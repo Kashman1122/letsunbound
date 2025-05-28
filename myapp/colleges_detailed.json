@@ -1,0 +1,30 @@
+[
+    {
+        "college_name": "University of Puerto Rico: Aguadilla",
+        "college_url": "https://bigfuture.collegeboard.org/colleges/university-of-puerto-rico-aguadilla",
+        "address": "Aguadilla, PR",
+        "card_details": [
+            "4-year\nPublic\nSmall\nSuburban",
+            "42% graduation rate",
+            "$6K average per year after aid",
+            "422–546"
+        ],
+        "college_description": "University of Puerto Rico: Aguadilla is a small, 4-year, public school. This coed college is located in a suburban community in a suburban setting and is primarily a commuter campus. It offers associate, bachelor's, and certificate degrees. This college has an acceptance rate of 82% and a graduation rate of 42%.",
+        "from_institution": "",
+        "college_board_code": "0983"
+    },
+    {
+        "college_name": "Wright State University: Lake Campus",
+        "college_url": "https://bigfuture.collegeboard.org/colleges/wright-state-university-lake-campus",
+        "address": "Celina, OH",
+        "card_details": [
+            "4-year\nPublic\nSmall\nRural",
+            "40% graduation rate",
+            "$12K average per year after aid",
+            "790–1200"
+        ],
+        "college_description": "Wright State University: Lake Campus is a small, 4-year, public school. This coed college is located in a rural setting and is primarily a commuter campus. It offers certificate, associate, and bachelor's degrees. This college has an acceptance rate of 100% and a graduation rate of 40%.",
+        "from_institution": "",
+        "college_board_code": "1947"
+    }
+]

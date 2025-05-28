@@ -1,0 +1,16 @@
+2025-04-10 22:44:40,250 - INFO - Initializing LinkedIn scraper...
+2025-04-10 22:44:40,250 - INFO - Attempting to initialize browser with auto-detected Chrome version...
+2025-04-10 22:44:41,936 - WARNING - Auto-detection failed: [Errno 28] No space left on device
+2025-04-10 22:44:41,937 - INFO - Attempting to use webdriver_manager to get the correct ChromeDriver...
+2025-04-10 22:44:41,937 - INFO - ====== WebDriver manager ======
+2025-04-10 22:44:42,951 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-10 22:44:43,128 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-10 22:44:43,278 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-10 22:44:43,615 - INFO - WebDriver version 129.0.6668.100 selected
+2025-04-10 22:44:43,621 - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/129.0.6668.100/win32/chromedriver-win32.zip
+2025-04-10 22:44:43,621 - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/129.0.6668.100/win32/chromedriver-win32.zip
+2025-04-10 22:44:44,132 - INFO - Driver downloading response is 200
+2025-04-10 22:44:46,622 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-10 22:44:46,763 - WARNING - webdriver_manager approach failed: [Errno 28] No space left on device
+2025-04-10 22:44:46,764 - INFO - Attempting default initialization...
+2025-04-10 22:44:48,180 - ERROR - An unexpected error occurred: [Errno 28] No space left on device

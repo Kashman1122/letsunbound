@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Upload University Data</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Display messages if any -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="csv_file" class="form-label">CSV File</label>
+                            <input type="file" class="form-control" id="csv_file" name="csv_file" required>
+                            <div class="form-text">Upload the university_data_with_majors.csv file</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload and Import</button>
+                        <a href="{% url 'upload_csv' %}" class="btn btn-primary">Upload University Data</a>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <p>Make sure your CSV file has the following columns:</p>
+                    <code>college_name, address, year, organization_type, size, area, graduation_rate, financial_aid, sat_score, majors</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

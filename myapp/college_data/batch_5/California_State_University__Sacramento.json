@@ -1,0 +1,43 @@
+{
+  "college_name": "California State University: Sacramento",
+  "url": "https://bigfuture.collegeboard.org/colleges/california-state-university-sacramento",
+  "scrape_success": true,
+  "scrape_timestamp": "2025-04-14 20:51:20",
+  "overview": {
+    "description": "California State University: Sacramento is a very large, 4-year, public university. This coed college is located in a large city in an urban setting and is primarily a commuter campus. It offers bachelor's, master's, and doctoral degrees. This college has an acceptance rate of 94% and a graduation rate of 54%.",
+    "college_type": "",
+    "location": "",
+    "enrollment": ""
+  },
+  "admissions": {
+    "high_school_gpa": "Required",
+    "high_school_rank": "Neither required nor recommended",
+    "college_prep_courses": "Required",
+    "sat_act_scores": "Considered if submitted",
+    "recommendations": "Neither required nor recommended",
+    "application_deadline": ""
+  },
+  "academics": {
+    "majors": []
+  },
+  "costs": {
+    "average_net_price": "",
+    "costs_breakdown": {},
+    "students_receiving_aid": "",
+    "average_aid_package": "",
+    "financial_aid_deadline": ""
+  },
+  "campus-life": {
+    "on_campus_housing": "",
+    "freshmen_live_on_campus": "",
+    "campus_setting": "",
+    "activities": ""
+  },
+  "successful_sections": [
+    "overview",
+    "admissions",
+    "academics",
+    "costs",
+    "campus-life"
+  ]
+}

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Profile Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .page-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left section styles */
+        .left-section {
+            flex: 1;
+            background-color: #f0f8ff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .analyzer-image {
+            width: 80%;
+            max-width: 500px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .analyzer-info {
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .analyzer-info h2 {
+            color: #0056b3;
+            margin-bottom: 15px;
+        }
+
+        /* Right section styles */
+        .right-section {
+            flex: 1.5;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .welcome-text {
+            margin-bottom: 20px;
+        }
+
+        /* Progress Steps */
+        .steps-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-line {
+            position: absolute;
+            height: 2px;
+            background-color: #e0e0e0;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .progress-line-completed {
+            position: absolute;
+            height: 2px;
+            background-color: #007bff;
+            width: 0%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            transition: width 0.6s ease-in-out;
+        }
+
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 3;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .step.completed {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .step.active {
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        /* Card styles */
+        .card {
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-content {
+            padding: 24px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin: 0 0 20px 0;
+        }
+
+        .highlight {
+            color: #c41e3a; /* Red color for "with Pro" */
+            font-weight: 600;
+        }
+
+        .diamond-icon {
+            margin-left: 8px;
+            color: #e67e22; /* Orange color for the diamond icon */
+        }
+
+        /* Feature list styles */
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .check-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            background-color: #4CAF50; /* Green background for check icon */
+            color: white;
+            border-radius: 50%;
+            font-size: 14px;
+        }
+
+        /* Card specific styles */
+        .pro-card {
+            background: linear-gradient(to right, #ffeee6, #fff0f0); /* Light pink/peach gradient */
+        }
+
+        .alternate-card {
+            background: linear-gradient(to right, #fffbeb, #fff9e6); /* Light yellow/cream gradient */
+        }
+
+        /* Section transitions */
+        .section {
+            transition: all 0.3s ease;
+        }
+
+        /* Form styles */
+        .form-container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            color: #0056b3;
+            margin: 0;
+        }
+
+        .form-section {
+            padding: 20px 0;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .page-container {
+                flex-direction: column;
+            }
+
+            .left-section {
+                height: auto;
+                position: relative;
+                padding: 30px 20px;
+            }
+
+            .analyzer-image {
+                width: 60%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Left Section with Profile Analyzer Image -->
+        <div class="left-section">
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/analysing-user-profile-6779152-5624410.png" alt="Profile Analyzer" class="analyzer-image">
+            <div class="analyzer-info">
+                <h2>Student Profile Analyzer</h2>
+                <p>Our intelligent system analyzes your academic performance, extracurricular activities, and skills to provide personalized recommendations for your educational journey.</p>
+                <p>Complete the form to get your customized profile analysis.</p>
+            </div>
+        </div>
+
+        <!-- Right Section with Form -->
+        <div class="right-section">
+            <div class="welcome-text">
+                <h3>Welcome, <span id="user-name">{{ user.get_full_name }}</span>!</h3>
+                <p>Fill out the form to get your personalized profile analysis.</p>
+            </div>
+
+            <div class="form-container">
+                <div class="form-header">
+                    <h2 class="form-title">Student Profile Analysis</h2>
+                </div>
+
+                <form id="profile-form" method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                    <!-- Progress steps -->
+                    <div class="steps-progress mb-4">
+                        <div class="progress-line"></div>
+                        <div class="progress-line-completed"></div>
+
+                        <div class="step completed" data-step="1">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="step active" data-step="2">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="step" data-step="3">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="step" data-step="4">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="step" data-step="5">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="step" data-step="6">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                    <!-- Section 1: Basic Info -->
+                    <div class="section" id="section1">
+                        <h4 class="mb-3">Basic Information</h4>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value='{{ user.get_full_name }}' required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Which board of study are you currently in ?</label>
+                            <input type="text" class="form-control" id="board" name="board" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">What field of study excites you most for the colleges ?</label>
+                            <input type="text" class="form-control" id="field" name="field" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">What is your expected year of completing class 12th ?</label>
+                            <input type="text" class="form-control" id="year" name="year" required>
+                        </div>
+                        <div class="form-buttons">
+                            <div></div> <!-- Empty div for spacing -->
+                            <button type="button" class="btn btn-primary" onclick="nextSection(1, 2)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Academic Details -->
+                    <div class="section d-none" id="section2">
+                        <h4 class="mb-3">Academic Details</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tenth_marks_received" class="form-label">8th Marks Received/Gpa</label>
+                                <input type="number" class="form-control" id="eight_marks_received" name="eight_marks_received" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="eight_marks_total" class="form-label">8th Total Marks</label>
+                                <input type="number" class="form-control" id="eight_marks_total" name="eight_marks_total" value="10" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tenth_marks_received" class="form-label">10th Marks Received/Gpa</label>
+                                <input type="number" class="form-control" id="tenth_marks_received" name="tenth_marks_received" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tenth_marks_total" class="form-label">10th Total Marks</label>
+                                <input type="number" class="form-control" id="tenth_marks_total" name="tenth_marks_total" value="10" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="tenth_marks_received" class="form-label">11th Marks Received/Gpa</label>
+                                <input type="number" class="form-control" id="eleventh_marks_received" name="eleventh_marks_received" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tenth_marks_total" class="form-label">10th Total Marks</label>
+                                <input type="number" class="form-control" id="eleventh_marks_total" name="eleventh_marks_total" value="10" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="twelfth_marks_received" class="form-label">12th Marks Received/Gpa</label>
+                                <input type="number" class="form-control" id="twelfth_marks_received" name="twelfth_marks_received" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="twelfth_marks_total" class="form-label">12th Total Marks</label>
+                                <input type="number" class="form-control" id="twelfth_marks_total" name="twelfth_marks_total" value="10" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="ranking" class="form-label">Where do you stand in your class ranking ?</label>
+                                <input type="text" class="form-control" id="ranking" name="ranking" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ranking" class="form-label">Total Ranking</label>
+                                <input type="number" class="form-control" id="ranking" name="ranking" value="5" required>
+                            </div>
+                        </div>
+                         <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="twelfth_marks_received" class="form-label">Have you receive any academic recognition or awards ?</label>
+                                <input type="text" class="form-control" id="awards" name="awards" required>
+                            </div>
+<!--                            <div class="col-md-6">-->
+<!--                                <label for="twelfth_marks_total" class="form-label">12th Total Marks</label>-->
+<!--                                <input type="number" class="form-control" id="twelfth_marks_total" name="twelfth_marks_total" required>-->
+<!--                            </div>-->
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="twelfth_marks_received" class="form-label">How many placements course have you done ?</label>
+                                <input type="number" class="form-control" id="course" name="course" required>
+                            </div>
+<!--                            <div class="col-md-6">-->
+<!--                                <label for="twelfth_marks_total" class="form-label">12th Total Marks</label>-->
+<!--                                <input type="number" class="form-control" id="twelfth_marks_total" name="twelfth_marks_total" required>-->
+<!--                            </div>-->
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="sat_score_received" class="form-label">SAT Score Received (Optional)</label>
+                                <input type="number" class="form-control" id="sat_score_received" name="sat_score_received">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="sat_score_total" class="form-label">SAT Total Score</label>
+                                <input type="number" class="form-control" id="sat_score_total" name="sat_score_total" value="1600" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="other_exam_score" class="form-label">Other Exam Scores (Optional)</label>
+                            <input type="text" class="form-control" id="other_exam_score" name="other_exam_score">
+                            <div class="form-text">Enter any other exam scores in format: Exam Name: Score</div>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn btn-secondary" onclick="prevSection(2, 1)">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="nextSection(2, 3)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: College Details -->
+                    <div class="section d-none" id="section3">
+                        <h4 class="mb-3">Extracurricular Activity</h4>
+
+                        <div class="mb-3">
+                            <label for="activity" class="form-label">How many extra curricular activity are you consistently involved in ?</label>
+                            <input type="number" step="0.01" class="form-control" id="activity" name="activity">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="competition_name" class="form-label">Extra curricular activity name ?</label>
+                            <input type="text" class="form-control" id="competition_name" name="competition_name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="learning_experience" class="form-label">What is your role in any of your activity ?</label>
+                            <textarea class="form-control" id="learning_experience" name="learning_experience" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="time" class="form-label">How long have you been involved in your primary extracurricular activity ?</label>
+                            <textarea class="form-control" id="time" name="time" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="help" class="form-label">Do you volunteer or help out in your community ?</label>
+                            <textarea class="form-control" id="help" name="help" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn btn-secondary" onclick="prevSection(3, 2)">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="nextSection(3, 4)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Extra Activities & Skills -->
+                    <div class="section d-none" id="section4">
+                        <h4 class="mb-3">Extra Activities & Skills</h4>
+
+                        <div class="mb-3">
+                            <label for="extra_curricular" class="form-label">Extra Curricular Activities</label>
+                            <textarea class="form-control" id="extra_curricular" name="extra_curricular" rows="3"></textarea>
+                            <div class="form-text">List your activities separated by commas</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="skills" class="form-label">Skills</label>
+                            <textarea class="form-control" id="skills" name="skills" rows="3"></textarea>
+                            <div class="form-text">List your skills separated by commas</div>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn btn-secondary" onclick="prevSection(4, 3)">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="nextSection(4, 5)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Personality and Cultural Evaluation -->
+                    <div class="section d-none" id="section5">
+                        <h4 class="mb-3">Personality and Cultural Evaluation</h4>
+
+                        <div class="mb-4">
+                            <label class="form-label">What do you do when something does not go right the first time?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="challenge_response" id="avoid" value="avoid">
+                                <label class="form-check-label" for="avoid">
+                                    I avoid similar situations
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="challenge_response" id="prepare" value="prepare">
+                                <label class="form-check-label" for="prepare">
+                                    I try again after preparation
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="challenge_response" id="feedback" value="feedback">
+                                <label class="form-check-label" for="feedback">
+                                    I seek feedback and improve
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="challenge_response" id="embrace" value="embrace">
+                                <label class="form-check-label" for="embrace">
+                                    I embrace the challenge and push forward
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Are you comfortable in making friends from different backgrounds?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="comfort_diversity" id="not_comfortable" value="not_comfortable">
+                                <label class="form-check-label" for="not_comfortable">
+                                    Not comfortable at all
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="comfort_diversity" id="slightly_comfortable" value="slightly_comfortable">
+                                <label class="form-check-label" for="slightly_comfortable">
+                                    Slightly comfortable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="comfort_diversity" id="somewhat_comfortable" value="somewhat_comfortable">
+                                <label class="form-check-label" for="somewhat_comfortable">
+                                    Somewhat comfortable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="comfort_diversity" id="quite_comfortable" value="quite_comfortable">
+                                <label class="form-check-label" for="quite_comfortable">
+                                    Quite comfortable
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="comfort_diversity" id="extremely_comfortable" value="extremely_comfortable">
+                                <label class="form-check-label" for="extremely_comfortable">
+                                    Extremely comfortable
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Have you received any award for any global and cultural program?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cultural_awards" id="international_awards" value="international">
+                                <label class="form-check-label" for="international_awards">
+                                    International awards
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cultural_awards" id="national_awards" value="national">
+                                <label class="form-check-label" for="national_awards">
+                                    National awards
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cultural_awards" id="regional_awards" value="regional">
+                                <label class="form-check-label" for="regional_awards">
+                                    Regional or state-level awards
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cultural_awards" id="school_awards" value="school">
+                                <label class="form-check-label" for="school_awards">
+                                    School-level awards
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cultural_awards" id="no_awards" value="none">
+                                <label class="form-check-label" for="no_awards">
+                                    No formal awards
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="global_contribution" class="form-label">Do you see yourself contributing to a globally interconnected world?</label>
+                            <textarea class="form-control" id="global_contribution" name="global_contribution" rows="4" placeholder="Please explain how you envision contributing to a globally interconnected world..."></textarea>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn btn-secondary" onclick="prevSection(5, 4)">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="nextSection(5, 6)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Section 6: Final Section -->
+                    <div class="section d-none" id="section6">
+                        <h4 class="mb-3">Additional Information</h4>
+
+                        <div class="mb-3">
+                            <label for="additional_info" class="form-label">Any additional information you'd like to share</label>
+                            <textarea class="form-control" id="additional_info" name="additional_info" rows="4" placeholder="Share any other relevant information about yourself..."></textarea>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn btn-secondary" onclick="prevSection(6, 5)">Previous</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Pro Card -->
+            <div class="card pro-card">
+                <div class="card-content">
+                    <h2 class="card-title">Maximize your chances <span class="highlight">with Pro</span> <span class="diamond-icon">💎</span></h2>
+                    <p class="card-subtitle">Upgrade for detailed insights and strategies.</p>
+
+                    <ul class="feature-list">
+                        <li><span class="check-icon">✓</span> In-depth profile analysis</li>
+                        <li><span class="check-icon">✓</span> Tailored profile building plan</li>
+                        <li><span class="check-icon">✓</span> Personalised activities suggestions</li>
+                        <li><span class="check-icon">✓</span> Access to previously admitted profiles</li>
+                        <li><span class="check-icon">✓</span> Personalized Scholarship Matches</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Alternate Programs Card -->
+            <div class="card alternate-card mb-5">
+                <div class="card-content">
+                    <h2 class="card-title">Alternate Programs for you <span class="diamond-icon">💎</span></h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function nextSection(current, next) {
+            // Validate current section
+            const currentSection = document.getElementById(`section${current}`);
+            const inputs = currentSection.querySelectorAll('input[required], textarea[required]');
+            let isValid = true;
+
+            // Simple validation for required fields in the first two sections
+            if (current <= 2) {
+                inputs.forEach(input => {
+                    if (!input.value) {
+                        input.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                });
+
+                if (!isValid) {
+                    alert('Please fill all required fields');
+                    return;
+                }
+            }
+
+            // Hide current section
+            document.getElementById(`section${current}`).classList.add('d-none');
+            // Show next section
+            document.getElementById(`section${next}`).classList.remove('d-none');
+
+            // Update progress steps
+            updateProgress(next);
+
+            // Scroll to top of form
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function prevSection(current, prev) {
+            // Hide current section
+            document.getElementById(`section${current}`).classList.add('d-none');
+            // Show previous section
+            document.getElementById(`section${prev}`).classList.remove('d-none');
+
+            // Update progress steps
+            updateProgress(prev);
+
+            // Scroll to top of form
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateProgress(currentStep) {
+            const steps = document.querySelectorAll('.step');
+            const progressLine = document.querySelector('.progress-line-completed');
+
+            // Update progress line
+            const totalSteps = steps.length;
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressLine.style.width = `${progressPercentage}%`;
+
+            // Update step classes
+            steps.forEach((step, index) => {
+                const stepNumber = index + 1;
+                step.classList.remove('completed', 'active');
+
+                if (stepNumber < currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNumber === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Update user name if provided
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('name');
+            nameInput.addEventListener('change', function() {
+                if (this.value) {
+                    document.getElementById('user-name').textContent = this.value.split(' ')[0];
+                }
+            });
+        });
+    </script>
+</body>
+</html>

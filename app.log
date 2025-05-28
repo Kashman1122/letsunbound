@@ -1,0 +1,85 @@
+INFO 2025-05-12 13:05:00,086 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 13:06:10,943 basehttp "GET / HTTP/1.1" 200 49435
+INFO 2025-05-12 13:06:16,265 basehttp "GET /colleges/ HTTP/1.1" 200 33311786
+INFO 2025-05-12 13:08:53,327 basehttp "GET /colleges/ HTTP/1.1" 200 33310702
+INFO 2025-05-12 13:09:09,242 basehttp "GET /colleges/ HTTP/1.1" 200 33311424
+INFO 2025-05-12 13:09:14,655 basehttp "GET /colleges/ HTTP/1.1" 200 33311424
+INFO 2025-05-12 13:10:42,566 basehttp "GET / HTTP/1.1" 200 49435
+INFO 2025-05-12 13:10:47,789 basehttp "GET /colleges/ HTTP/1.1" 200 33311424
+INFO 2025-05-12 13:11:38,967 basehttp "GET /colleges/ HTTP/1.1" 200 33310951
+INFO 2025-05-12 13:13:10,573 basehttp "GET /colleges/ HTTP/1.1" 200 33311424
+INFO 2025-05-12 13:13:19,667 basehttp "GET / HTTP/1.1" 200 49435
+INFO 2025-05-12 13:13:24,991 basehttp "GET /colleges/ HTTP/1.1" 200 33311424
+WARNING 2025-05-12 13:15:09,296 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:15:09,297 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 246
+INFO 2025-05-12 13:16:10,533 basehttp "GET /colleges/ HTTP/1.1" 200 33311423
+WARNING 2025-05-12 13:16:11,000 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:16:11,001 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 246
+INFO 2025-05-12 13:19:25,209 basehttp "GET /colleges/ HTTP/1.1" 200 33311452
+INFO 2025-05-12 13:19:38,164 basehttp "GET /colleges/ HTTP/1.1" 200 33311452
+INFO 2025-05-12 13:19:52,308 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 13:20:07,892 basehttp "GET / HTTP/1.1" 200 49435
+INFO 2025-05-12 13:20:10,169 basehttp "GET /colleges/ HTTP/1.1" 200 33311452
+INFO 2025-05-12 13:20:33,681 basehttp "GET /colleges/ HTTP/1.1" 200 33311452
+INFO 2025-05-12 13:21:16,237 basehttp "GET /colleges/ HTTP/1.1" 200 33311444
+INFO 2025-05-12 13:21:44,386 basehttp "GET /colleges/ HTTP/1.1" 200 33311452
+INFO 2025-05-12 13:43:15,077 autoreload D:\pycharm\Edtech\education\education\settings.py changed, reloading.
+INFO 2025-05-12 13:43:15,823 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 13:43:19,467 basehttp "GET /colleges/ HTTP/1.1" 200 33311452
+INFO 2025-05-12 13:44:45,913 basehttp "GET /colleges/?csrfmiddlewaretoken=QYrPnQ8KoS49Rc7yrY3Afzw2T7IVBWInodNxXTyESMrFytFD6hngopEXK55Fc8vG&college_id=5967&name=kashish&email=choprakashish94%40gmail.com HTTP/1.1" 200 33311452
+INFO 2025-05-12 13:58:52,762 autoreload D:\pycharm\Edtech\education\myapp\views.py changed, reloading.
+INFO 2025-05-12 13:58:53,851 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 13:59:17,650 basehttp "GET /colleges/ HTTP/1.1" 200 33311452
+INFO 2025-05-12 14:02:29,790 basehttp "GET /colleges/?csrfmiddlewaretoken=H46dRBsCDV9KJ76Rpo8EydruiW2n9Lz6fjsVrESw7PwgqoEW4HskH3zp9Up7KXmp&college_id=5967&name=kashish&email=choprakashish94%40gmail.com HTTP/1.1" 200 33311452
+INFO 2025-05-12 14:25:03,905 basehttp "GET /colleges/ HTTP/1.1" 200 32027818
+INFO 2025-05-12 14:25:57,215 basehttp "GET /colleges/?csrfmiddlewaretoken=DSJ7G89ZLs5Z4hJhVaqQxOowzxJJ8jAFb75PgbzTfmsvLyhmAtKwGEwrqv6tJvnY&college_id=5967&name=kashish&email=choprakashish94%40gmail.com HTTP/1.1" 200 32027818
+INFO 2025-05-12 14:41:04,056 basehttp "GET /colleges/?csrfmiddlewaretoken=DSJ7G89ZLs5Z4hJhVaqQxOowzxJJ8jAFb75PgbzTfmsvLyhmAtKwGEwrqv6tJvnY&college_id=5967&name=kashish&email=choprakashish94%40gmail.com HTTP/1.1" 200 32028642
+INFO 2025-05-12 14:41:10,527 basehttp "GET /colleges/ HTTP/1.1" 200 32028642
+INFO 2025-05-12 14:44:06,149 basehttp "GET /colleges/?csrfmiddlewaretoken=z4Wh0y1bXuEfNOL9AUFwyW2VGQyN1pjF7jiZABr5ro1Lu5jefdZcHMaQxOVxCB6Y&college_id=5967&name=Kashish&email=choprakashish94%40gmail.com HTTP/1.1" 200 32028642
+INFO 2025-05-12 15:26:09,495 basehttp "GET /colleges/ HTTP/1.1" 200 52311728
+INFO 2025-05-12 15:26:30,457 basehttp "GET /colleges/ HTTP/1.1" 200 45223648
+INFO 2025-05-12 15:28:56,227 basehttp "GET /colleges/?csrfmiddlewaretoken=yF7Ty7GXCnBph16OMHIRvWEDoq1QFlLz6UtB8a6R6hYVYiETr02xEMMyfooAgxyS&college_id=5967&name=Kashish&email=choprakashish94%40gmail.com&phone=&additional_info= HTTP/1.1" 200 45223648
+INFO 2025-05-12 15:35:13,499 autoreload D:\pycharm\Edtech\education\myapp\views.py changed, reloading.
+INFO 2025-05-12 15:35:15,162 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 15:35:47,624 basehttp "GET /colleges/ HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:36:49,230 basehttp "GET /colleges/?csrfmiddlewaretoken=lw16WOpSsrip56PebMgBQpxuNLQhZDQETLnOwRPMWlFVMnnjQ5AhZfFpEJd1APDX&college_id=5967&name=Kashish&email=choprakashish94%40gmail.com&phone=&additional_info= HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:43:56,023 autoreload D:\pycharm\Edtech\education\education\settings.py changed, reloading.
+INFO 2025-05-12 15:43:56,687 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 15:44:09,816 autoreload D:\pycharm\Edtech\education\education\settings.py changed, reloading.
+INFO 2025-05-12 15:44:10,532 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 15:44:36,749 basehttp "GET /colleges/ HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:46:08,113 basehttp "GET /colleges/?csrfmiddlewaretoken=i0G9uOBGsBj2LW52SZz92TKYNfqgIuQfQf2R4R1AWvGysdD7xiTPbJSTEdN0jGDy&college_id=5967&name=Kashish&email=choprakashish94%40gmail.com&phone=&additional_info= HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:53:58,283 autoreload D:\pycharm\Edtech\education\myapp\views.py changed, reloading.
+INFO 2025-05-12 15:53:59,032 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 15:54:09,326 basehttp "GET /colleges/ HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:55:16,262 basehttp "GET /colleges/?csrfmiddlewaretoken=5ttOn28WSnSzCtNBxovg4n9sxEDvGAxNDIPwX5yQmhf5jKlGcHPWddhnoC0fhMk6&college_id=5967&name=Kashish&email=choprakashish94%40gmail.com&phone=&additional_info= HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:56:42,712 autoreload D:\pycharm\Edtech\education\myapp\urls.py changed, reloading.
+INFO 2025-05-12 15:56:43,781 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 15:56:46,702 basehttp "GET / HTTP/1.1" 200 49435
+INFO 2025-05-12 15:56:51,964 basehttp "GET /colleges/ HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:58:38,927 basehttp "GET /colleges/?csrfmiddlewaretoken=37zNPrloWdkDpCPOVyI7r8fKFUb1wa0iBmVvpuLiq7H96TnTAR2NAYnFwSyL7mNB&college_id=5920&name=kashish&email=choprakashish94%40gmail.com&phone=&additional_info= HTTP/1.1" 200 55898988
+INFO 2025-05-12 15:59:48,836 autoreload D:\pycharm\Edtech\education\myapp\views.py changed, reloading.
+INFO 2025-05-12 15:59:49,914 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 15:59:53,602 basehttp "GET / HTTP/1.1" 200 49435
+INFO 2025-05-12 15:59:58,387 basehttp "GET /colleges/ HTTP/1.1" 200 55898988
+INFO 2025-05-12 16:01:50,396 basehttp "GET /colleges/?csrfmiddlewaretoken=kWJ1mkZA7axZKNunaOqig20R2895qpaQSb5JWnpuB4Uvr42sP7KYpS8MT6wP1BX9&college_id=5967&name=kashish&email=choprakashish94%40gmail.com&phone=9812683839&additional_info=xdjkhfbsv HTTP/1.1" 200 55898988
+INFO 2025-05-12 16:03:26,477 basehttp "GET /colleges/?csrfmiddlewaretoken=yYJyCXYiXWQiQfUaTms9RiYGHXwYMheO6d5gc0ocrQdOxwsfyFMP086ByVTInt17&college_id=5997&name=kashish&email=choprakashish94%40gmail.com&phone=9812683839&additional_info=sdf HTTP/1.1" 200 55894666
+INFO 2025-05-12 16:05:00,543 basehttp "GET /colleges/?csrfmiddlewaretoken=kWJ1mkZA7axZKNunaOqig20R2895qpaQSb5JWnpuB4Uvr42sP7KYpS8MT6wP1BX9&college_id=5967&name=kashish&email=choprakashish94%40gmail.com&phone=9812683839&additional_info=xdjkhfbsv HTTP/1.1" 200 55782294
+INFO 2025-05-12 16:07:14,940 basehttp "GET /colleges/?csrfmiddlewaretoken=FMqBJ8815os4FX1pVzrwHjfi7bReLUnwd1MjjbyVziPAmezuASLcQ9ndY9eYm6aP&college_id=5967&name=kashish&email=choprakashish94%40gmail.com&phone=9812683839&additional_info= HTTP/1.1" 200 55782294
+INFO 2025-05-12 16:10:16,210 basehttp "GET /colleges/ HTTP/1.1" 200 55842802
+INFO 2025-05-12 16:12:06,039 basehttp "POST /colleges/ HTTP/1.1" 200 55842802
+INFO 2025-05-12 16:14:35,559 basehttp "GET /colleges/ HTTP/1.1" 200 55842802
+INFO 2025-05-12 16:15:34,525 basehttp "POST /colleges/ HTTP/1.1" 200 55842802
+INFO 2025-05-12 16:16:35,786 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 16:16:38,691 basehttp "GET / HTTP/1.1" 200 49435
+WARNING 2025-05-12 16:16:41,504 log Not Found: /blogs/
+WARNING 2025-05-12 16:16:41,504 basehttp "GET /blogs/ HTTP/1.1" 404 246
+INFO 2025-05-12 16:16:47,804 basehttp "GET /colleges/ HTTP/1.1" 200 55842802
+INFO 2025-05-12 16:17:40,002 basehttp "POST /colleges/ HTTP/1.1" 200 55842802
+INFO 2025-05-12 16:20:07,655 basehttp "GET /colleges/ HTTP/1.1" 200 54550524
+INFO 2025-05-12 16:22:03,419 basehttp "POST /colleges/ HTTP/1.1" 200 54550524
+INFO 2025-05-12 16:34:59,424 basehttp "GET /colleges/ HTTP/1.1" 200 43434340
+INFO 2025-05-12 16:35:48,323 basehttp "POST /colleges/ HTTP/1.1" 200 43434340
+INFO 2025-05-12 16:39:22,518 autoreload D:\pycharm\Edtech\education\myapp\views.py changed, reloading.
+INFO 2025-05-12 16:39:23,853 autoreload Watching for file changes with StatReloader
+INFO 2025-05-12 16:39:56,722 autoreload D:\pycharm\Edtech\education\education\settings.py changed, reloading.

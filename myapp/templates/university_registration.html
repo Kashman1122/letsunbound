@@ -1,0 +1,113 @@
+<!-- university_registration.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>University Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .messages {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .error {
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>University Registration</h1>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <h2>Account Information</h2>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <h2>University Information</h2>
+            <div class="form-group">
+                <label for="uniname">University Name:</label>
+                <input type="text" id="uniname" name="uniname" required>
+            </div>
+            <div class="form-group">
+                <label for="unicountry">Country:</label>
+                <input type="text" id="unicountry" name="unicountry" required>
+            </div>
+            <div class="form-group">
+                <label for="unistate">State:</label>
+                <input type="text" id="unistate" name="unistate" required>
+            </div>
+            <div class="form-group">
+                <label for="unicity">City:</label>
+                <input type="text" id="unicity" name="unicity" required>
+            </div>
+            <div class="form-group">
+                <label for="unilocation">Location:</label>
+                <input type="text" id="unilocation" name="unilocation">
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Register University</button>
+            </div>
+
+            <div>
+                <p>Already have an account? <a href="{% url 'signin' %}">Sign in</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

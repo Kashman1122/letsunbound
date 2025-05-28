@@ -1,0 +1,3138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LetsUnbound Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2699FB;
+            --secondary-color: #E8F4FE;
+            --text-dark: #212529;
+            --text-medium: #454545;
+            --text-light: #606060;
+            --background-light: #F4F9FF;
+            --white: #FFFFFF;
+            --radius-small: 8px;
+            --radius-medium: 12px;
+            --radius-large: 20px;
+            --shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-medium);
+        }
+
+        /* Common Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-weight: 500;
+            border-radius: var(--radius-small);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+
+
+        .btn-primary:hover {
+            background-color: #1a84d8;
+        }
+
+        .btn-outline {
+            background-color: var(--white);
+            color: var(--text-medium);
+            border: 1px solid #c0bfbf;
+        }
+
+        .btn-outline:hover {
+            color: var(--white);
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            background-color: var(--white);
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            width: 240px;
+            height: auto;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            width:100%;
+            height:100%;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            width:100%;
+            height:100%;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 16px;
+            color: var(--text-medium);
+            margin-bottom: 15px;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-description {
+            font-size: 22px;
+            color: var(--text-medium);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 18px;
+            margin-top: 25px;
+            background-color:transparent;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+            width:100%;
+
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: var(--radius-medium);
+            box-shadow: var(--shadow);
+        }
+
+        /* Partners Section */
+        /*.partners {*/
+        /*    padding: 40px 0;*/
+        /*    background-color: var(--background-light);*/
+        /*}*/
+
+        /*.partners-title {*/
+        /*    text-align: center;*/
+        /*    margin-bottom: 30px;*/
+        /*    font-size: 22px;*/
+        /*    color: var(--text-dark);*/
+        /*}*/
+
+        /*.partners-logos {*/
+        /*    display: flex;*/
+        /*    justify-content: space-around;*/
+        /*    align-items: center;*/
+        /*    flex-wrap: wrap;*/
+        /*    gap: 20px;*/
+        /*}*/
+
+        /*.partners-logos img {*/
+        /*    height: 40px;*/
+        /*    width: auto;*/
+        /*    opacity: 0.8;*/
+        /*    transition: var(--transition);*/
+        /*}*/
+
+        /*.partners-logos img:hover {*/
+        /*    opacity: 1;*/
+        /*}*/
+
+        /* Career Section */
+        .career {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 36px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-medium);
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .course-card {
+            background-color: var(--white);
+            border-radius: var(--radius-medium);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 25px;
+        }
+
+        .course-title {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .course-description {
+            font-size: 16px;
+            color: var(--text-medium);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .course-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .course-link:hover {
+            text-decoration: underline;
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-image {
+            flex: 1;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: var(--radius-medium);
+            box-shadow: var(--shadow);
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-title {
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .about-description {
+            font-size: 16px;
+            color: var(--text-medium);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        /* Online Courses */
+        .online-courses {
+            padding: 80px 0;
+        }
+
+        .course-slider {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 10px 0 30px;
+            scrollbar-width: none;
+        }
+
+        .course-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .course-slide {
+            min-width: 320px;
+            flex: 0 0 auto;
+            background-color: var(--white);
+            border-radius: var(--radius-medium);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .course-slide img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .course-tag {
+            display: inline-block;
+            margin: 15px;
+            padding: 5px 10px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .slide-content {
+            padding: 0 15px 20px;
+        }
+
+        .slide-title {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .slide-details {
+            list-style: none;
+        }
+
+        .slide-details li {
+            font-size: 15px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        /* CEO Section */
+        .ceo {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+
+        .ceo-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .ceo-image {
+            flex: 1;
+        }
+
+        .ceo-image img {
+            max-width: 100%;
+            border-radius: 60px 20px 60px 20px;
+            background-color: var(--primary-color);
+            padding: 10px;
+        }
+
+        .ceo-content {
+            flex: 1.2;
+            position: relative;
+        }
+
+        .ceo-title {
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        .ceo-quote {
+            font-size: 18px;
+            color: var(--text-medium);
+            line-height: 1.7;
+            margin-bottom: 30px;
+            font-style: italic;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .ceo-name {
+            font-size: 18px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 80px 0;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://t4.ftcdn.net/jpg/01/90/74/63/360_F_190746317_qjZikoohn97kiJrWpJZJLHilBXKVWTAD.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .stats-title {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .stats-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Job Section */
+        .job {
+            padding: 80px 0;
+        }
+
+        .job-container {
+            display: flex;
+            gap: 50px;
+            align-items: flex-start;
+        }
+
+        .job-content {
+            flex: 1.2;
+        }
+
+        .job-title {
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .job-description {
+            font-size: 18px;
+            color: var(--text-medium);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .job-card {
+            background-color: var(--white);
+            border-radius: var(--radius-medium);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-card-title {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .job-card-description {
+            font-size: 16px;
+            color: var(--text-medium);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .job-card-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .job-card-link:hover {
+            text-decoration: underline;
+        }
+
+        .job-image {
+            flex: 0.8;
+            margin-top: 60px;
+        }
+
+        .job-image img {
+            width: 100%;
+            border-radius: var(--radius-medium);
+            box-shadow: var(--shadow);
+        }
+
+        /* Placement Section */
+        .placement {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+
+        .placement-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .placement-content {
+            max-width: 600px;
+        }
+
+        .placement-title {
+            font-size: 32px;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .placement-description {
+            font-size: 18px;
+            color: var(--text-medium);
+            line-height: 1.6;
+        }
+
+        .placement-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: var(--radius-medium);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .feature-content h3 {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .feature-content p {
+            font-size: 16px;
+            color: var(--text-medium);
+            line-height: 1.5;
+        }
+
+        /* YouTube Section */
+        .youtube {
+            padding: 60px 0;
+            background-color: var(--background-light);
+            border-radius: var(--radius-large);
+            margin: 80px 20px;
+        }
+
+        .youtube-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .youtube-image {
+            flex: 1;
+        }
+
+        .youtube-image img {
+            max-width: 100%;
+            border-radius: var(--radius-medium);
+        }
+
+        .youtube-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .youtube-logo {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .youtube-title {
+            font-size: 28px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .youtube-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        .youtube-button {
+            background-color: #ED2025;
+            color: var(--white);
+            padding: 15px 30px;
+            padding-left: 60px;
+            font-size: 18px;
+            font-weight: 500;
+            border-radius: var(--radius-small);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+        }
+
+        .youtube-button i {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0A2134;
+            color: var(--white);
+            padding: 80px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand img {
+            width: 160px;
+            margin-bottom: 20px;
+        }
+
+        .footer-description {
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            background-color: var(--primary-color);
+        }
+
+        .footer-heading {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            opacity: 0.8;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary-color);
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+
+        .footer-contact-text {
+            font-size: 15px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-copyright {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .footer-policy {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-policy a {
+            font-size: 14px;
+            color: var(--white);
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .footer-policy a:hover {
+            opacity: 1;
+            color: var(--primary-color);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .courses-grid,
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .placement-features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .nav-menu, .nav-buttons {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero-container,
+            .about-container,
+            .ceo-container,
+            .job-container,
+            .youtube-container {
+                flex-direction: column;
+            }
+
+            .hero-content,
+            .about-content,
+            .ceo-content,
+            .job-content,
+            .youtube-content {
+                text-align: center;
+                width: 100%;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: -1;
+                margin-bottom: 30px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .ceo-quote {
+                padding-left: 15px;
+                text-align: left;
+            }
+
+            .placement-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .placement-content {
+                max-width: 100%;
+            }
+
+            .placement-features {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            .job-image {
+                margin-top: 0;
+                margin-bottom: 30px;
+                order: -1;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .courses-grid,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .logo {
+            width: 160px;
+            height: auto;
+        }
+
+            .stats-title,
+            .about-title,
+            .job-title,
+            .placement-title,
+            .ceo-title {
+                font-size: 24px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .ceo-image img {
+                border-radius: 40px 15px 40px 15px;
+            }
+
+            .youtube-button {
+                width: 100%;
+            }
+
+            .course-slide {
+                min-width: 280px;
+            }
+
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: var(--white);
+            z-index: 1001;
+            padding: 20px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-close {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .mobile-menu-close button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 15px 0;
+            font-size: 18px;
+            color: var(--text-dark);
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-nav-buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+        .partners {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .partners-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 50px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .slider-container:active {
+            cursor: grabbing;
+        }
+
+        .partners-logos {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            animation: slideLeft 20s linear infinite;
+            will-change: transform;
+        }
+
+        .partners-logos.paused {
+            animation-play-state: paused;
+        }
+
+        .partners-logos img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(0.7);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .partners-logos img:hover {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.1);
+        }
+
+        @keyframes slideLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Duplicate the logos for seamless loop */
+        .partners-logos::after {
+            content: '';
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-left: 60px;
+        }
+
+        /* Navigation dots */
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #bdc3c7;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background-color: #3498db;
+        }
+
+        /* Control buttons */
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .control-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .partners-title {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+
+            .partners-logos {
+                gap: 40px;
+            }
+
+            .partners-logos img {
+                height: 45px;
+            }
+        }
+        .success-story {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-story::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23000" opacity="0.02"/><circle cx="75" cy="25" r="1" fill="%23000" opacity="0.02"/><circle cx="50" cy="50" r="1" fill="%23000" opacity="0.02"/><circle cx="25" cy="75" r="1" fill="%23000" opacity="0.02"/><circle cx="75" cy="75" r="1" fill="%23000" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .story-text {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .story-image {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            line-height: 1.2;
+            position: relative;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            border-radius: 2px;
+        }
+
+        .student-name {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 30px;
+        }
+
+        .story-description {
+            font-size: 1.1rem;
+            color: #5d6d7e;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .achievements {
+            list-style: none;
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            transform: translateX(-20px);
+            opacity: 0;
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        .achievement-item:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        .achievement-item:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .achievement-item:nth-child(3) {
+            animation-delay: 0.7s;
+        }
+
+        .achievement-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .achievement-icon::after {
+            content: '→';
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .achievement-text {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .image-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            background: #ffd93d;
+            padding: 30px;
+        }
+
+        .student-photo {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .university-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 3;
+        }
+
+        .university-badge img {
+            height: 30px;
+            width: auto;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 50%;
+            right: -50px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .floating-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            margin-top: -30px;
+            margin-left: 40px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            animation-delay: -3s;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(-50%) translateX(0);
+            }
+            50% {
+                transform: translateY(-50%) translateX(20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .story-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .main-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .student-name {
+                font-size: 1.8rem;
+            }
+
+            .floating-elements {
+                display: none;
+            }
+
+            .image-container {
+                margin-top: 20px;
+            }
+        }
+
+        .quantum_nexus_hero_orchestrator {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quantum_nexus_hero_orchestrator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .zenith_crystalline_matrix_vessel {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .luminary_textual_symphony_hub {
+            animation: mystical_cascade_from_nebula 1s ease-out;
+        }
+
+        .ethereal_brand_manifestation_sigil {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(0);
+            animation: transcendent_birth_explosion 0.8s ease-out 0.3s forwards;
+        }
+
+        .ethereal_brand_manifestation_sigil img {
+            width: 80px;
+            height: 60px;
+        }
+
+        .quantum_nexus_hero_orchestrator h1 {
+            color: white;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .quantum_nexus_hero_orchestrator p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .primordial_action_catalyst_gem {
+            background: white;
+            color: #6366f1;
+            padding: 18px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .primordial_action_catalyst_gem:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: #f8fafc;
+        }
+
+        .dimensional_visual_metamorphosis_sanctum {
+            position: relative;
+            animation: celestial_drift_from_cosmos 1s ease-out 0.2s both;
+        }
+
+        .scholastic_achievement_hologram_dome {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .academic_triumph_avatar_construct {
+            position: absolute;
+            right: 50px;
+            bottom: 0;
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+            border-radius: 150px 150px 20px 20px;
+            overflow: hidden;
+        }
+
+        .intellectual_coronation_insignia_crown {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 100px;
+            background: #1e293b;
+            border-radius: 10px;
+        }
+
+        .intellectual_coronation_insignia_crown::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 20px;
+            background: #1e293b;
+            border-radius: 10px;
+        }
+
+        .golden_ceremonial_thread_pendulum {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            width: 3px;
+            height: 60px;
+            background: #fbbf24;
+            border-radius: 2px;
+        }
+
+        .golden_ceremonial_thread_pendulum::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -5px;
+            width: 13px;
+            height: 13px;
+            background: #fbbf24;
+            border-radius: 50%;
+        }
+
+        .parchment_achievement_scroll_relic {
+            position: absolute;
+            left: 20px;
+            top: 150px;
+            width: 120px;
+            height: 80px;
+            background: #f8fafc;
+            border-radius: 5px;
+            transform: rotate(-15deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .parchment_achievement_scroll_relic::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 2px;
+            background: #6366f1;
+        }
+
+        .ethereal_wisdom_constellation_field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .levitating_knowledge_essence_orb {
+            position: absolute;
+            color: rgba(255,255,255,0.3);
+            font-size: 2rem;
+            animation: transcendent_oscillation_ritual 6s ease-in-out infinite;
+        }
+
+        .levitating_knowledge_essence_orb:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .levitating_knowledge_essence_orb:nth-child(2) { top: 60%; left: 15%; animation-delay: 2s; }
+        .levitating_knowledge_essence_orb:nth-child(3) { top: 30%; right: 20%; animation-delay: 4s; }
+
+        /* Stats Section */
+        .numerical_supremacy_amphitheater_nexus {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .achievement_metrics_crystalline_vault {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .quantified_excellence_tessellation_grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .singular_triumph_data_monument {
+            text-align: center;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .singular_triumph_data_monument.mystical_revelation_awakening {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .colossal_achievement_numerical_deity {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .descriptive_excellence_terminology_beacon {
+            color: #374151;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .institutional_alliance_constellation_matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .collaborative_prestige_manifestation_shrine {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            transform: translateY(30px);
+            opacity: 0;
+        }
+
+        .collaborative_prestige_manifestation_shrine.mystical_revelation_awakening {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .collaborative_prestige_manifestation_shrine:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .partnership_classification_ethereal_whisper {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .organizational_identity_sacred_emblem {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* CTA Section */
+        .engagement_transformation_laboratory_realm {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .interactive_magnetism_orchestration_chamber {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .curiosity_embodiment_visualization_portal {
+            position: relative;
+        }
+
+        .inquisitive_learner_holographic_vessel {
+            width: 300px;
+            height: 350px;
+            background: linear-gradient(180deg, #1e293b 0%, #374151 100%);
+            border-radius: 150px 150px 30px 30px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .interrogative_thought_bubble_constellation {
+            position: absolute;
+            top: 20px;
+            left: -50px;
+        }
+
+        .singular_inquiry_manifestation_sphere {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .singular_inquiry_manifestation_sphere:nth-child(1) { background: #ec4899; }
+        .singular_inquiry_manifestation_sphere:nth-child(2) { background: #8b5cf6; }
+        .singular_inquiry_manifestation_sphere:nth-child(3) { background: #fbbf24; }
+
+        .engagement_transformation_laboratory_realm h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .experiential_initiation_gateway_crystal {
+            background: #6366f1;
+            color: white;
+            padding: 18px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .experiential_initiation_gateway_crystal:hover {
+            background: #5b58f0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Final Section */
+        .ultimate_destiny_proclamation_cosmos {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path d="M0,160L48,176C96,192,192,224,288,224C384,224,480,192,576,165.3C672,139,768,117,864,122.7C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" fill="rgba(59,130,246,0.1)"/></svg>');
+            background-size: cover;
+            background-position: bottom;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .aspirational_convergence_sanctified_vessel {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .ultimate_destiny_proclamation_cosmos h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .golden_pinnacle_designation_aura {
+            color: #fbbf24;
+        }
+
+        .ultimate_destiny_proclamation_cosmos p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        @keyframes mystical_cascade_from_nebula {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes celestial_drift_from_cosmos {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes transcendent_birth_explosion {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes transcendent_oscillation_ritual {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes ethereal_pulsation_manifestation {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .zenith_crystalline_matrix_vessel,
+            .interactive_magnetism_orchestration_chamber {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .quantum_nexus_hero_orchestrator h1 {
+                font-size: 2.5rem;
+            }
+
+            .quantified_excellence_tessellation_grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .institutional_alliance_constellation_matrix {
+                grid-template-columns: 1fr;
+            }
+
+            .engagement_transformation_laboratory_realm h2 {
+                font-size: 2rem;
+            }
+        }
+        .zyx_college_gateway_hero_section_wrapper_9821 {
+            min-height: 100vh;
+background: linear-gradient(135deg, #0384f7 5%, #ffffff 20%, #ffffff 70%, #0384f7 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 60px 20px;
+            overflow: hidden;
+        }
+
+        .abc_floating_decorative_shapes_container_7463 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .def_animated_background_element_5729 {
+            position: absolute;
+            opacity: 0.08;
+            animation: qrs_gentle_float_animation_3841 8s ease-in-out infinite;
+        }
+
+        .def_animated_background_element_5729:nth-child(1) {
+            top: 12%;
+            left: 8%;
+            width: 70px;
+            height: 70px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .def_animated_background_element_5729:nth-child(2) {
+            top: 65%;
+            right: 12%;
+            width: 50px;
+            height: 50px;
+            background: #0066ff;
+            border-radius: 15px;
+            animation-delay: 2.5s;
+        }
+
+        .def_animated_background_element_5729:nth-child(3) {
+            bottom: 25%;
+            left: 15%;
+            width: 90px;
+            height: 90px;
+            background: #ffcc44;
+            border-radius: 50%;
+            animation-delay: 5s;
+        }
+
+        @keyframes qrs_gentle_float_animation_3841 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(90deg); }
+        }
+
+        .ghi_main_content_grid_container_8152 {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .jkl_left_content_section_wrapper_4967 {
+            animation: mno_slide_in_from_left_2384 1.2s ease-out;
+        }
+
+        .pqr_university_gateway_badge_1573 {
+            display: inline-block;
+            background: rgba(102, 153, 255, 0.15);
+            color: #0066ff;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 28px;
+            border: 2px solid rgba(102, 153, 255, 0.25);
+            backdrop-filter: blur(12px);
+        }
+
+        .stu_primary_headline_text_6284 {
+            font-size: clamp(42px, 5.5vw, 64px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 36px;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+        }
+
+        .vwx_highlighted_college_text_9176 {
+            color: #4d7fff;
+            position: relative;
+        }
+
+        .vwx_highlighted_college_text_9176::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #4d7fff, #80b3ff);
+            border-radius: 3px;
+            animation: yzab_underline_growth_effect_7492 2.5s ease-out 0.8s both;
+        }
+
+        @keyframes yzab_underline_growth_effect_7492 {
+            from { width: 0; opacity: 0; }
+            to { width: 100%; opacity: 1; }
+        }
+
+        .cdef_student_testimonial_stats_8361 {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .ghij_circular_student_avatars_5928 {
+            display: flex;
+            margin-right: 20px;
+        }
+
+        .klmn_individual_student_avatar_7645 {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            margin-left: -16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .klmn_individual_student_avatar_7645:first-child {
+            margin-left: 0;
+        }
+
+        .klmn_individual_student_avatar_7645:hover {
+            transform: scale(1.15) translateY(-4px);
+            z-index: 10;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .opqr_student_count_description_4172 h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .opqr_student_count_description_4172 p {
+            font-size: 15px;
+            color: #555555;
+            line-height: 1.6;
+            max-width: 280px;
+        }
+
+        .stuv_admission_counselor_cta_btn_3849 {
+            display: inline-block;
+            background: linear-gradient(135deg, #4d7fff, #80b3ff);
+            color: white;
+            padding: 18px 36px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 17px;
+            box-shadow: 0 12px 32px rgba(77, 127, 255, 0.35);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .stuv_admission_counselor_cta_btn_3849::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.6s;
+        }
+
+        .stuv_admission_counselor_cta_btn_3849:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(77, 127, 255, 0.45);
+        }
+
+        .stuv_admission_counselor_cta_btn_3849:hover::before {
+            left: 100%;
+        }
+
+        .wxyz_right_image_section_container_6293 {
+            position: relative;
+            animation: abcd_slide_in_from_right_9517 1.2s ease-out;
+        }
+
+        .efgh_main_student_hero_image_8764 {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            border-radius: 24px;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .efgh_main_student_hero_image_8764:hover {
+            transform: scale(1.03);
+        }
+
+        .ijkl_floating_decorative_elements_2851 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .mnop_animated_sparkle_icon_7436 {
+            position: absolute;
+            font-size: 28px;
+            animation: qrst_sparkle_twinkle_effect_5192 3s ease-in-out infinite;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .mnop_animated_sparkle_icon_7436:nth-child(1) {
+            top: 10%;
+            right: -15px;
+            animation-delay: 0s;
+        }
+
+        .mnop_animated_sparkle_icon_7436:nth-child(2) {
+            top: 35%;
+            right: -25px;
+            font-size: 22px;
+            animation-delay: 1s;
+        }
+
+        .mnop_animated_sparkle_icon_7436:nth-child(3) {
+            top: 60%;
+            right: -20px;
+            font-size: 24px;
+            animation-delay: 2s;
+        }
+
+        @keyframes qrst_sparkle_twinkle_effect_5192 {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.3) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        .uvwx_academic_achievement_badge_4675 {
+            position: absolute;
+            top: 15%;
+            left: -40px;
+            background: linear-gradient(135deg, #4d7fff, #80b3ff);
+            color: white;
+            padding: 20px;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 12px 32px rgba(77, 127, 255, 0.4);
+            animation: yzab_gentle_pulse_animation_8259 3s ease-in-out infinite;
+        }
+
+        .cdef_achievement_icon_wrapper_1634 {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        @keyframes yzab_gentle_pulse_animation_8259 {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .ghij_google_rating_testimonial_card_5718 {
+            position: absolute;
+            bottom: 8%;
+            left: -30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 24px;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            min-width: 200px;
+        }
+
+        .klmn_google_brand_icon_circle_9382 {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(45deg, #4285f4, #ea4335, #fbbc05, #34a853);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .opqr_rating_details_text_section_7146 h4 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .stuv_five_star_rating_display_2963 {
+            color: #ffd700;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        .wxyz_whatsapp_floating_contact_btn_8471 {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            width: 65px;
+            height: 65px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .wxyz_whatsapp_floating_contact_btn_8471:hover {
+            transform: scale(1.12);
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5);
+        }
+
+        @keyframes mno_slide_in_from_left_2384 {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes abcd_slide_in_from_right_9517 {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ghi_main_content_grid_container_8152 {
+                grid-template-columns: 1fr;
+                gap: 50px;
+                text-align: center;
+                padding: 0 15px;
+            }
+
+            .zyx_college_gateway_hero_section_wrapper_9821 {
+                padding: 50px 15px;
+                min-height: auto;
+            }
+
+            .uvwx_academic_achievement_badge_4675,
+            .ghij_google_rating_testimonial_card_5718 {
+                position: relative;
+                left: 0;
+                margin: 25px auto;
+            }
+
+            .stu_primary_headline_text_6284 {
+                font-size: clamp(32px, 8vw, 48px);
+            }
+
+            .cdef_student_testimonial_stats_8361 {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .vwx_highlighted_college_text_9176::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #4d7fff, #80b3ff);
+            border-radius: 3px;
+            animation: yzab_underline_growth_effect_7492 2.5s ease-out 0.8s both;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="/">
+                    <img src="https://letsunbound.com/wp-content/uploads/2024/08/Logo-001-01-e1724852823632.png" alt="LetsUnbound Logo" class="logo">
+                </a>
+                <div class="nav-menu">
+                    <a href="/colleges/" class="nav-link">Colleges</a>
+                    <a href="https://letsunbound.com/about-us/" class="nav-link">About Us</a>
+                    <a href="https://letsunbound.com/blog/" class="nav-link">Blogs</a>
+                    <a href="https://letsunbound.com/eventswebinar/" class="nav-link">Event & Webinar</a>
+                    <a href="https://letsunbound.com/contact-page/" class="nav-link">Contact Us</a>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-outline" onclick="window.location.href='https://letscrackwithunbound.pythonanywhere.com/signin/'">Sign in</button>
+                    <button class="btn btn-primary"  onclick="window.location.href='https://letscrackwithunbound.pythonanywhere.com/dorai/'" style="background:linear-gradient(135deg, #c5d4ef, #c5d4ef, #e7d7f4); color:black;">Ask AI</button>
+                </div>
+                <button class="mobile-menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="overlay" id="overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-close">
+            <button id="menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="/colleges/" class="mobile-nav-link">Colleges</a>
+            <a href="https://letsunbound.com/about-us/" class="mobile-nav-link">About Us</a>
+            <a href="https://letsunbound.com/blog/" class="mobile-nav-link">Blogs</a>
+            <a href="https://letsunbound.com/eventswebinar/" class="mobile-nav-link">Event & Webinar</a>
+            <a href="https://letsunbound.com/contact-page/" class="mobile-nav-link">Contact Us</a>
+            <div class="mobile-nav-buttons">
+                <button class="btn btn-outline" onclick="window.location.href='https://letscrackwithunbound.pythonanywhere.com/signin/'">Sign in</button>
+                    <button class="btn btn-primary"  onclick="window.location.href='https://letscrackwithunbound.pythonanywhere.com/dorai/'" style="background:linear-gradient(135deg, #c5d4ef, #c5d4ef, #e7d7f4); color:black;">Ask AI</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <section class="zyx_college_gateway_hero_section_wrapper_9821">
+        <div class="abc_floating_decorative_shapes_container_7463">
+            <div class="def_animated_background_element_5729"></div>
+            <div class="def_animated_background_element_5729"></div>
+            <div class="def_animated_background_element_5729"></div>
+        </div>
+
+        <div class="ghi_main_content_grid_container_8152">
+            <div class="jkl_left_content_section_wrapper_4967">
+                <div class="pqr_university_gateway_badge_1573">Unlock your future at top U.S. universities</div>
+
+                <h1 class="stu_primary_headline_text_6284">
+                    Your Path to <span class="vwx_highlighted_college_text_9176">College</span><br>
+                    <span class="vwx_highlighted_college_text_9176">Success</span> Starts Here
+                </h1>
+
+                <div class="cdef_student_testimonial_stats_8361">
+                    <div class="ghij_circular_student_avatars_5928">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='26' fill='%23ff7675'/%3E%3Cpath d='M26 15c-3.5 0-6.5 2.8-6.5 6.2 0 3.4 2.9 6.2 6.5 6.2s6.5-2.8 6.5-6.2c0-3.4-3-6.2-6.5-6.2zm0 18.5c-5.2 0-9.5 2.4-9.5 5.5v2h19v-2c0-3.1-4.3-5.5-9.5-5.5z' fill='white'/%3E%3C/svg%3E" alt="Student 1" class="klmn_individual_student_avatar_7645">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='26' fill='%2374b9ff'/%3E%3Cpath d='M26 15c-3.5 0-6.5 2.8-6.5 6.2 0 3.4 2.9 6.2 6.5 6.2s6.5-2.8 6.5-6.2c0-3.4-3-6.2-6.5-6.2zm0 18.5c-5.2 0-9.5 2.4-9.5 5.5v2h19v-2c0-3.1-4.3-5.5-9.5-5.5z' fill='white'/%3E%3C/svg%3E" alt="Student 2" class="klmn_individual_student_avatar_7645">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'%3E%3Ccircle cx='26' cy='26' r='26' fill='%23fdcb6e'/%3E%3Cpath d='M26 15c-3.5 0-6.5 2.8-6.5 6.2 0 3.4 2.9 6.2 6.5 6.2s6.5-2.8 6.5-6.2c0-3.4-3-6.2-6.5-6.2zm0 18.5c-5.2 0-9.5 2.4-9.5 5.5v2h19v-2c0-3.1-4.3-5.5-9.5-5.5z' fill='white'/%3E%3C/svg%3E" alt="Student 3" class="klmn_individual_student_avatar_7645">
+                    </div>
+                    <div class="opqr_student_count_description_4172">
+                        <h3>Join Over 3000+ Students</h3>
+                        <p>We help students create fresh strategies every week, ensuring progress and innovation.</p>
+                    </div>
+                </div>
+
+                <a href="/register/" class="stuv_admission_counselor_cta_btn_3849">start for free</a>
+            </div>
+
+            <div class="wxyz_right_image_section_container_6293">
+                <img src="https://th.bing.com/th/id/OIP.T-GR1tzuIxA0ZDYODkCw3gAAAA?cb=iwc2&w=420&h=469&rs=1&pid=ImgDetMain" width='480' height='560' viewBox='0 0 480 560'%3E%3Cdefs%3E%3ClinearGradient id='studentBg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23f8f9fa'/%3E%3Cstop offset='50%25' style='stop-color:%23ffffff'/%3E%3Cstop offset='100%25' style='stop-color:%23e9ecef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='480' height='560' fill='url(%23studentBg)' rx='24'/%3E%3C!-- Female student figure --%3E%3C!-- Hair --%3E%3Cpath d='M180 120c0-40 40-60 80-60s80 20 80 60c0 10-5 20-10 25l5 35c0 15-15 25-35 25h-40c-20 0-35-10-35-25l5-35c-5-5-10-15-10-25z' fill='%238B4513'/%3E%3C!-- Face --%3E%3Cellipse cx='240' cy='160' rx='35' ry='45' fill='%23FDBCB4'/%3E%3C!-- Eyes --%3E%3Cellipse cx='230' cy='150' rx='3' ry='4' fill='%23333'/%3E%3Cellipse cx='250' cy='150' rx='3' ry='4' fill='%23333'/%3E%3C!-- Smile --%3E%3Cpath d='M230 170c5 5 15 5 20 0' stroke='%23333' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C!-- Body --%3E%3Crect x='200' y='200' width='80' height='160' fill='%2395a5a6' rx='15'/%3E%3C!-- Backpack straps --%3E%3Crect x='190' y='210' width='8' height='60' fill='%23e17055' rx='4'/%3E%3Crect x='282' y='210' width='8' height='60' fill='%23e17055' rx='4'/%3E%3C!-- Backpack --%3E%3Crect x='300' y='180' width='50' height='90' fill='%23e17055' rx='12'/%3E%3Crect x='310' y='190' width='30' height='15' fill='%23d63031' rx='5'/%3E%3C!-- Arms --%3E%3Cellipse cx='170' cy='240' rx='12' ry='35' fill='%23FDBCB4' transform='rotate(-15 170 240)'/%3E%3Cellipse cx='310' cy='240' rx='12' ry='35' fill='%23FDBCB4' transform='rotate(15 310 240)'/%3E%3C!-- Books in hand --%3E%3Crect x='140' y='260' width='25' height='35' fill='%234d7fff' rx='3'/%3E%3Crect x='145' y='255' width='25' height='35' fill='%2374b9ff' rx='3'/%3E%3C!-- Legs --%3E%3Crect x='215' y='360' width='18' height='80' fill='%232d3436' rx='9'/%3E%3Crect x='247' y='360' width='18' height='80' fill='%232d3436' rx='9'/%3E%3C!-- Shoes --%3E%3Cellipse cx='224' cy='450' rx='15' ry='8' fill='%23333'/%3E%3Cellipse cx='256' cy='450' rx='15' ry='8' fill='%23333'/%3E%3C!-- Decorative elements --%3E%3Ccircle cx='80' cy='100' r='15' fill='%23fdcb6e' opacity='0.6'/%3E%3Ccircle cx='400' cy='150' r='12' fill='%23ff7675' opacity='0.6'/%3E%3Ccircle cx='60' cy='300' r='18' fill='%2374b9ff' opacity='0.4'/%3E%3Ccircle cx='420' cy='400' r='20' fill='%23fd79a8' opacity='0.5'/%3E%3C/svg%3E" alt="Female student with backpack and books" class="efgh_main_student_hero_image_8764">
+
+                <div class="ijkl_floating_decorative_elements_2851">
+                    <div class="mnop_animated_sparkle_icon_7436">✨</div>
+                    <div class="mnop_animated_sparkle_icon_7436">⭐</div>
+                    <div class="mnop_animated_sparkle_icon_7436">✨</div>
+                </div>
+
+                <div class="uvwx_academic_achievement_badge_4675">
+                    <div class="cdef_achievement_icon_wrapper_1634">🎓</div>
+                    <div style="font-size: 11px; line-height: 1.2;">ACADEMIC EXCELLENCE</div>
+                </div>
+
+                <div class="ghij_google_rating_testimonial_card_5718">
+                    <div class="klmn_google_brand_icon_circle_9382">G</div>
+                    <div class="opqr_rating_details_text_section_7146">
+                        <h4>4.9 Rated / USA & CA</h4>
+                        <div class="stuv_five_star_rating_display_2963">★ ★ ★ ★ ★</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <a href="#" class="wxyz_whatsapp_floating_contact_btn_8471" style="display:none;">💬</a>
+
+    <script>
+        // Unique JavaScript functionality with extremely specific identifiers
+        document.addEventListener('DOMContentLoaded', function() {
+            const abcd_floating_shapes_elements_list_7829 = document.querySelectorAll('.def_animated_background_element_5729');
+
+            // Enhanced parallax mousemove effect
+            document.addEventListener('mousemove', function(efgh_mouse_event_object_3647) {
+                const ijkl_normalized_mouse_x_position_9184 = efgh_mouse_event_object_3647.clientX / window.innerWidth;
+                const mnop_normalized_mouse_y_position_5271 = efgh_mouse_event_object_3647.clientY / window.innerHeight;
+
+                abcd_floating_shapes_elements_list_7829.forEach((qrst_individual_shape_element_8362, uvwx_array_index_counter_1945) => {
+                    const yzab_movement_speed_multiplier_6738 = (uvwx_array_index_counter_1945 + 1) * 0.3;
+                    const cdef_calculated_x_offset_7491 = ijkl_normalized_mouse_x_position_9184 * yzab_movement_speed_multiplier_6738 * 8;
+                    const ghij_calculated_y_offset_2856 = mnop_normalized_mouse_y_position_5271 * yzab_movement_speed_multiplier_6738 * 8;
+
+                    qrst_individual_shape_element_8362.style.transform = `translate(${cdef_calculated_x_offset_7491}px, ${ghij_calculated_y_offset_2856}px)`;
+                });
+            });
+
+            // CTA button interaction with unique naming
+            const klmn_admission_counselor_button_element_5839 = document.querySelector('.stuv_admission_counselor_cta_btn_3849');
+            klmn_admission_counselor_button_element_5839.addEventListener('click', function(opqr_click_event_handler_4172) {
+                opqr_click_event_handler_4172.preventDefault();
+                this.style.transform = 'scale(0.96) translateY(-1px)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-3px)';
+                }, 180);
+            });
+
+            // Student avatar hover effects with unique identifiers
+            const stuv_student_avatar_image_elements_8264 = document.querySelectorAll('.klmn_individual_student_avatar_7645');
+            stuv_student_avatar_image_elements_8264.forEach(wxyz_single_avatar_element_9157 => {
+                wxyz_single_avatar_element_9157.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.15) translateY(-4px)';
+                    this.style.zIndex = '15';
+                    this.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.2)';
+                });
+
+                wxyz_single_avatar_element_9157.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.zIndex = '';
+                    this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                });
+            });
+
+            // Badge pulsing animation activation
+            setTimeout(() => {
+                const abcd_university_gateway_badge_element_6283 = document.querySelector('.pqr_university_gateway_badge_1573');
+                abcd_university_gateway_badge_element_6283.style.animation = 'yzab_gentle_pulse_animation_8259 3s ease-in-out';
+            }
+        </script>
+
+    <!-- Career Section -->
+    <!--<section class="career">-->
+    <!--    <div class="container">-->
+    <!--        <h2 class="section-title">Fast-Track Your Tech Career</h2>-->
+    <!--        <p class="section-subtitle">Discover our industry-aligned courses designed to transform your career trajectory</p>-->
+    <!--        <div class="courses-grid">-->
+    <!--            <div class="course-card">-->
+    <!--                <img src="https://img.freepik.com/free-vector/gradient-ui-ux-background_23-2149052117.jpg" alt="UI/UX Design Course" class="course-image">-->
+    <!--                <div class="course-content">-->
+    <!--                    <h3 class="course-title">UI/UX Design Mastery</h3>-->
+    <!--                    <p class="course-description">Learn to create intuitive user experiences and stunning interfaces that captivate users and drive engagement.</p>-->
+    <!--                    <a href="/courses/ui-ux-design/" class="course-link">Explore Course <i class="fas fa-arrow-right"></i></a>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="course-card">-->
+    <!--                <img src="https://img.freepik.com/free-vector/gradient-coding-logo-template_23-2148809439.jpg" alt="Full Stack Development" class="course-image">-->
+    <!--                <div class="course-content">-->
+    <!--                    <h3 class="course-title">Full Stack Development</h3>-->
+    <!--                    <p class="course-description">Master both front-end and back-end technologies to become a versatile developer equipped for modern tech demands.</p>-->
+    <!--                    <a href="/courses/full-stack/" class="course-link">Explore Course <i class="fas fa-arrow-right"></i></a>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="course-card">-->
+    <!--                <img src="https://img.freepik.com/free-vector/big-data-analytics-abstract-concept-illustration_335657-2058.jpg" alt="Data Science Course" class="course-image">-->
+    <!--                <div class="course-content">-->
+    <!--                    <h3 class="course-title">Data Science & Analytics</h3>-->
+    <!--                    <p class="course-description">Transform raw data into actionable insights through statistical analysis, machine learning, and visualization techniques.</p>-->
+    <!--                    <a href="/courses/data-science/" class="course-link">Explore Course <i class="fas fa-arrow-right"></i></a>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</section>-->
+
+    <!-- About Section -->
+    <!--<section class="about">-->
+    <!--    <div class="container about-container">-->
+    <!--        <div class="about-image">-->
+    <!--            <img src="https://img.freepik.com/free-photo/group-diverse-people-having-business-meeting_53876-25060.jpg" alt="About LetsUnbound">-->
+    <!--        </div>-->
+    <!--        <div class="about-content">-->
+    <!--            <h2 class="about-title">Empowering Careers Through Quality Education</h2>-->
+    <!--            <p class="about-description">At LetsUnbound Tech, we believe in delivering industry-relevant education that translates directly into career advancement. Our courses are designed by industry experts with decades of real-world experience.</p>-->
+    <!--            <p class="about-description">We focus on practical skills, hands-on projects, and personalized mentorship that ensure our students not only understand concepts but can apply them confidently in professional settings.</p>-->
+    <!--            <a href="/about-us/" class="btn btn-primary">Learn More About Us</a>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</section>-->
+
+    <section class="success-story">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-text">
+                    <h1 class="main-title">Admit to the University of Illinois</h1>
+                    <h2 class="student-name">Rushil Shah</h2>
+                    <p class="story-description">
+                        Rushil's journey is one of dedication and impact. Starting in 10th grade with the Lets Unbound Fellowship, he spent 15 months mastering advanced coding concepts, mentoring 100+ peers through workshops. His passion led to the publication of his first book on Amazon, and he showcased his skills by winning a coding competition with a multiverse function calculator design.
+                    </p>
+                    <ul class="achievements">
+                        <li class="achievement-item">
+                            <div class="achievement-icon"></div>
+                            <span class="achievement-text">Won a Coding Hackathon</span>
+                        </li>
+                        <li class="achievement-item">
+                            <div class="achievement-icon"></div>
+                            <span class="achievement-text">SAT Score of 1550</span>
+                        </li>
+                        <li class="achievement-item">
+                            <div class="achievement-icon"></div>
+                            <span class="achievement-text">Went to the University of Illinois</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="story-image">
+                    <div class="image-container">
+                        <div class="university-badge">
+                            <img src="https://th.bing.com/th/id/OIP.exQt8ZVGpAiDRZylsn2CWgHaEo?cb=iwc2&rs=1&pid=ImgDetMain" alt="University of Illinois Logo">
+                        </div>
+                        <img src="https://letsunbound.com/wp-content/uploads/2024/11/Case-study-e1732700348720.webp" alt="Student Photo" class="student-photo">
+                    </div>
+                    <div class="floating-elements">
+                        <div class="floating-circle"></div>
+                        <div class="floating-circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Online Courses -->
+    <!--<section class="online-courses">-->
+    <!--    <div class="container">-->
+    <!--        <h2 class="section-title">Learn At Your Own Pace</h2>-->
+    <!--        <p class="section-subtitle">Flexible online courses designed to fit your busy schedule</p>-->
+    <!--        <div class="course-slider">-->
+    <!--            <div class="course-slide">-->
+    <!--                <span class="course-tag">Bestseller</span>-->
+    <!--                <img src="https://img.freepik.com/free-vector/web-development-concept-with-programming-languages_23-2148678361.jpg" alt="Web Development">-->
+    <!--                <div class="slide-content">-->
+    <!--                    <h3 class="slide-title">Web Development Fundamentals</h3>-->
+    <!--                    <ul class="slide-details">-->
+    <!--                        <li><i class="fas fa-clock"></i> 8 weeks, 4-6 hours/week</li>-->
+    <!--                        <li><i class="fas fa-user-graduate"></i> 15,000+ students enrolled</li>-->
+    <!--                        <li><i class="fas fa-star"></i> 4.8/5 (2,300+ reviews)</li>-->
+    <!--                    </ul>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="course-slide">-->
+    <!--                <span class="course-tag">New</span>-->
+    <!--                <img src="https://img.freepik.com/free-vector/artificial-intelligence-concept-with-brain_23-2147508660.jpg" alt="AI Course">-->
+    <!--                <div class="slide-content">-->
+    <!--                    <h3 class="slide-title">AI & Machine Learning Bootcamp</h3>-->
+    <!--                    <ul class="slide-details">-->
+    <!--                        <li><i class="fas fa-clock"></i> 12 weeks, 8-10 hours/week</li>-->
+    <!--                        <li><i class="fas fa-user-graduate"></i> 8,500+ students enrolled</li>-->
+    <!--                        <li><i class="fas fa-star"></i> 4.9/5 (1,200+ reviews)</li>-->
+    <!--                    </ul>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="course-slide">-->
+    <!--                <span class="course-tag">Popular</span>-->
+    <!--                <img src="https://img.freepik.com/free-vector/gradient-devops-illustration_23-2149379682.jpg" alt="DevOps Course">-->
+    <!--                <div class="slide-content">-->
+    <!--                    <h3 class="slide-title">DevOps & Cloud Computing</h3>-->
+    <!--                    <ul class="slide-details">-->
+    <!--                        <li><i class="fas fa-clock"></i> 10 weeks, 6-8 hours/week</li>-->
+    <!--                        <li><i class="fas fa-user-graduate"></i> 12,000+ students enrolled</li>-->
+    <!--                        <li><i class="fas fa-star"></i> 4.7/5 (1,800+ reviews)</li>-->
+    <!--                    </ul>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="course-slide">-->
+    <!--                <span class="course-tag">Advanced</span>-->
+    <!--                <img src="https://img.freepik.com/free-vector/cyber-security-concept_23-2148532223.jpg" alt="Cybersecurity Course">-->
+    <!--                <div class="slide-content">-->
+    <!--                    <h3 class="slide-title">Cybersecurity Specialist</h3>-->
+    <!--                    <ul class="slide-details">-->
+    <!--                        <li><i class="fas fa-clock"></i> 14 weeks, 8-12 hours/week</li>-->
+    <!--                        <li><i class="fas fa-user-graduate"></i> 9,200+ students enrolled</li>-->
+    <!--                        <li><i class="fas fa-star"></i> 4.8/5 (1,500+ reviews)</li>-->
+    <!--                    </ul>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</section>-->
+
+
+<section class="quantum_nexus_hero_orchestrator">
+        <div class="zenith_crystalline_matrix_vessel">
+            <div class="luminary_textual_symphony_hub">
+                <div class="ethereal_brand_manifestation_sigil">
+                    <svg width="80" height="60" viewBox="0 0 80 60" fill="none">
+                        <circle cx="40" cy="30" r="25" fill="#6366f1"/>
+                        <text x="40" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="20">C</text>
+                        <path d="M20 45 L40 50 L60 45" stroke="#fbbf24" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <h1>Is your child ready to enroll in <span style="color: #fbbf24;">IVY league Colleges?</span></h1>
+                <p>Prepare students for undergraduate admission in Ivy League and top 100 universities across the world with Lets Unbound's SAT, AP and Test Prep series.</p>
+                <a href="#" class="primordial_action_catalyst_gem">Discover More</a>
+            </div>
+            <div class="dimensional_visual_metamorphosis_sanctum">
+                <div class="scholastic_achievement_hologram_dome">
+                    <div class="academic_triumph_avatar_construct" style="background-image:url('https://letsunbound.com/wp-content/uploads/2024/09/gradlub.webp')">
+                        <div class="intellectual_coronation_insignia_crown">
+                            <div class="golden_ceremonial_thread_pendulum"></div>
+                        </div>
+                    </div>
+                    <div class="parchment_achievement_scroll_relic"></div>
+                    <div class="ethereal_wisdom_constellation_field">
+                        <div class="levitating_knowledge_essence_orb">📚</div>
+                        <div class="levitating_knowledge_essence_orb">🎓</div>
+                        <div class="levitating_knowledge_essence_orb">⭐</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="numerical_supremacy_amphitheater_nexus">
+        <div class="achievement_metrics_crystalline_vault">
+            <div class="quantified_excellence_tessellation_grid">
+                <div class="singular_triumph_data_monument">
+                    <span class="colossal_achievement_numerical_deity">5,000+</span>
+                    <span class="descriptive_excellence_terminology_beacon">Students Enrolled</span>
+                </div>
+                <div class="singular_triumph_data_monument">
+                    <span class="colossal_achievement_numerical_deity">150k+</span>
+                    <span class="descriptive_excellence_terminology_beacon">Hours of Teaching Delivered</span>
+                </div>
+                <div class="singular_triumph_data_monument">
+                    <span class="colossal_achievement_numerical_deity">25+</span>
+                    <span class="descriptive_excellence_terminology_beacon">Countries Reached</span>
+                </div>
+                <div class="singular_triumph_data_monument">
+                    <span class="colossal_achievement_numerical_deity">4.9/5</span>
+                    <span class="descriptive_excellence_terminology_beacon">Average Rating</span>
+                </div>
+            </div>
+
+            <div class="institutional_alliance_constellation_matrix">
+                <div class="collaborative_prestige_manifestation_shrine">
+                    <div class="partnership_classification_ethereal_whisper">Certified by</div>
+                    <div class="organizational_identity_sacred_emblem">STEM.org ACCREDITED</div>
+                </div>
+                <div class="collaborative_prestige_manifestation_shrine">
+                    <div class="partnership_classification_ethereal_whisper">Partnered With</div>
+                    <div class="organizational_identity_sacred_emblem">ASU Prep Digital<br>Arizona State University</div>
+                </div>
+                <div class="collaborative_prestige_manifestation_shrine">
+                    <div class="partnership_classification_ethereal_whisper">Partnered with</div>
+                    <div class="organizational_identity_sacred_emblem">HARVARD<br>STUDENT AGENCIES</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="engagement_transformation_laboratory_realm">
+        <div class="interactive_magnetism_orchestration_chamber">
+            <div class="curiosity_embodiment_visualization_portal">
+                <div class="inquisitive_learner_holographic_vessel" style="background-image:url('https://img.freepik.com/premium-photo/blue-purple-gradient-background_564061-71.jpg')">
+                    <div class="interrogative_thought_bubble_constellation">
+                        <div class="singular_inquiry_manifestation_sphere">?</div>
+                        <div class="singular_inquiry_manifestation_sphere">?</div>
+                        <div class="singular_inquiry_manifestation_sphere">💡</div>
+                    </div>
+                </div>
+            </div>
+            <div class="transformative_engagement_textual_nexus">
+                <h2>Start your university journey with LetsUnbound</h2>
+                <a href="/register" class="experiential_initiation_gateway_crystal">
+                    Start for free
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Section -->
+    <section class="ultimate_destiny_proclamation_cosmos" style="background-image: url('https://th.bing.com/th/id/R.23826e1c68b6b9d292e068cb0c1a5dee?rik=JtzOOLWih%2bOyqQ&riu=http%3a%2f%2fwww.usnews.com%2fcmsmedia%2f2e%2f4e%2f943c67ee4a8695ed4e16b6c5c8da%2f140930-yale-submitted.jpg&ehk=wHZi7rplObChBDipG9dm69EudXSTh%2bA9cOZaxV879As%3d&risl=&pid=ImgRaw&r=0'); background-size: cover; background-position: center; padding: 60px 20px; color: white; text-align: center;">
+    <div class="aspirational_convergence_sanctified_vessel">
+        <h2>Let's Help Students Get Into <span class="golden_pinnacle_designation_aura" style="color: gold;">Top Colleges</span></h2>
+        <p>Top colleges seek students who are driven by passion, guided by purpose, and committed to making a meaningful impact on the world.</p>
+    </div>
+</section>
+
+
+    <script>
+        // Intersection Observer for animations
+        const arcane_observation_parameters = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const mystical_visibility_sentinel = new IntersectionObserver((ethereal_entries) => {
+            ethereal_entries.forEach(dimensional_manifestation => {
+                if (dimensional_manifestation.isIntersecting) {
+                    dimensional_manifestation.target.classList.add('mystical_revelation_awakening');
+                }
+            });
+        }, arcane_observation_parameters);
+
+        // Stats animation
+        document.querySelectorAll('.singular_triumph_data_monument').forEach((triumph_element, temporal_index) => {
+            setTimeout(() => {
+                mystical_visibility_sentinel.observe(triumph_element);
+            }, temporal_index * 200);
+        });
+
+        // Partner cards animation
+        document.querySelectorAll('.collaborative_prestige_manifestation_shrine').forEach((alliance_vessel, chronological_sequence) => {
+            setTimeout(() => {
+                mystical_visibility_sentinel.observe(alliance_vessel);
+            }, chronological_sequence * 300);
+        });
+
+        // Smooth scrolling for CTA buttons
+        document.querySelectorAll('a[href^="#"]').forEach(navigation_anchor => {
+            navigation_anchor.addEventListener('click', function (interaction_event) {
+                interaction_event.preventDefault();
+                const destination_element = document.querySelector(this.getAttribute('href'));
+                if (destination_element) {
+                    destination_element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.primordial_action_catalyst_gem, .experiential_initiation_gateway_crystal').forEach(interactive_catalyst => {
+            interactive_catalyst.addEventListener('mouseenter', function() {
+                this.style.animation = 'ethereal_pulsation_manifestation 0.6s ease-in-out';
+            });
+
+            interactive_catalyst.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scroll_quantum_measurement = window.pageYOffset;
+            const levitating_wisdom_entities = document.querySelectorAll('.levitating_knowledge_essence_orb');
+            const dimensional_velocity_coefficient = 0.5;
+
+            levitating_wisdom_entities.forEach(floating_consciousness => {
+                const vertical_displacement_calculation = -(scroll_quantum_measurement * dimensional_velocity_coefficient);
+                floating_consciousness.style.transform = `translateY(${vertical_displacement_calculation}px)`;
+            });
+        });
+    </script>
+
+
+    <!-- CEO Section -->
+<!--    <section class="ceo">-->
+<!--        <div class="container ceo-container">-->
+<!--            <div class="ceo-image">-->
+<!--                <img src="https://letsunbound.com/wp-content/uploads/2024/09/thumbnail-1.png" alt="CEO Portrait">-->
+<!--            </div>-->
+<!--            <div class="ceo-content">-->
+<!--                <h2 class="ceo-title">Building Future-Ready Professionals</h2>-->
+<!--                <blockquote class="ceo-quote">-->
+<!--Formerly with Tata and XSEED (India’s Largest School Ed-tech Platform). Scaled operations in 2000+ schools across 6 countries, impacting 250,000+ students. Consultant for startups in India and abroad, particularly with IIT Bombay ventures.                </blockquote>-->
+<!--                <p class="ceo-name">Amol Patil , Co-Founder</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--    <section class="ceo">-->
+<!--        <div class="container ceo-container">-->
+<!--            <div class="ceo-image">-->
+<!--                <img src="https://letsunbound.com/wp-content/uploads/2024/09/thumbnail-2.png" alt="CEO Portrait">-->
+<!--            </div>-->
+<!--            <div class="ceo-content">-->
+<!--                <h2 class="ceo-title">I'm Prof. Nishant-->
+<!--The Co-Founder Of Lets Unbound.</h2>-->
+<!--                <blockquote class="ceo-quote">-->
+<!--                    SP Jain Alum with 6+ years in academia and 7+ years in the education sector. Career counseling for 1,000+ students and an educator for K-12 and Executive MBA programs. Mentor of Change, Atal Innovation Mission, NITI Aayog.-->
+<!--                </blockquote>-->
+<!--                <p class="ceo-name">Prof. Nishant , Co-Founder</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <h2 class="stats-title">Our Impact in Numbers</h2>
+            <p class="stats-subtitle">What we've achieved through our commitment to quality technical education</p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">35,000+</div>
+                    <div class="stat-label">Learners</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Placement Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Corporate Partners</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">85+</div>
+                    <div class="stat-label">Courses</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Job Section -->
+    <!--<section class="job">-->
+    <!--    <div class="container job-container">-->
+    <!--        <div class="job-content">-->
+    <!--            <h2 class="job-title">Job Opportunities for Our Graduates</h2>-->
+    <!--            <p class="job-description">Our graduates are working with top companies around the world. Here are some positions currently available through our placement network.</p>-->
+    <!--            <div class="job-card">-->
+    <!--                <h3 class="job-card-title">Senior Frontend Developer</h3>-->
+    <!--                <p class="job-card-description">For a leading fintech company. 4+ years experience required with React and TypeScript. Remote position with competitive salary.</p>-->
+    <!--                <a href="/jobs/frontend-developer/" class="job-card-link">View Details <i class="fas fa-arrow-right"></i></a>-->
+    <!--            </div>-->
+    <!--            <div class="job-card">-->
+    <!--                <h3 class="job-card-title">Data Scientist</h3>-->
+    <!--                <p class="job-card-description">For an e-commerce giant. Knowledge of machine learning algorithms and Python required. Hybrid work model with exciting projects.</p>-->
+    <!--                <a href="/jobs/data-scientist/" class="job-card-link">View Details <i class="fas fa-arrow-right"></i></a>-->
+    <!--            </div>-->
+    <!--            <div class="job-card">-->
+    <!--                <h3 class="job-card-title">Product Manager</h3>-->
+    <!--                <p class="job-card-description">For a health-tech startup. 3+ years experience in tech product management. On-site position with stock options.</p>-->
+    <!--                <a href="/jobs/product-manager/" class="job-card-link">View Details <i class="fas fa-arrow-right"></i></a>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="job-image">-->
+    <!--            <img src="https://img.freepik.com/free-photo/young-woman-working-laptop-office_23-2149204671.jpg" alt="Job Opportunities">-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</section>-->
+
+    <!-- Placement Section -->
+    <!--<section class="placement">-->
+    <!--    <div class="container">-->
+    <!--        <div class="placement-header">-->
+    <!--            <div class="placement-content">-->
+    <!--                <h2 class="placement-title">Career Services & Placement Support</h2>-->
+    <!--                <p class="placement-description">We're committed to your success beyond the classroom with comprehensive career services.</p>-->
+    <!--            </div>-->
+    <!--            <a href="/placement-support/" class="btn btn-primary">Learn More</a>-->
+    <!--        </div>-->
+    <!--        <div class="placement-features">-->
+    <!--            <div class="feature-card">-->
+    <!--                <img src="https://img.icons8.com/fluency/96/document.png" alt="Resume Icon" class="feature-icon">-->
+    <!--                <div class="feature-content">-->
+    <!--                    <h3>Resume Building</h3>-->
+    <!--                    <p>Personalized resume review and optimization by industry experts who know what employers are looking for.</p>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="feature-card">-->
+    <!--                <img src="https://img.icons8.com/fluency/96/conference-call.png" alt="Interview Icon" class="feature-icon">-->
+    <!--                <div class="feature-content">-->
+    <!--                    <h3>Interview Preparation</h3>-->
+    <!--                    <p>Mock interviews and feedback sessions with industry veterans to prepare you for technical and behavioral questions.</p>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="feature-card">-->
+    <!--                <img src="https://img.icons8.com/fluency/96/building.png" alt="Network Icon" class="feature-icon">-->
+    <!--                <div class="feature-content">-->
+    <!--                    <h3>Job Placement</h3>-->
+    <!--                    <p>Direct connections to our network of 150+ hiring partners actively looking for talented professionals.</p>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="feature-card">-->
+    <!--                <img src="https://img.icons8.com/fluency/96/idea-sharing.png" alt="Mentorship Icon" class="feature-icon">-->
+    <!--                <div class="feature-content">-->
+    <!--                    <h3>Career Mentorship</h3>-->
+    <!--                    <p>One-on-one guidance from industry mentors who help you navigate your career path effectively.</p>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="feature-card">-->
+    <!--                <img src="https://img.icons8.com/fluency/96/project.png" alt="Portfolio Icon" class="feature-icon">-->
+    <!--                <div class="feature-content">-->
+    <!--                    <h3>Portfolio Development</h3>-->
+    <!--                    <p>Guidance on building a professional portfolio that showcases your skills and projects to potential employers.</p>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="feature-card">-->
+    <!--                <img src="https://img.icons8.com/fluency/96/handshake.png" alt="Networking Icon" class="feature-icon">-->
+    <!--                <div class="feature-content">-->
+    <!--                    <h3>Networking Events</h3>-->
+    <!--                    <p>Regular industry meetups and hiring events where you can connect directly with employers and alumni.</p>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</section>-->
+
+    <!-- YouTube Section -->
+    <section class="youtube">
+        <div class="container youtube-container">
+            <div class="youtube-image">
+                <img src="https://img.freepik.com/free-vector/video-upload-concept-illustration_114360-4702.jpg" alt="YouTube Channel">
+            </div>
+            <div class="youtube-content">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/800px-YouTube_full-color_icon_%282017%29.svg.png" alt="YouTube Logo" class="youtube-logo">
+                <h2 class="youtube-title">Free Learning Resources</h2>
+                <span class="youtube-badge">100,000+ Subscribers</span>
+                <a href="https://youtube.com/letsunbound" class="youtube-button">
+                    <i class="fab fa-youtube"></i>
+                    Subscribe Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://letsunbound.com/wp-content/uploads/2024/08/Logo-001-01-e1724852823632.png" alt="LetsUnbound Logo">
+                    <p class="footer-description">LetsUnbound Tech is a premier tech education platform dedicated to transforming careers through practical, industry-relevant training.</p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/letsunbound"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/letsunbound"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/letsunbound"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com/company/letsunbound"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://youtube.com/letsunbound"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/about-us/">About Us</a></li>
+                        <li><a href="/courses/">Courses</a></li>
+                        <li><a href="/careers/">Career Services</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/testimonials/">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="/webinars/">Free Webinars</a></li>
+                        <li><a href="/tutorials/">Tutorials</a></li>
+                        <li><a href="/community/">Community</a></li>
+                        <li><a href="/faq/">FAQ</a></li>
+                        <li><a href="/support/">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Contact Us</h3>
+                    <div class="footer-contact">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p class="footer-contact-text">123 Tech Park, Sector 15, Gurugram, Haryana 122001, India</p>
+                    </div>
+                    <div class="footer-contact">
+                        <i class="fas fa-phone-alt"></i>
+                        <p class="footer-contact-text">+91 98765 43210</p>
+                    </div>
+                    <div class="footer-contact">
+                        <i class="fas fa-envelope"></i>
+                        <p class="footer-contact-text">contact@letsunbound.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2025 LetsUnbound Tech. All rights reserved.</p>
+                <div class="footer-policy">
+                    <a href="/privacy-policy/">Privacy Policy</a>
+                    <a href="/terms-of-service/">Terms of Service</a>
+                    <a href="/refund-policy/">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('overlay');
+        const menuClose = document.getElementById('menu-close');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        menuClose.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    closeMenu();
+                }
+            });
+        });
+
+        // Add active class to current nav item
+        const currentLocation = location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentLocation) {
+                link.style.color = 'var(--primary-color)';
+                link.style.fontWeight = '600';
+            }
+        });
+
+        mobileNavLinks.forEach(link => {
+            if (link.getAttribute('href') === currentLocation) {
+                link.style.color = 'var(--primary-color)';
+                link.style.fontWeight = '600';
+            }
+        });
+    </script>
+</body>
+</html>

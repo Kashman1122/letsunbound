@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambitio Pro - Application Process</title>
+    <style>
+        :root {
+            --primary-color: #FF4D4D;
+            --secondary-color: #F8F9FA;
+            --text-primary: #333;
+            --text-secondary: #6B7280;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1440px;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%);
+            padding: 30px 20px;
+            border-right: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            transition: width var(--transition-speed) ease;
+        }
+
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .sidebar-menu-item:hover,
+        .sidebar-menu-item.active {
+            background-color: rgba(255,77,77,0.1);
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu-item i {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        .sidebar-elite-btn {
+            background: linear-gradient(135deg, var(--primary-color), #FF6B6B);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .sidebar-elite-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255,77,77,0.3);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            background: white;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 30px;
+            font-size: 16px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .search-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255,77,77,0.2);
+        }
+
+        .search-input i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .application-requirements {
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .premium-section {
+            background: linear-gradient(135deg, var(--primary-color), #FF6B6B);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-section-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .premium-bg-icon {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            font-size: 200px;
+            color: rgba(255,255,255,0.1);
+            z-index: 1;
+        }
+
+        .ask-ai-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50px;
+            padding: 15px 25px;
+            box-shadow: 0 10px 20px rgba(255,77,77,0.3);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .ask-ai-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(255,77,77,0.4);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-graduation-cap mr-2"></i>
+                LetsCrack
+            </div>
+
+            <div class="mb-4 text-gray-600">Welcome, {{ user.get_full_name }}</div>
+
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item active">
+                    <i class="fas fa-file-alt"></i>
+                    Application Process
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-envelope-open-text"></i>
+                    LORs
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-file-signature"></i>
+                    SOPs
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-file-invoice"></i>
+                    Resume
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-edit"></i>
+                    Essays
+                </li>
+            </ul>
+
+            <button class="sidebar-elite-btn">
+                <i class="fas fa-crown mr-2"></i>
+                Get LetsCrack Elite
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="search-bar">
+                <div class="search-input mr-4">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Ask anything...">
+                </div>
+                <div class="flex items-center">
+                    <span class="mr-3 text-gray-600">Postgraduate</span>
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <span class="text-red-600 font-semibold">K</span>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="text-2xl font-bold mb-4 text-gray-800">Application Process</h1>
+
+            <div class="application-requirements">
+                <h2 class="text-lg font-semibold mb-4">
+                    The application requirements for graduate admission for US are as follows:
+                </h2>
+
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>Test score needed: GRE conducted by ETS (https://www.ets.org/)</li>
+                    <li>English proficiency test: IELTS/TOEFL</li>
+                    <li>Work experience</li>
+                    <li>10th 12th Marksheet</li>
+                </ul>
+
+                <div class="mt-4 bg-white p-3 rounded-lg border-l-4 border-red-500">
+                    Application portal: There is no centralized application. You need to submit at the university portal.
+                </div>
+            </div>
+
+            <div class="premium-section">
+                <div class="premium-bg-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="premium-section-content">
+                    <h3 class="text-xl font-bold mb-3">
+                        Premium Guidance with Ambitio Pro!
+                    </h3>
+                    <p class="mb-4">
+                        Access the tricks and strategies that worked, from the successful applicants and seasoned admission experts.
+                    </p>
+
+                </div>
+            </div>
+
+            <button class="ask-ai-btn" onclick="window.location.href='http://127.0.0.1:8000/dorai/'">
+                <i class="fas fa-robot mr-2"></i>
+                Ask AI
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Interactive menu
+        document.querySelectorAll('.sidebar-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.sidebar-menu-item').forEach(i =>
+                    i.classList.remove('active')
+                );
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

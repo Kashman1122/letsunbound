@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniMatch - Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #303f9f;
+            --light-bg: #f5f7fa;
+            --dark-text: #333333;
+            --light-text: #6c757d;
+            --accent-green: #4caf50;
+            --accent-blue: #2196f3;
+            --accent-yellow: #ffc107;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+        }
+
+        /* Fixed Sidebar Styles */
+        .sidebar {
+            background-color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 20px 0;
+            width: 220px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            z-index: 10;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: block;
+            margin: 10px auto;
+            max-width: 150px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(0,0,0,0.05);
+            border-left: 3px solid #1565c0;
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-section {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #777;
+            padding: 10px 20px;
+            margin-top: 15px;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 20px 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            background-color: #0c1756;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .welcome {
+            font-size: 18px;
+        }
+
+        .welcome strong {
+            display: block;
+            font-size: 24px;
+            color: white;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile span {
+            margin-right: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .stats-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+        }
+
+        .stat-icon.blue {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .stat-icon.green {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .stat-icon.yellow {
+            background-color: #fff8e1;
+            color: #ffc107;
+        }
+
+        .stat-icon.purple {
+            background-color: #f3e5f5;
+            color: #9c27b0;
+        }
+
+        .stat-details .stat-title {
+            color: var(--light-text);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .stat-details .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .schedule-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .weekday-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .weekday {
+            width: 60px;
+            text-align: center;
+        }
+
+        .weekday-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .weekday-number.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .weekday-name {
+            font-size: 12px;
+            color: var(--light-text);
+        }
+
+        .tasks-list {
+            margin-top: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .task-checkbox {
+            margin-right: 15px;
+        }
+
+        .task-content {
+            flex-grow: 1;
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .task-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+
+        .task-badge.yellow {
+            background-color: #fff8e1;
+            color: #ffc107;
+        }
+
+        .task-badge.blue {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .task-badge.purple {
+            background-color: #f3e5f5;
+            color: #9c27b0;
+        }
+
+        .task-date {
+            font-size: 12px;
+            color: var(--light-text);
+        }
+
+        .btn-add {
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 14px;
+        }
+
+        .profile-analysis-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .analysis-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .analysis-card {
+background-color: rgba(255, 239, 213, 0.1);
+border:2px solid rgba(255, 239, 213, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .analysis-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .analysis-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .analysis-score {
+            font-size: 24px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .analysis-text {
+            font-size: 16px;
+            color: var(--dark-text);
+        }
+
+        .services-section {
+            margin-top: 30px;
+        }
+
+        .services-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .service-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .service-title.blue {
+            color: var(--accent-blue);
+        }
+
+        .service-title.green {
+            color: var(--accent-green);
+        }
+
+        .service-title.red {
+            color: var(--primary-color);
+        }
+
+        .service-title.yellow {
+            color: var(--accent-yellow);
+        }
+
+        .service-description {
+            color: var(--light-text);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .service-image {
+            text-align: center;
+        }
+
+        .service-image img {
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .btn-pro {
+            background: linear-gradient(45deg, #303f9f, #1a237e);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px 0 rgba(26, 35, 126, 0.4);
+        }
+
+        .btn-pro:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px 0 rgba(26, 35, 126, 0.6);
+        }
+
+
+
+.resume-container {
+    position: relative;
+    width: 100%;
+    height: 400px; /* Minimal height as requested */
+    overflow: hidden;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.resume-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.blurred-resume {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top; /* Show the top part of the resume */
+    border: none;
+}
+
+.blur-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /* Height of blur gradient */
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    pointer-events: none;
+}
+
+
+<!--/* Styling for the iframe or image inside the container */-->
+<!--.blurred-resume {-->
+<!--    width: 100%;-->
+<!--    height: 100%;-->
+<!--    object-fit: cover;-->
+<!--    border: none;-->
+<!--    pointer-events: none;-->
+<!--    overflow: hidden;-->
+<!--}-->
+
+
+/* Hide scrollbars in Firefox */
+.blurred-resume::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbars in Firefox */
+.blurred-resume {
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+}
+
+
+
+.download-button {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.download-button a {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.download-button a:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 14px; /* Slightly smaller text */
+    font-weight: bold;
+    text-decoration: none;
+    padding: 18px 24px; /* Reduce padding */
+    border-radius: 6px; /* Slightly smaller border radius */
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 190px; /* Set a fixed width */
+}
+
+/* Premium "Enhance Resume" Button */
+.btn-enhance {
+    background: linear-gradient(to right, #007bff, #0c1756);
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.4);
+    border: none;
+}
+
+.btn-enhance:hover {
+    background: linear-gradient(to right, #0056b3, #007bff);
+    box-shadow: 0px 6px 10px rgba(0, 123, 255, 0.6);
+}
+
+/* Simple Blue "Give Test" Button */
+.btn-test {
+    margin-top: 15px;
+    border: 1px solid #0093c4;
+    background-color: #fffff;
+    color: black;
+    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-test:hover {
+    background-color: #0056b3;
+}
+/* For better file input appearance with Bootstrap */
+.custom-file-label::after {
+    content: "Browse";
+}
+
+        .curly-text {
+    font-family: 'Pacifico', cursive;
+    font-size: 3.1rem;
+    color: #00008b; /* Navy blue color */
+    text-align: center;
+    margin: 10px 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    letter-spacing: 1.3px;
+    position: relative;
+    overflow: hidden;
+    font-weight: 100; /* Lighter font weight for slimmer appearance */
+    transform: scaleY(0.9); /* Slightly compress vertically */
+        transform: scaleX(1.1); /* Slightly compress vertically */
+
+
+    /* Main animation on load */
+    animation: fadeInUp 1.2s ease-out forwards,
+               glow 2.5s ease-in-out infinite alternate;
+
+    /* Hover effects */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Stagger the entrance of each line */
+.curly-text:nth-child(1) {
+    animation-delay: 0s;
+}
+.curly-text:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.curly-text:nth-child(3) {
+    animation-delay: 0.4s;
+}
+.curly-text:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.curly-text:hover {
+    transform: scale(1.05);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2),
+                 0 0 15px rgba(0, 0, 139, 0.5);
+    letter-spacing: 1.5px;
+}
+
+/* Shimmer effect */
+.curly-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    z-index: 1;
+    pointer-events: none;
+            transform: scaleX(1.1); /* Slightly compress vertically */
+
+}
+
+/* Apply shimmer animation on scroll */
+.curly-text.shimmer::before {
+    animation: shimmer 2s infinite;
+}
+
+.curly-text::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background: linear-gradient(90deg, transparent, #00008b, transparent);
+    transition: width 0.5s ease, left 0.5s ease;
+            transform: scaleX(1.1); /* Slightly compress vertically */
+
+}
+
+.curly-text:hover::after {
+    width: 80%;
+    left: 10%;
+}
+
+/* Keyframe Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    to {
+        text-shadow: 1px 1px 10px rgba(0, 0, 139, 0.4);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 200%;
+    }
+}
+
+<!--/* Add this for a subtle floating effect */-->
+<!--.resume-container {-->
+<!--    animation: float 6s ease-in-out infinite;-->
+<!--}-->
+
+<!--@keyframes float {-->
+<!--    0% {-->
+<!--        transform: translateY(0px);-->
+<!--    }-->
+<!--    50% {-->
+<!--        transform: translateY(-10px);-->
+<!--    }-->
+<!--    100% {-->
+<!--        transform: translateY(0px);-->
+<!--    }-->
+<!--}-->
+        .pro-banner {
+background: linear-gradient(45deg, #bbdefb,#bbdefb, #2196f3);
+;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            border: 1px solid #2196f3;
+        }
+
+        .pro-content {
+            flex-grow: 1;
+        }
+
+        .pro-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .pro-title i {
+            margin-right: 10px;
+        }
+
+        .pro-description {
+            color: var(--dark-text);
+            font-size: 14px;
+        }
+
+        .pro-image {
+            margin-right: 20px;
+        }
+
+        .pro-image img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .btn-pro {
+            background: linear-gradient(45deg, #007bff, #6610f2,#6610f2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-left: 20px;
+            transition: all 0.5s;
+            transition: all 0.5s ease;
+            moz-transition: all 0.5s ease;
+            -webkit-transition: all 0.5s ease;
+            box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.4);
+        }
+
+        .btn-pro:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+       /* Ensure the image displays at its natural size */
+/* From Uiverse.io by Cobp */
+.card-container {
+  width: 260px;
+  background: linear-gradient(
+    to top right,
+    #975af4,
+    #2f7cf8 40%,
+    #78aafa 65%,
+    #934cff 100%
+  );
+  padding: 4px;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+}
+.card-container .title-card {
+  display: flex;
+  align-items: center;
+  padding: 16px 18px;
+  justify-content: space-between;
+  color: #fff;
+}
+.card-container .title-card p {
+  font-size: 14px;
+  font-weight: 600;
+  font-style: italic;
+  text-shadow: 2px 2px 6px #2975ee;
+}
+
+.card-container .card-content {
+  width: 100%;
+  height: 100%;
+  background-color: #161a20;
+  border-radius: 30px;
+  color: #838383;
+  font-size: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card-container .card-content .title {
+  font-weight: 600;
+  color: #bab9b9;
+}
+.card-container .card-content .plain :nth-child(1) {
+  font-size: 36px;
+  color: #fff;
+}
+.card-container .card-content .card-btn {
+  background: linear-gradient(
+    4deg,
+    #975af4,
+    #2f7cf8 40%,
+    #78aafa 65%,
+    #934cff 100%
+  );
+  padding: 8px;
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+.card-container .card-content .card-btn:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px #fff;
+  transform: scale(1.03);
+}
+.card-container .card-content .card-btn:active {
+  transform: scale(1);
+}
+
+ .blur-background {
+            filter: blur(5px);
+            pointer-events: none;
+        }
+
+
+
+        /* Card styles */
+.card {
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card-content {
+    padding: 24px;
+}
+
+.card-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.card-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0 0 20px 0;
+}
+
+.highlight {
+    color: #c41e3a; /* Red color for "with Pro" */
+    font-weight: 600;
+}
+
+.diamond-icon {
+    margin-left: 8px;
+    color: #e67e22; /* Orange color for the diamond icon */
+}
+
+/* Feature list styles */
+.feature-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #555;
+}
+
+.check-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    background-color: #4CAF50; /* Green background for check icon */
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+/* Card specific styles */
+.pro-card {
+    background: linear-gradient(to right, #ffeee6, #fff0f0); /* Light pink/peach gradient */
+}
+
+.alternate-card {
+    background: linear-gradient(to right, #fffbeb, #fff9e6); /* Light yellow/cream gradient */
+}
+
+.sidebar-toggle {
+    display: none; /* Hidden by default on desktop */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background-color: #1565c0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background-color: #0d47a1;
+}
+
+.sidebar-toggle i {
+    font-size: 18px;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 992px) {
+    .sidebar {
+        width: 250px;
+        transform: translateX(-100%); /* Hide sidebar by default on mobile */
+        transition: transform 0.3s ease;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99;
+    }
+
+    .sidebar.active {
+        transform: translateX(0); /* Show sidebar when active class is added */
+    }
+
+    .sidebar-toggle {
+        display: flex; /* Show toggle button on mobile */
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Add overlay when sidebar is active */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 98;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* Adjust card layout for smaller screens */
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Even smaller screens */
+@media screen and (max-width: 576px) {
+    .message {
+        max-width: 90%;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .input-container {
+        padding: 10px;
+    }
+
+    .input-field {
+        padding: 12px;
+    }
+
+    .send-button {
+        width: 45px;
+        height: 45px;
+    }
+
+    /* Adjust chat container padding */
+    .chat-container {
+        padding: 10px;
+    }
+}
+        .card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card-header i {
+            font-size: 24px;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .profile-left {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .profile-classification {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .profile-id {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3b82f6;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: #1d4ed8;
+        }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .performance-item {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .performance-label {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .performance-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-list li {
+            background: white;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #3b82f6;
+            font-size: 14px;
+            color: #475569;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .analysis-summary {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-top: 20px;
+        }
+
+        .analysis-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .analysis-title::before {
+            content: '📊';
+            font-size: 18px;
+        }
+
+        .analysis-content {
+            line-height: 1.7;
+            color: #475569;
+            font-size: 15px;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 1px solid #93c5fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 16px;
+        }
+
+        .recommendation-title {
+            font-weight: 700;
+            color: #1d4ed8;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recommendation-title::before {
+            content: '💡';
+            font-size: 16px;
+        }
+
+        .recommendation-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #1e40af;
+        }
+
+        .card-footer {
+            background: #f8fafc;
+            padding: 24px 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+        }
+
+        .btn-outline:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://letsunbound.com/wp-content/uploads/2024/08/Logo-001-01-e1724852823632.png" class="logo" alt="Logo">
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-robot"></i> Dashboard</a></li>
+            <li> <a href="#" class="active"><i class="fas fa-home"></i>Ask AI</a></li>
+            <li><a href="#"><i class="fas fa-user-graduate"></i> Profile Analyzer</a></li>
+        </ul>
+
+        <div class="sidebar-section">Explore</div>
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-university"></i> College Finder</a></li>
+            <li><a href="#"><i class="fas fa-clipboard-check"></i> Admit Finder</a></li>
+            <li><a href="#"><i class="fas fa-list-ul"></i> Shortlist Builder</a></li>
+            <li><a href="#"><i class="fas fa-award"></i> Scholarship Finder</a></li>
+        </ul>
+
+        <div class="sidebar-section">Applications</div>
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-tasks"></i> Manage Shortlist</a></li>
+            <li><a href="#"><i class="fas fa-file-alt"></i> Application Builder</a></li>
+<!--            <li><a href="#"><i class="fas fa-folder-open"></i> Manage Applications</a></li>-->
+<!--            <li><a href="#"><i class="fas fa-compass"></i> Guidance</a></li>-->
+        </ul>
+
+<!--        <div class="sidebar-section">Post Admit</div>-->
+<!--        <ul class="sidebar-menu">-->
+<!--            <li><a href="#"><i class="fas fa-check-circle"></i> Finalize Admits</a></li>-->
+<!--        </ul>-->
+
+<!--        <div style="padding: 0 20px; margin-top: 30px;">-->
+<!--            <button class="btn-pro">Get UniMatch Elite</button>-->
+<!--        </div>-->
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div class="welcome">
+Welcome {{ profile.exam_type|title }} Qualifier to Lets Unbound
+                <strong>Your Students are making great progress—</strong>
+                <div>one milestone at a time!</div>
+            </div>
+
+            <div class="user-profile">
+<span style="font-size: 24px;"><strong>{{ user.get_full_name|title }}</strong></span>
+                <div class="user-avatar">{{ user.get_full_name|slice:":1"|join:""|capfirst }}</div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+
+
+        <!-- Profile Analysis Section -->
+        <div class="profile-analysis-container">
+            <div class="profile-header">
+
+
+
+
+
+            <div class="analysis-cards">
+                <div class="analysis-card">
+                    <div class="analysis-icon text-primary">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="analysis-title">Degree</div>
+                    <div class="analysis-score">{{ profile.degree }}</div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="analysis-icon text-success">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="analysis-title">Interested Field</div>
+                    <div class="analysis-score">{{ profile.interests }}</div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="analysis-icon text-warning">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="analysis-title">Average Score</div>
+                    <div class="analysis-score">{{ avg_match_score|floatformat:2 }}/10</div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="analysis-icon text-danger">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="analysis-title">Exam Score</div>
+                    <div class="analysis-score">{{ profile.exam_score }}</div>
+                </div>
+            </div>
+
+            <div class="row mt-8 text-left" style="margin-top:30px;">
+
+</div>
+
+
+</div>
+
+
+                <div class="card">
+        <div class="card-header">
+            <i class="fas fa-user-graduate"></i> Professional Candidate Assessment Report
+        </div>
+        <div class="card-body">
+            <div class="profile-grid">
+                <div class="profile-left">
+                    <div class="profile-classification">{{ analysis.classification }}</div>
+                    <div class="profile-name">{{ analysis.name }}</div>
+                    <div class="profile-id">ID: EDU{{ "123456" }}</div>
+                    <div class="section-title">Performance Ranking</div>
+                    <div class="performance-item">
+                        <div class="performance-label">Percentile Rank</div>
+                        <div class="performance-value">
+                            {% if analysis.classification == 'Top10' %}
+                                95th Percentile
+                            {% elif analysis.classification == 'Top50' %}
+                                78th Percentile
+                            {% elif analysis.classification == 'Top100' %}
+                                65th Percentile
+                            {% else %}
+                                45th Percentile
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-right">
+                    <div class="section-title">Academic Excellence Overview</div>
+                    <div class="performance-grid">
+                        <div class="performance-item">
+                            <div class="performance-label">10th Grade Performance</div>
+                            <div class="performance-value">{{ analysis.tenth_marks_received }} / {{ analysis.tenth_marks_total }}</div>
+                        </div>
+                        <div class="performance-item">
+                            <div class="performance-label">12th Grade Performance</div>
+                            <div class="performance-value">{{ analysis.twelfth_marks_received }} / {{ analysis.twelfth_marks_total }}</div>
+                        </div>
+                        <div class="performance-item">
+                            <div class="performance-label">SAT Achievement</div>
+                            <div class="performance-value">{{ analysis.sat_score_received }} / {{ analysis.sat_score_total }}</div>
+                        </div>
+                        <div class="performance-item">
+                            <div class="performance-label">College CGPA</div>
+                            <div class="performance-value">{{ analysis.avg_cgpa }} / 4.0</div>
+                        </div>
+                    </div>
+
+                    {% if analysis.competition_name %}
+                    <div class="section-title">Competition Achievements</div>
+                    <ul class="info-list">
+                        <li>{{ analysis.competition_name }}</li>
+                    </ul>
+                    {% endif %}
+
+                    {% if analysis.extra_curricular %}
+                    <div class="section-title">Leadership & Activities</div>
+                    <ul class="info-list">
+                        <li>{{ analysis.extra_curricular }}</li>
+                    </ul>
+                    {% endif %}
+
+                    {% if analysis.skills %}
+                    <div class="section-title">Core Competencies</div>
+                    <ul class="info-list">
+                        <li>{{ analysis.skills }}</li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="section-title">Comprehensive Assessment & Development Roadmap</div>
+            <div class="analysis-summary">
+                <div class="analysis-title">Professional Evaluation</div>
+                <div class="analysis-content">
+                    {% if analysis.classification == 'Top10' %}
+                        <strong>Exceptional Achievement Recognition:</strong> Your academic profile demonstrates outstanding excellence across all educational milestones. You have consistently maintained superior performance standards that place you among the top 10% of candidates in our comprehensive database. Your disciplined approach to learning and remarkable consistency in high-stakes examinations reflect exceptional intellectual capabilities and strong work ethic.
+
+                        <div class="recommendation-box">
+                            <div class="recommendation-title">Strategic Enhancement Opportunities</div>
+                            <div class="recommendation-content">
+                                • Consider pursuing advanced research projects or independent studies in your field of interest<br>
+                                • Explore leadership roles in academic societies or student organizations<br>
+                                • Investigate mentorship opportunities to guide junior students<br>
+                                • Look into prestigious scholarship programs and honors societies<br>
+                                • Focus on developing presentation and public speaking skills to complement your academic excellence
+                            </div>
+                        </div>
+                    {% elif analysis.classification == 'Top50' %}
+                        <strong>Strong Academic Foundation:</strong> Your profile showcases commendable academic performance with notable consistency across different educational phases. Ranking within the top 50% of our candidate pool, you demonstrate solid subject mastery and effective study strategies. Your SAT scores and CGPA particularly highlight your potential for continued academic success.
+
+                        <div class="recommendation-box">
+                            <div class="recommendation-title">Growth & Excellence Pathway</div>
+                            <div class="recommendation-content">
+                                • Identify specific subject areas for deeper specialization and advanced study<br>
+                                • Pursue relevant certifications or online courses to enhance technical skills<br>
+                                • Engage in research projects or internships related to your career interests<br>
+                                • Join professional associations or academic clubs in your field<br>
+                                • Consider participating in academic competitions to challenge yourself further<br>
+                                • Develop a portfolio showcasing your best academic work and projects
+                            </div>
+                        </div>
+                    {% elif analysis.classification == 'Top100' %}
+                        <strong>Solid Academic Platform:</strong> Your academic journey shows a dependable foundation with consistent effort across various educational stages. You rank among the top 100 candidates, indicating reliable performance and dedication to your studies. There are clear opportunities to elevate your academic profile through strategic focus and targeted improvement.
+
+                        <div class="recommendation-box">
+                            <div class="recommendation-title">Acceleration & Improvement Strategy</div>
+                            <div class="recommendation-content">
+                                • Develop a structured study schedule with specific daily and weekly goals<br>
+                                • Seek additional academic support through tutoring or study groups<br>
+                                • Focus on strengthening fundamental concepts in core subjects<br>
+                                • Engage in practical applications of theoretical knowledge through projects<br>
+                                • Explore internship opportunities to gain real-world experience<br>
+                                • Consider retaking standardized tests if eligible for score improvement<br>
+                                • Build relationships with professors and academic advisors for guidance
+                            </div>
+                        </div>
+                    {% else %}
+                        <strong>Foundation Building & Growth Opportunity:</strong> Your academic profile has been thoroughly analyzed and presents significant potential for improvement and growth. Every successful journey begins with recognizing areas for development, and you are now positioned to make meaningful progress. Your current standing provides a solid baseline from which to build exceptional achievements.
+
+                        <div class="recommendation-box">
+                            <div class="recommendation-title">Comprehensive Development Plan</div>
+                            <div class="recommendation-content">
+                                • Enroll in foundational courses to strengthen core subject knowledge<br>
+                                • Establish a consistent daily study routine with dedicated time blocks<br>
+                                • Utilize academic resources such as tutoring centers and study workshops<br>
+                                • Join study groups and collaborative learning environments<br>
+                                • Set short-term, achievable academic goals to build momentum<br>
+                                • Actively participate in class discussions and seek clarification when needed<br>
+                                • Consider gap-year programs or preparatory courses for competitive exams<br>
+                                • Focus on developing effective note-taking and exam preparation strategies<br>
+                                • Engage with career counselors to align academic efforts with career goals
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <a href="#" class="btn btn-primary"><i class="fas fa-file-download"></i> Download Complete Report</a>
+                <a href="#" class="btn btn-outline" id="downloadResume"><i class="fas fa-file-pdf"></i> Export Professional PDF</a>
+                <a href="#" class="btn btn-outline"><i class="fas fa-envelope"></i> Share Assessment</a>
+                <a href="#" class="btn btn-outline"><i class="fas fa-chart-line"></i> Track Progress</a>
+            </div>
+        </div>
+    </div>
+
+
+<!--<div class="col-md-6 text-left" style="margin-top:20px; position: relative;">-->
+<!--    {% if resume_url %}-->
+<!--    &lt;!&ndash; Left side upload button &ndash;&gt;-->
+<!--    <div class="resume-action-buttons" style="position: absolute; bottom: -20px; left: 10px; z-index: 10;">-->
+<!--    <form method="post" enctype="multipart/form-data" style="display: inline;">-->
+<!--        {% csrf_token %}-->
+<!--        <label for="resumeUpload" class="btn btn-sm">-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">-->
+<!--                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>-->
+<!--                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>-->
+<!--            </svg>-->
+<!--            <input type="file" id="resumeUpload" name="resume" accept=".pdf" style="display: none;" onchange="this.form.submit()">-->
+<!--        </label>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--<div class="resume-action-buttons" style="position: absolute; bottom: -20px; right: 10px; z-index: 10;">-->
+<!--    <button class="btn btn-sm" onclick="downloadResume()">-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">-->
+<!--            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>-->
+<!--            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>-->
+<!--        </svg>-->
+<!--        <span class="ml-1"></span>-->
+<!--    </button>-->
+<!--</div>-->
+
+<!--    <div class="resume-container">-->
+<!--        <div class="resume-image-wrapper">-->
+<!--            <img id="resume-image" class="blurred-resume" src="{{ resume_url }}" alt="Resume preview">-->
+<!--            <div class="blur-gradient"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {% else %}-->
+<!--    <p>No resume uploaded.</p>-->
+
+<!--    &lt;!&ndash; Show upload button when no resume is present &ndash;&gt;-->
+<!--    <div class="resume-action-buttons" style="position: absolute; top: 10px; left: 10px; z-index: 10;">-->
+<!--        <form method="post" enctype="multipart/form-data" style="display: inline;">-->
+<!--            {% csrf_token %}-->
+<!--            <label for="resumeUpload" class="btn btn-sm btn-primary">-->
+<!--                Upload Resume-->
+<!--                <input type="file" id="resumeUpload" name="resume" accept=".pdf" style="display: none;" onchange="this.form.submit()">-->
+<!--            </label>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--    {% endif %}-->
+<!--</div>-->
+
+
+<!--                    {% if messages %}-->
+<!--                        <div class="mt-3">-->
+<!--                            {% for message in messages %}-->
+<!--                                <div class="alert alert-{{ message.tags }}">-->
+<!--                                    {{ message }}-->
+<!--                                </div>-->
+<!--                            {% endfor %}-->
+<!--                        </div>-->
+<!--                    {% endif %}-->
+<!--</div>-->
+
+<!--        </div>-->
+
+
+            {% load static %}
+
+
+
+
+
+
+        <!-- Schedule Sections -->
+            <div class="container">
+
+
+
+    <div class="row align-items-center" style="margin-top:20px; border:1px solid #f5f2f2; border-radius:10px;box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.1);padding: 20px;">
+        <!-- Left Column: Text -->
+        <div class="col-md-6 text-left">
+            <h2>Study Abroad</h2>
+            <div style="width: 140%; height: 130px; overflow: hidden;">
+<img src="{% static 'Screenshot 2025-03-30 174137 (1).jpg' %}" alt="Image" style="width: 90%;">
+
+</div>
+<p>
+    Increase your chances by taking the test and enhancing your resume.
+    Gain valuable insights, improve your skills, and stand out to top universities.
+    Our platform helps you assess your strengths, identify areas for growth,
+    and prepare for a successful academic journey abroad.
+</p>
+        </div>
+        <!-- Right Column: Buttons -->
+<div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+    <div class="schedule-section text-center">
+        <div class="section-header">
+            <!-- Add any header content here -->
+        </div>
+        <div class="resume-buttons">
+            <a href="#" class="btn btn-enhance">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 3 12 21"></polygon>
+                    <path d="M12 9L12 21"></path>
+                </svg>
+                Enhance Resume
+            </a>
+            <a href="http://127.0.0.1:8000/user-analysis/" class="btn btn-test">Analyze Profile</a>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+
+                <div class="overlay" id="overlay" onclick="hideCard()"></div>
+
+
+            <!-- From Uiverse.io by Cobp -->
+
+
+
+        <!-- Services Section -->
+        <div class="services-section">
+            <div class="services-title">Our Services</div>
+            <div class="service-cards">
+                <div class="service-card">
+                    <div class="service-title blue">Profile Analyzer</div>
+                    <div class="service-description">
+                        Unlock insights into your resume's strengths, weaknesses, and improvement areas.
+                    </div>
+                    <div class="service-image">
+                        <img src="https://th.bing.com/th/id/OIP.Bflm-P6ShX6bygWXuIof9QHaHa?pid=ImgDet&w=474&h=474&rs=1" alt="Profile Analyzer">
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-title green">Shortlist Builder</div>
+                    <div class="service-description">
+                        Shortlist Builder will provide a curated shortlist of universities that match your profile
+                    </div>
+                    <div class="service-image">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4413/4413611.png" alt="Shortlist Builder">
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-title red">Admit Finder</div>
+                    <div class="service-description">
+                        Admit Finder lets you explore profiles of previous admits to universities worldwide
+                    </div>
+                    <div class="service-image">
+                        <img src="https://thumbs.dreamstime.com/b/teamwork-icons-line-style-team-work-people-support-business-vector-illustration-teamwork-web-icons-line-style-team-work-143588069.jpg" alt="Admit Finder">
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-title yellow">Scholarship Finder</div>
+                    <div class="service-description">
+                        Discover top scholarships from around the world, suited to your study goals.
+                    </div>
+                    <div class="service-image">
+                        <img src="https://th.bing.com/th/id/OIP.eFEvSVhLG97jwPo-CooXqgHaG3?rs=1&pid=ImgDetMain" alt="Scholarship Finder">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script>
+
+    function toggleCard(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            document.getElementById("cardContainer").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+            document.body.classList.add("blur-background");
+        }
+
+        function hideCard() {
+            document.getElementById("cardContainer").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+            document.body.classList.remove("blur-background");
+        }
+    // Add this script to trigger the shimmer effect on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const curlyTexts = document.querySelectorAll('.curly-text');
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Determine scroll direction
+        if (scrollTop > lastScrollTop) {
+            // Scrolling down
+            curlyTexts.forEach((text, index) => {
+                setTimeout(() => {
+                    text.classList.add('shimmer');
+                    setTimeout(() => {
+                        text.classList.remove('shimmer');
+                    }, 2000);
+                }, index * 150);
+            });
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    }, {passive: true});
+
+    // Also trigger shimmer effect when page loads
+    setTimeout(() => {
+        curlyTexts.forEach((text, index) => {
+            setTimeout(() => {
+                text.classList.add('shimmer');
+                setTimeout(() => {
+                    text.classList.remove('shimmer');
+                }, 2000);
+            }, index * 200 + 1000);
+        });
+    }, 1000);
+});
+
+    function downloadResume() {
+    // Get the resume URL and initiate download
+    var resumeUrl = document.getElementById('resume-image').src;
+    var link = document.createElement('a');
+    link.href = resumeUrl;
+    link.download = 'my_resume.pdf'; // Default filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Display the name of the file selected
+    document.getElementById('resumeUpload').addEventListener('change', function() {
+        const fileName = this.files[0].name;
+        const label = document.querySelector('.custom-file-label');
+        label.textContent = fileName;
+    });
+
+    // PDF.js for rendering the resume
+    const pdfUrl = "{{ resume_url }}";
+
+    if (pdfUrl) {
+        // Set the worker source (required for PDF.js)
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        // Load and render the PDF
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc) {
+            return pdfDoc.getPage(1); // Get the first page
+        }).then(function(page) {
+            const viewport = page.getViewport({ scale: 1.5 });
+
+            // Create a canvas to render the PDF page
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Render the PDF page on the canvas
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+
+            page.render(renderContext).promise.then(function() {
+                // Convert the canvas to an image and set as source for the img element
+                const imageUrl = canvas.toDataURL('image/png');
+                document.getElementById('resume-image').src = imageUrl;
+            });
+        }).catch(function(error) {
+            console.error('Error rendering PDF:', error);
+            document.getElementById('resume-image').insertAdjacentHTML('afterend',
+                '<div class="alert alert-danger mt-3">Error loading PDF. Please ensure your file is valid.</div>');
+        });
+    }
+});
+    // Create the sidebar toggle button
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'sidebar-toggle';
+    toggleButton.innerHTML = '<i class="fas fa-bars"></i>';
+    document.body.appendChild(toggleButton);
+
+    // Create overlay for mobile view
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+
+    // Get the sidebar element
+    const sidebar = document.querySelector('.sidebar');
+
+    // Add click event to toggle button
+    toggleButton.addEventListener('click', function() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    });
+
+    // Close sidebar when clicking the overlay
+    overlay.addEventListener('click', function() {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+
+    // Handle window resize events
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 992) {
+            // On larger screens, remove the active classes
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+    });
+
+    // Modify the suggestion cards system to be responsive
+    const originalAddSuggestionCards = window.addSuggestionCards || function() {};
+
+    window.addSuggestionCards = function() {
+        const chatContainer = document.getElementById('chatContainer');
+
+        // Create cards container with responsive grid layout
+        const cardsContainer = document.createElement('div');
+        cardsContainer.id = 'suggestionCards';
+        cardsContainer.style.display = 'grid';
+        cardsContainer.style.gridTemplateColumns = window.innerWidth <= 768 ? '1fr' : 'repeat(2, 1fr)';
+        cardsContainer.style.gap = '15px';
+        cardsContainer.style.width = '90%';
+        cardsContainer.style.maxWidth = '800px';
+        cardsContainer.style.margin = '20px auto';
+        cardsContainer.style.justifyContent = 'center';
+
+        // Sample suggestion cards
+        const suggestions = [
+            { text: "College admission tips", query: "What are some tips for college admissions?" },
+            { text: "Scholarship information", query: "Tell me about scholarship opportunities" },
+            { text: "Campus life", query: "What is college campus life like?" },
+            { text: "Career guidance", query: "What career paths can I pursue after college?" }
+        ];
+
+        // Create each card
+        suggestions.forEach(suggestion => {
+            const card = document.createElement('div');
+            card.classList.add('suggestion-card');
+            card.setAttribute('data-query', suggestion.query);
+            card.textContent = suggestion.text;
+
+            // Style the card
+            card.style.backgroundColor = '#f0f0f0'; // Light grey
+            card.style.padding = '15px';
+            card.style.borderRadius = '8px';
+            card.style.cursor = 'pointer';
+            card.style.textAlign = 'center';
+            card.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            card.style.transition = 'background-color 0.3s ease';
+            card.style.borderLeft = '4px solid #1565c0'; // Match your design
+
+            // Add hover effect
+            card.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#e0e0e0';
+            });
+
+            card.addEventListener('mouseout', function() {
+                this.style.backgroundColor = '#f0f0f0';
+            });
+
+            // Add click event
+            card.addEventListener('click', function() {
+                const query = this.getAttribute('data-query');
+                document.getElementById('userQuery').value = query;
+
+                // Highlight the clicked card briefly
+                this.style.backgroundColor = '#bbdefb';
+                setTimeout(() => {
+                    this.style.backgroundColor = '#f0f0f0';
+                }, 300);
+
+                // Auto-submit the form when a card is clicked
+                document.getElementById('queryForm').dispatchEvent(new Event('submit'));
+            });
+
+            cardsContainer.appendChild(card);
+        });
+
+        chatContainer.appendChild(cardsContainer);
+
+        // Update grid layout on window resize
+        window.addEventListener('resize', function() {
+            if (cardsContainer) {
+                cardsContainer.style.gridTemplateColumns = window.innerWidth <= 768 ? '1fr' : 'repeat(2, 1fr)';
+            }
+        });
+    };
+
+    // Call the function to initialize cards if it exists in the original script
+    if (typeof originalAddSuggestionCards === 'function') {
+        addSuggestionCards();
+    }
+
+    // Intercept and modify the fetch request to remove cards when response is received
+    const originalFetch = window.fetch;
+    window.fetch = function() {
+        const fetchPromise = originalFetch.apply(this, arguments);
+
+        // If this is a request to the dorai endpoint
+        if (arguments[0].toString().includes('dorai')) {
+            fetchPromise.then(() => {
+                // Remove suggestion cards once the fetch request completes
+                removeSuggestionCards();
+            });
+        }
+
+        return fetchPromise;
+    };
+
+    // Function to remove suggestion cards
+    function removeSuggestionCards() {
+        const cards = document.getElementById('suggestionCards');
+        if (cards) {
+            cards.remove();
+        }
+    }
+</script>

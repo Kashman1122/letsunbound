@@ -1,0 +1,43 @@
+{
+  "college_name": "Talmudical Seminary Of Bobov",
+  "url": "https://bigfuture.collegeboard.org/colleges/talmudical-seminary-of-bobov",
+  "scrape_success": true,
+  "scrape_timestamp": "2025-04-14 20:32:05",
+  "overview": {
+    "description": "Talmudical Seminary Of Bobov is a 4-year, private school. This college is located in an urban setting. It offers bachelor's degrees. This college has an acceptance rate of 92% and a graduation rate of 100%.",
+    "college_type": "",
+    "location": "",
+    "enrollment": ""
+  },
+  "admissions": {
+    "high_school_gpa": "Neither required nor recommended",
+    "high_school_rank": "Neither required nor recommended",
+    "college_prep_courses": "Required",
+    "sat_act_scores": "Not available",
+    "recommendations": "Required",
+    "application_deadline": ""
+  },
+  "academics": {
+    "majors": []
+  },
+  "costs": {
+    "average_net_price": "",
+    "costs_breakdown": {},
+    "students_receiving_aid": "",
+    "average_aid_package": "",
+    "financial_aid_deadline": ""
+  },
+  "campus-life": {
+    "on_campus_housing": "",
+    "freshmen_live_on_campus": "",
+    "campus_setting": "",
+    "activities": ""
+  },
+  "successful_sections": [
+    "overview",
+    "admissions",
+    "academics",
+    "costs",
+    "campus-life"
+  ]
+}

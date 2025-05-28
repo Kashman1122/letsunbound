@@ -1,0 +1,43 @@
+{
+  "college_name": "University of Wisconsin-Whitewater",
+  "url": "https://bigfuture.collegeboard.org/colleges/university-of-wisconsin-whitewater",
+  "scrape_success": true,
+  "scrape_timestamp": "2025-04-14 21:04:03",
+  "overview": {
+    "description": "University of Wisconsin-Whitewater is a large, 4-year, public university. This coed college is located in a large town in a suburban setting and is primarily a residential campus. It offers certificate, associate, bachelor's, master's, and doctoral degrees. This college has an acceptance rate of 94% and a graduation rate of 62%.",
+    "college_type": "",
+    "location": "",
+    "enrollment": ""
+  },
+  "admissions": {
+    "high_school_gpa": "Required",
+    "high_school_rank": "Considered but not required",
+    "college_prep_courses": "Recommended",
+    "sat_act_scores": "Considered if submitted",
+    "recommendations": "Considered but not required",
+    "application_deadline": ""
+  },
+  "academics": {
+    "majors": []
+  },
+  "costs": {
+    "average_net_price": "",
+    "costs_breakdown": {},
+    "students_receiving_aid": "",
+    "average_aid_package": "",
+    "financial_aid_deadline": ""
+  },
+  "campus-life": {
+    "on_campus_housing": "",
+    "freshmen_live_on_campus": "",
+    "campus_setting": "",
+    "activities": ""
+  },
+  "successful_sections": [
+    "overview",
+    "admissions",
+    "academics",
+    "costs",
+    "campus-life"
+  ]
+}

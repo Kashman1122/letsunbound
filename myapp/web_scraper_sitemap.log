@@ -1,0 +1,69 @@
+2025-04-14 19:12:41,838 - INFO - Successfully loaded 250 URLs from university_descriptions.csv.checkpoint
+2025-04-14 19:12:41,838 - INFO - Found 250 URLs to process
+2025-04-14 19:12:41,934 - INFO - ====== WebDriver manager ======
+2025-04-14 19:12:42,756 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-14 19:12:42,891 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-14 19:12:43,070 - INFO - Driver [C:\Users\ACER\.wdm\drivers\chromedriver\win64\129.0.6668.100\chromedriver-win32/chromedriver.exe] found in cache
+2025-04-14 19:12:45,621 - WARNING - Could not create driver with webdriver_manager: Message: session not created
+from unknown error: failed to write prefs file
+Stacktrace:
+	GetHandleVerifier [0x00F65523+24195]
+	(No symbol) [0x00EFAA04]
+	(No symbol) [0x00DF2093]
+	(No symbol) [0x00E26D81]
+	(No symbol) [0x00E26F34]
+	(No symbol) [0x00E215EC]
+	(No symbol) [0x00E1E649]
+	(No symbol) [0x00E64B95]
+	(No symbol) [0x00E6431A]
+	(No symbol) [0x00E5A8D6]
+	(No symbol) [0x00E2BA27]
+	(No symbol) [0x00E2C43D]
+	GetHandleVerifier [0x0122CE13+2938739]
+	GetHandleVerifier [0x0127EC69+3274185]
+	GetHandleVerifier [0x00FF09C2+594722]
+	GetHandleVerifier [0x00FF7EDC+624700]
+	(No symbol) [0x00F037CD]
+	(No symbol) [0x00F00528]
+	(No symbol) [0x00F006C5]
+	(No symbol) [0x00EF2CA6]
+	BaseThreadInitThunk [0x759C7BA9+25]
+	RtlInitializeExceptionChain [0x7701C2EB+107]
+	RtlClearBits [0x7701C26F+191]
+
+2025-04-14 19:12:49,289 - ERROR - Failed to create Chrome driver: Message: session not created
+from unknown error: failed to write prefs file
+Stacktrace:
+	GetHandleVerifier [0x00007FF65908B095+29557]
+	(No symbol) [0x00007FF658FFFA50]
+	(No symbol) [0x00007FF658EBB56A]
+	(No symbol) [0x00007FF658EFBA48]
+	(No symbol) [0x00007FF658EFBCD6]
+	(No symbol) [0x00007FF658EF50CA]
+	(No symbol) [0x00007FF658EF251E]
+	(No symbol) [0x00007FF658F42F90]
+	(No symbol) [0x00007FF658F42620]
+	(No symbol) [0x00007FF658F36F33]
+	(No symbol) [0x00007FF658F0116F]
+	(No symbol) [0x00007FF658F022D1]
+	GetHandleVerifier [0x00007FF6593BC96D+3378253]
+	GetHandleVerifier [0x00007FF659408497+3688311]
+	GetHandleVerifier [0x00007FF6593FD1CB+3642539]
+	GetHandleVerifier [0x00007FF65914A6B6+813462]
+	(No symbol) [0x00007FF65900AB5F]
+	(No symbol) [0x00007FF659006B74]
+	(No symbol) [0x00007FF659006D10]
+	(No symbol) [0x00007FF658FF5C1F]
+	BaseThreadInitThunk [0x00007FF95402259D+29]
+	RtlUserThreadStart [0x00007FF95546AF38+40]
+
+2025-04-14 19:12:49,289 - CRITICAL - Critical error: Could not initialize WebDriver
+2025-04-14 19:17:15,271 - INFO - Successfully loaded 250 URLs from university_descriptions.csv.checkpoint
+2025-04-14 19:17:15,271 - INFO - Found 250 URLs to process
+2025-04-14 19:17:18,093 - INFO - ====== WebDriver manager ======
+2025-04-14 19:17:19,034 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-14 19:17:19,276 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-14 19:17:19,392 - INFO - Driver [C:\Users\ACER\.wdm\drivers\chromedriver\win64\129.0.6668.100\chromedriver-win32/chromedriver.exe] found in cache
+2025-04-14 19:17:25,406 - INFO - Navigated to BigFuture page
+2025-04-14 19:17:28,407 - CRITICAL - Critical error: 'platform'
+2025-04-14 19:29:53,938 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /session/fee876a99db07abfeb6d9c3488b0fd71

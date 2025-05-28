@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .step {
+            display: none;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .step.active {
+            display: block;
+        }
+        h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button.back {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            height: 20px;
+            position: relative;
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        .progress-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            line-height: 20px;
+        }
+        .exam-score {
+            display: none;
+            margin-top: 10px;
+        }
+        .university-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .university-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .university-details {
+            font-size: 14px;
+            color: #666;
+        }
+        .match-score {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            float: right;
+        }
+        .logo {
+            display: block;
+            margin: 20px auto;
+            max-width: 300px;
+        }
+        .main-container{
+background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding-right: 10px;
+            padding-left:10px;
+            box-sizing: border-box;        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .page-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+
+
+        .form-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .progress-text {
+            position: absolute;
+            right: 10px;
+            color: #fff;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="file"] {
+            border: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button.back {
+            background-color: #6c757d;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .exam-score {
+            display: none;
+        }
+
+        @media (max-width: 992px) {
+            .page-container {
+                flex-direction: column;
+            }
+
+            .image-container {
+                height: 300px;
+            }
+        }
+        .page-container1, .page-container {
+    width: 50%;
+    height: 100vh; /* Full height */
+    position: absolute;
+    top: 0;
+}
+
+.page-container1 {
+    left: 0;
+    display: flex;
+}
+
+.image-container {
+    width: 100%; /* Ensure it covers the full container */
+    height: 100vh; /* Full height */
+    background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.page-container {
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff; /* Change as needed */
+}
+
+    </style>
+</head>
+<body>
+<div class="page-container1">
+
+<!-- Left side image (exactly half screen) -->
+        <div class="image-container">
+            <div class="image-overlay"></div>
+        </div>
+</div>
+<div class="page-container">
+
+
+        <!-- Right side registration form (exactly half screen) -->
+        <div class="form-container">
+            <div class="main-container">
+                <img src="https://letsunbound.com/wp-content/uploads/2024/08/Logo-001-01-e1724852823632.png" class="logo" alt="Logo">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" id="progress" style="width: 16.67%;">
+                            <span class="progress-text">Step 1 of 6</span>
+                        </div>
+                    </div>
+                </div>
+                <form id="registrationForm" method="post" action="{% url 'register' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Step 1: Basic Information -->
+                    <div class="step active" id="step1">
+                        <h2>Personal Information</h2>
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <div class="buttons">
+                            <div></div> <!-- Empty div to maintain spacing -->
+                            <button type="button" onclick="nextStep(1, 2)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Education -->
+                    <div class="step" id="step2">
+                        <h2>Education</h2>
+                        <div class="form-group">
+                            <label for="degree">What degree are you looking for?</label>
+                            <select id="degree" name="degree" required>
+                                <option value="" disabled selected>Select your degree</option>
+                                <option value="btech">BTech</option>
+                                <option value="mtech">MTech</option>
+                                <option value="mba">MBA</option>
+                                <option value="bsc">BSc</option>
+                                <option value="bca">BCA</option>
+                                <option value="mechatronics">Mechatronics</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="back" onclick="prevStep(2, 1)">Back</button>
+                            <button type="button" onclick="nextStep(2, 3)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Additional Information -->
+                    <div class="step" id="step3">
+                        <h2>Additional Information</h2>
+                        <div class="form-group">
+                            <label for="interests">What are your areas of interest?</label>
+                            <select id="interests" name="interests" required>
+                                <option value="" disabled selected>Select your interest</option>
+                                <option value="ai">Artificial Intelligence</option>
+                                <option value="data">Data Science</option>
+                                <option value="web">Web Development</option>
+                                <option value="cyber">Cybersecurity</option>
+                                <option value="network">Networking</option>
+                                <option value="management">Management</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="back" onclick="prevStep(3, 2)">Back</button>
+                            <button type="button" onclick="nextStep(3, 4)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Country Selection -->
+                    <div class="step" id="step4">
+                        <h2>Study Destination</h2>
+                        <div class="form-group">
+                            <label for="country">Which country do you want to choose for study?</label>
+                            <select id="country" name="country" required>
+                                <option value="" disabled selected>Select a country</option>
+                                <!-- Countries will be loaded dynamically -->
+                            </select>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="back" onclick="prevStep(4, 3)">Back</button>
+                            <button type="button" onclick="nextStep(4, 5)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Exam Information -->
+                    <div class="step" id="step5">
+                        <h2>Exam Information</h2>
+                        <div class="form-group">
+                            <label for="exam">Which exam have you given?</label>
+                            <select id="exam" name="exam" onchange="showScoreInput()" required>
+                                <option value="" disabled selected>Select an exam</option>
+                                <option value="gate">GATE</option>
+                                <option value="cat">CAT</option>
+                                <option value="toefl">TOEFL</option>
+                                <option value="duolingo">Duolingo English Test</option>
+                                <option value="pte">PTE</option>
+                            </select>
+                        </div>
+
+                        <div id="gateScore" class="exam-score">
+                            <div class="form-group">
+                                <label for="gateMarks">How much marks did you gain in GATE?</label>
+                                <input type="number" id="gateMarks" name="gateMarks" min="0" max="1000">
+                            </div>
+                        </div>
+
+                        <div id="catScore" class="exam-score">
+                            <div class="form-group">
+                                <label for="catMarks">How much marks did you gain in CAT?</label>
+                                <input type="number" id="catMarks" name="catMarks" min="0" max="100">
+                            </div>
+                        </div>
+
+                        <div id="toeflScore" class="exam-score">
+                            <div class="form-group">
+                                <label for="toeflMarks">How much marks did you gain in TOEFL?</label>
+                                <input type="number" id="toeflMarks" name="toeflMarks" min="0" max="120">
+                            </div>
+                        </div>
+
+                        <div id="duolingoScore" class="exam-score">
+                            <div class="form-group">
+                                <label for="duolingoMarks">How much marks did you gain in Duolingo English Test?</label>
+                                <input type="number" id="duolingoMarks" name="duolingoMarks" min="0" max="160">
+                            </div>
+                        </div>
+
+                        <div id="pteScore" class="exam-score">
+                            <div class="form-group">
+                                <label for="pteMarks">How much marks did you gain in PTE?</label>
+                                <input type="number" id="pteMarks" name="pteMarks" min="0" max="90">
+                            </div>
+                        </div>
+
+                        <div class="buttons">
+                            <button type="button" class="back" onclick="prevStep(5, 4)">Back</button>
+                            <button type="button" onclick="nextStep(5, 6)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Profile Analysis -->
+                    <div class="step" id="step6">
+                        <h2>Profile Analysis</h2>
+                        <div class="form-group">
+                            <label for="profilePdf">Upload your resume/CV (PDF)</label>
+                            <input type="file" id="profilePdf" name="profilePdf" accept=".pdf">
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalInfo">Additional Information</label>
+                            <textarea id="additionalInfo" name="additionalInfo" rows="4" placeholder="Please provide any additional information that may help us analyze your profile"></textarea>
+                        </div>
+                        <div class="buttons">
+                            <button type="button" class="back" onclick="prevStep(6, 5)">Back</button>
+                            <button type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- University Recommendations -->
+                <div class="step" id="universityRecommendations" style="display: none;">
+                    <h2>University Recommendations</h2>
+                    <p>Based on your profile, here are some university recommendations:</p>
+
+                    <div id="universityList">
+                        <!-- Universities will be dynamically populated here -->
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" class="back" onclick="prevStep('universityRecommendations', 6)">Back</button>
+                        <button type="submit" onclick="completeRegistration()">Complete Registration</button>
+                    </div>
+                </div>
+
+                <div id="formSubmission" style="display: none;">
+                    <h2>Registration Complete!</h2>
+                    <p>Thank you for registering. We'll get back to you shortly with more information about your university options.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Load countries when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Use the REST Countries API to get a list of all countries
+            fetch('https://restcountries.com/v3.1/all')
+                .then(response => response.json())
+                .then(data => {
+                    const countrySelect = document.getElementById('country');
+
+                    // Sort countries by name
+                    data.sort((a, b) => {
+                        if (a.name.common < b.name.common) return -1;
+                        if (a.name.common > b.name.common) return 1;
+                        return 0;
+                    });
+
+                    // Add countries to the select element
+                    data.forEach(country => {
+                        const option = document.createElement('option');
+                        option.value = country.cca2;
+                        option.textContent = country.name.common;
+                        countrySelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading countries:', error);
+                    // Fallback for top study destinations
+                    const topDestinations = [
+                        { code: 'US', name: 'United States' },
+                        { code: 'UK', name: 'United Kingdom' },
+                        { code: 'CA', name: 'Canada' },
+                        { code: 'AU', name: 'Australia' },
+                        { code: 'DE', name: 'Germany' },
+                        { code: 'FR', name: 'France' },
+                        { code: 'NL', name: 'Netherlands' },
+                        { code: 'SG', name: 'Singapore' },
+                        { code: 'JP', name: 'Japan' },
+                        { code: 'CH', name: 'Switzerland' }
+                    ];
+
+                    const countrySelect = document.getElementById('country');
+                    topDestinations.forEach(country => {
+                        const option = document.createElement('option');
+                        option.value = country.code;
+                        option.textContent = country.name;
+                        countrySelect.appendChild(option);
+                    });
+                });
+        });
+
+        // Total number of steps
+        const totalSteps = 6;
+
+        // Function to move to the next step
+        function nextStep(currentStep, nextStep) {
+            // Validate current step
+            if (currentStep === 1) {
+                if (!validateStep1()) return false;
+            } else if (currentStep === 2) {
+                if (!validateStep2()) return false;
+            } else if (currentStep === 3) {
+                if (!validateStep3()) return false;
+            } else if (currentStep === 4) {
+                if (!validateStep4()) return false;
+            } else if (currentStep === 5) {
+                if (!validateStep5()) return false;
+            }
+
+            // Hide current step and show next step
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + nextStep).classList.add('active');
+
+            // Update progress bar
+            updateProgress(nextStep);
+
+            return true;
+        }
+
+        // Function to go back to the previous step
+        function prevStep(currentStep, prevStep) {
+            // If current step is the university recommendations page
+            if (currentStep === 'universityRecommendations') {
+                document.getElementById(currentStep).style.display = 'none';
+                document.getElementById('step' + prevStep).classList.add('active');
+            } else {
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + prevStep).classList.add('active');
+            }
+
+            // Update progress bar
+            updateProgress(prevStep);
+
+            return true;
+        }
+
+        // Update progress bar
+        function updateProgress(step) {
+            const progressPercent = (step / totalSteps) * 100;
+            document.getElementById('progress').style.width = progressPercent + '%';
+            document.querySelector('.progress-text').textContent = 'Step ' + step + ' of ' + totalSteps;
+        }
+
+
+
+
+
+        // Validate step 1
+        function validateStep1() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!name || !email || !phone || !password || !confirmPassword) {
+                alert('Please fill in all fields');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+
+            // Basic email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Validate step 2
+        function validateStep2() {
+            const degree = document.getElementById('degree').value;
+
+            if (!degree) {
+                alert('Please select a degree');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Validate step 3
+        function validateStep3() {
+            const interests = document.getElementById('interests').value;
+
+            if (!interests) {
+                alert('Please select your area of interest');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Validate step 4
+        function validateStep4() {
+            const country = document.getElementById('country').value;
+
+            if (!country) {
+                alert('Please select a country');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Validate step 5
+        function validateStep5() {
+            const exam = document.getElementById('exam').value;
+
+            if (!exam) {
+                alert('Please select an exam');
+                return false;
+            }
+
+            // Validate exam scores based on selected exam
+            const examScoreInputs = {
+                'gate': document.getElementById('gateMarks'),
+                'cat': document.getElementById('catMarks'),
+                'toefl': document.getElementById('toeflMarks'),
+                'duolingo': document.getElementById('duolingoMarks'),
+                'pte': document.getElementById('pteMarks')
+            };
+
+            if (!examScoreInputs[exam].value) {
+                alert('Please enter your exam score');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Show score input based on selected exam
+        function showScoreInput() {
+            // Hide all score inputs
+            document.querySelectorAll('.exam-score').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            // Show the selected exam's score input
+            const selectedExam = document.getElementById('exam').value;
+            if (selectedExam) {
+                document.getElementById(selectedExam + 'Score').style.display = 'block';
+            }
+        }
+
+        // Analyze profile and show university recommendations
+        function analyzeProfile() {
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                degree: document.getElementById('degree').value,
+                interests: document.getElementById('interests').value,
+                country: document.getElementById('country').value,
+                exam: document.getElementById('exam').value,
+                examScore: getExamScore(),
+                additionalInfo: document.getElementById('additionalInfo').value
+            };
+
+            // Hide step 6 and show university recommendations
+            document.getElementById('step6').classList.remove('active');
+            document.getElementById('universityRecommendations').style.display = 'block';
+
+            // Generate university recommendations based on profile
+            generateUniversityRecommendations(formData);
+        }
+
+        // Get exam score based on selected exam
+        function getExamScore() {
+            const exam = document.getElementById('exam').value;
+            const examScoreInputs = {
+                'gate': document.getElementById('gateMarks'),
+                'cat': document.getElementById('catMarks'),
+                'toefl': document.getElementById('toeflMarks'),
+                'duolingo': document.getElementById('duolingoMarks'),
+                'pte': document.getElementById('pteMarks')
+            };
+
+            return examScoreInputs[exam].value;
+        }
+
+        // Generate university recommendations based on profile
+        function generateUniversityRecommendations(formData) {
+            const universityList = document.getElementById('universityList');
+            universityList.innerHTML = ''; // Clear existing universities
+
+            // Sample universities based on different criteria
+            const universities = [];
+
+
+
+            // Filter universities based on country preference
+            const countrySelect = document.getElementById('country');
+            const selectedCountryName = countrySelect.options[countrySelect.selectedIndex].text;
+
+            // Create university cards
+            universities.forEach(university => {
+                const universityCard = document.createElement('div');
+                universityCard.className = 'university-card';
+
+                const universityHTML = `
+                    <div class="university-name">${university.name} <span class="match-score">${university.matchScore}% Match</span></div>
+                    <div class="university-location">${university.location}</div>
+                    <div class="university-details">${university.details}</div>
+                `;
+
+                universityCard.innerHTML = universityHTML;
+                universityList.appendChild(universityCard);
+            });
+
+            // Add a message if no universities match the criteria
+            if (universities.length === 0) {
+                universityList.innerHTML = '<p>No universities found matching your criteria. Please try adjusting your preferences.</p>';
+            }
+        }
+
+        // Complete registration process
+        function completeRegistration() {
+            // Hide university recommendations and show completion message
+            document.getElementById('universityRecommendations').style.display = 'none';
+            document.getElementById('formSubmission').style.display = 'block';
+            document.querySelector('.progress-container').style.display = 'none';
+
+            // Here you would typically send the form data to a server
+            console.log('Registration completed!');
+        }
+    </script>
+</body>
+</html>

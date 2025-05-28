@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Analysis Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a7bd5;
+            --secondary-color: #00d2ff;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Progress Steps */
+        .steps-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-line {
+            position: absolute;
+            height: 3px;
+            background-color: #e0e0e0;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .progress-line-completed {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            transition: width 1s cubic-bezier(0.65, 0, 0.35, 1);
+            box-shadow: 0 0 10px rgba(58, 123, 213, 0.4);
+        }
+
+        .step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 3;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.5s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .step.completed {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-color: transparent;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .step.active {
+            border-color: var(--success-color);
+            color: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+            }
+        }
+
+        /* Main card styles */
+        .card {
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+            background-color: white;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.8;
+            z-index: -1;
+            transform: rotate(-5deg);
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: white;
+            font-weight: 600;
+            font-size: 26px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body {
+            padding: 30px;
+            position: relative;
+        }
+
+        .card-footer {
+            padding: 20px 30px;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Classification badges */
+        .classification-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .classification-badge::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+            transform: rotate(45deg);
+            animation: shineEffect 3s infinite;
+        }
+
+        @keyframes shineEffect {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .badge-top10 {
+            background: linear-gradient(135deg, #28a745, #5fd080);
+            color: white;
+        }
+
+        .badge-top50 {
+            background: linear-gradient(135deg, #17a2b8, #5ccce4);
+            color: white;
+        }
+
+        .badge-top100 {
+            background: linear-gradient(135deg, #ffc107, #ffdb6d);
+            color: #333;
+        }
+
+        .badge-regular {
+            background: linear-gradient(135deg, #6c757d, #9da5ad);
+            color: white;
+        }
+
+        .profile-section {
+            text-align: center;
+            animation: fadeInLeft 0.8s ease-out;
+        }
+
+        .profile-section h4 {
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 22px;
+            color: #444;
+        }
+
+        /* Section styling */
+        .section-title {
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            font-weight: 600;
+            color: #444;
+            font-size: 20px;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
+        .performance-group {
+            animation: fadeInRight 0.8s ease-out;
+        }
+
+        .performance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 10px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .performance-item:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+            transform: translateX(5px);
+        }
+
+        .performance-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .performance-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Alert styling */
+        .analysis-alert {
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-top: 15px;
+            position: relative;
+            border-left: 5px solid;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left-color: var(--success-color);
+        }
+
+        .alert-info {
+            background-color: rgba(23, 162, 184, 0.1);
+            border-left-color: var(--info-color);
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left-color: var(--warning-color);
+        }
+
+        .alert-secondary {
+            background-color: rgba(108, 117, 125, 0.1);
+            border-left-color: var(--dark-color);
+        }
+
+        .alert-icon {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert-success .alert-icon {
+            background-color: var(--success-color);
+        }
+
+        .alert-info .alert-icon {
+            background-color: var(--info-color);
+        }
+
+        .alert-warning .alert-icon {
+            background-color: var(--warning-color);
+        }
+
+        .alert-secondary .alert-icon {
+            background-color: var(--dark-color);
+        }
+
+        /* Pro card styling */
+        .pro-card {
+            background: linear-gradient(135deg, #fff6f3, #fff0f5);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .pro-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+            border-radius: 0 0 0 150px;
+            z-index: 0;
+        }
+
+        .card-content {
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-subtitle {
+            font-size: 17px;
+            color: #666;
+            margin: 0 0 25px 0;
+        }
+
+        .highlight {
+            color: #dc3545;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        .highlight::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #dc3545;
+        }
+
+        .diamond-icon {
+            margin-left: 10px;
+            font-size: 24px;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Feature list styles */
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 17px;
+            color: #555;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .feature-list li:hover {
+            transform: translateX(10px);
+            color: #333;
+        }
+
+        .check-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            margin-right: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            font-size: 14px;
+            box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Button styling */
+        .btn {
+            display: inline-block;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 2px solid transparent;
+            padding: 12px 30px;
+            font-size: 16px;
+            line-height: 1.5;
+            border-radius: 50px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+            z-index: -1;
+        }
+
+        .btn:hover::after {
+            left: 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 15px rgba(58, 123, 213, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(58, 123, 213, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #ff4b1f, #ff9068);
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(220, 53, 69, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+                margin: 20px auto;
+            }
+
+            .card {
+                border-radius: 15px;
+            }
+
+            .card-header, .card-body, .card-footer, .card-content {
+                padding: 20px;
+            }
+
+            .classification-badge {
+                font-size: 22px;
+                padding: 15px 30px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Progress Steps -->
+    <div class="steps-progress">
+        <div class="progress-line"></div>
+        <div class="progress-line-completed" id="progressLine"></div>
+        <div class="step completed">1</div>
+        <div class="step completed">2</div>
+        <div class="step active">3</div>
+        <div class="step">4</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-chart-line"></i> Profile Analysis Result</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 profile-section">
+                    <div class="classification-badge badge-top50">
+                        {{ analysis.classification }}
+                    </div>
+                    <h4>{{ analysis.name }}</h4>
+                </div>
+
+                <div class="col-md-8 performance-group">
+                    <h5 class="section-title">Academic Performance</h5>
+                    <div class="performance-item">
+                        <span class="performance-label">10th Grade:</span>
+                        <span class="performance-value">{{ analysis.tenth_marks_received }} / {{ analysis.tenth_marks_total }}</span>
+                    </div>
+                    <div class="performance-item">
+                        <span class="performance-label">12th Grade:</span>
+                        <span class="performance-value">{{ analysis.twelfth_marks_received }} / {{ analysis.twelfth_marks_total }}</span>
+                    </div>
+                    <div class="performance-item">
+                        <span class="performance-label">SAT Score:</span>
+                        <span class="performance-value">{{ analysis.sat_score_received }} / {{ analysis.sat_score_total }}</span>
+                    </div>
+                    <div class="performance-item">
+                        <span class="performance-label">College CGPA:</span>
+                        <span class="performance-value">{{ analysis.avg_cgpa }}</span>
+                    </div>
+                                        {% if analysis.competition_name %}
+
+                    <h5 class="section-title">Competitions</h5>
+                    <div class="performance-item">
+                        <span class="performance-value">{{ analysis.competition_name }}</span>
+                    </div>
+                                        {% endif %}
+                                        {% if analysis.competition_name %}
+
+
+                    <h5 class="section-title">Extra-Curricular Activities</h5>
+                    <div class="performance-item">
+                        <span class="performance-value">{{ analysis.extra_curricular }}</span>
+                    </div>
+
+                                        {% endif %}
+                                        {% if analysis.competition_name %}
+
+                    <h5 class="section-title">Skills</h5>
+                    <div class="performance-item">
+                        <span class="performance-value">{{ analysis.skills }}</span>
+                    </div>
+
+                                        {% endif %}
+
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="section-title">Analysis Summary</h5>
+                <div class="analysis-alert alert-info">
+                    <div class="alert-icon"><i class="fas fa-info"></i></div>
+                     {% if analysis.classification == 'Top10' %}
+                        <p>Congratulations! Your profile shows outstanding academic excellence and a well-rounded personality. You are among the top 10% of applicants.</p>
+                    {% elif analysis.classification == 'Top50' %}
+                        <p>Great job! Your profile demonstrates strong academic performance and good extracurricular involvement. You are among the top 50% of applicants.</p>
+                    {% elif analysis.classification == 'Top100' %}
+                        <p>Your profile shows solid academic achievements. With some improvements in extra activities, you can boost your chances significantly.</p>
+                    {% else %}
+                        <p>Your profile has been recorded. Consider enhancing your academic scores and adding more extracurricular activities.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-footer">
+            <a href="#" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create New Analysis</a>
+            <button class="btn btn-success download-btn" id="downloadResume">
+                <i class="fas fa-file-download"></i> Download as Resume
+            </button>
+        </div>
+        </div>
+
+    </div>
+
+    <!-- Pro Card -->
+    <div class="card pro-card">
+        <div class="card-content">
+            <h2 class="card-title">Get personalized recommendations <span class="highlight">with Pro</span> <span class="diamond-icon">💎</span></h2>
+            <p class="card-subtitle">Our AI-powered system will help you improve your profile.</p>
+
+            <ul class="feature-list">
+                <li><span class="check-icon">✓</span> Targeted improvement strategies</li>
+                <li><span class="check-icon">✓</span> College match recommendations</li>
+                <li><span class="check-icon">✓</span> Success probability estimations</li>
+                <li><span class="check-icon">✓</span> Track progress over time</li>
+            </ul>
+
+            <button class="btn btn-danger"><i class="fas fa-crown"></i> Upgrade to Pro</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Animate the progress line
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            document.getElementById('progressLine').style.width = '66%';
+        }, 500);
+    });
+
+    // Add entrance animations to elements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation classes
+        const animationElements = document.querySelectorAll('.card, .performance-item, .classification-badge');
+
+        animationElements.forEach(function(element, index) {
+            element.style.animationDelay = (index * 0.1) + 's';
+        });
+    });
+</script>
+</body>
+</html>

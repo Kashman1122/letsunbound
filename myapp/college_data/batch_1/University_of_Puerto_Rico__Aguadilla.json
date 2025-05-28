@@ -1,0 +1,43 @@
+{
+  "college_name": "University of Puerto Rico: Aguadilla",
+  "url": "https://bigfuture.collegeboard.org/colleges/university-of-puerto-rico-aguadilla",
+  "scrape_success": true,
+  "scrape_timestamp": "2025-04-14 19:57:46",
+  "overview": {
+    "description": "University of Puerto Rico: Aguadilla is a small, 4-year, public school. This coed college is located in a suburban community in a suburban setting and is primarily a commuter campus. It offers associate, bachelor's, and certificate degrees. This college has an acceptance rate of 82% and a graduation rate of 42%.",
+    "college_type": "",
+    "location": "",
+    "enrollment": ""
+  },
+  "admissions": {
+    "high_school_gpa": "Required",
+    "high_school_rank": "Neither required nor recommended",
+    "college_prep_courses": "Recommended",
+    "sat_act_scores": "Required",
+    "recommendations": "Neither required nor recommended",
+    "application_deadline": ""
+  },
+  "academics": {
+    "majors": []
+  },
+  "costs": {
+    "average_net_price": "",
+    "costs_breakdown": {},
+    "students_receiving_aid": "",
+    "average_aid_package": "",
+    "financial_aid_deadline": ""
+  },
+  "campus-life": {
+    "on_campus_housing": "",
+    "freshmen_live_on_campus": "",
+    "campus_setting": "",
+    "activities": ""
+  },
+  "successful_sections": [
+    "overview",
+    "admissions",
+    "academics",
+    "costs",
+    "campus-life"
+  ]
+}

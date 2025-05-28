@@ -1,0 +1,43 @@
+{
+  "college_name": "University of Wyoming",
+  "url": "https://bigfuture.collegeboard.org/colleges/university-of-wyoming",
+  "scrape_success": true,
+  "scrape_timestamp": "2025-04-14 21:28:34",
+  "overview": {
+    "description": "University of Wyoming is a medium, 4-year, public university. This coed college is located in a large town in a suburban setting and is primarily a residential campus. It offers certificate, bachelor's, master's, and doctoral degrees. This college has an acceptance rate of 97% and a graduation rate of 61%.",
+    "college_type": "",
+    "location": "",
+    "enrollment": ""
+  },
+  "admissions": {
+    "high_school_gpa": "Required",
+    "high_school_rank": "Neither required nor recommended",
+    "college_prep_courses": "Required",
+    "sat_act_scores": "Neither required nor recommended",
+    "recommendations": "Neither required nor recommended",
+    "application_deadline": ""
+  },
+  "academics": {
+    "majors": []
+  },
+  "costs": {
+    "average_net_price": "",
+    "costs_breakdown": {},
+    "students_receiving_aid": "",
+    "average_aid_package": "",
+    "financial_aid_deadline": ""
+  },
+  "campus-life": {
+    "on_campus_housing": "",
+    "freshmen_live_on_campus": "",
+    "campus_setting": "",
+    "activities": ""
+  },
+  "successful_sections": [
+    "overview",
+    "admissions",
+    "academics",
+    "costs",
+    "campus-life"
+  ]
+}

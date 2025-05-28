@@ -1,0 +1,43 @@
+{
+  "college_name": "Saint Peter's University",
+  "url": "https://bigfuture.collegeboard.org/colleges/saint-peter-s-university",
+  "scrape_success": true,
+  "scrape_timestamp": "2025-04-14 20:56:04",
+  "overview": {
+    "description": "",
+    "college_type": "",
+    "location": "",
+    "enrollment": ""
+  },
+  "admissions": {
+    "high_school_gpa": "",
+    "high_school_rank": "",
+    "college_prep_courses": "",
+    "sat_act_scores": "",
+    "recommendations": "",
+    "application_deadline": ""
+  },
+  "academics": {
+    "majors": []
+  },
+  "costs": {
+    "average_net_price": "",
+    "costs_breakdown": {},
+    "students_receiving_aid": "",
+    "average_aid_package": "",
+    "financial_aid_deadline": ""
+  },
+  "campus-life": {
+    "on_campus_housing": "",
+    "freshmen_live_on_campus": "",
+    "campus_setting": "",
+    "activities": ""
+  },
+  "successful_sections": [
+    "overview",
+    "admissions",
+    "academics",
+    "costs",
+    "campus-life"
+  ]
+}

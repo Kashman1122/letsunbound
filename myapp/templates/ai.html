@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVYBOT - College Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            overflow: hidden; /* Prevent body scrolling */
+        }
+
+        /* Fixed Sidebar Styles */
+        .sidebar {
+            background-color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 20px 0;
+            width: 220px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            z-index: 10;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: block;
+            margin: 10px auto;
+            max-width: 150px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(0,0,0,0.05);
+            border-left: 3px solid #1565c0;
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-section {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #777;
+            padding: 10px 20px;
+            margin-top: 15px;
+        }
+
+        .btn-pro {
+            background-color: #1565c0;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-pro:hover {
+            background-color: #0d47a1;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 220px; /* Same as sidebar width */
+            width: calc(100% - 220px);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent main content from scrolling */
+        }
+
+        .header {
+            background-color: #f7f7f7;
+            color: #343863;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom:1px solid #eae7e7;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-header {
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Chat Container */
+        .chat-area-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Take full width of main content */
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            overflow: hidden; /* Prevent container from scrolling */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Cards Grid - Now in 2x2 format */
+        .cards-container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto; /* Center the cards in the chat area */
+        }
+
+        .card {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #1565c0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            background-color: #e3f2fd;
+        }
+
+        .card h3 {
+            color: #1565c0;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto; /* Allow vertical scrolling */
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+                        max-width:75%;
+
+        }
+
+        .message {
+            max-width: 80%;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 18px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #e7f5ff;
+            border: 1px solid #d1e9ff;
+            color: #0a4c7f;
+            text-align: right;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background-color: #f0f2f5;
+            border: 1px solid #e1e4e8;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Rich text rendering in AI messages */
+        .ai-message strong,
+        .ai-message b {
+            font-weight: bold;
+        }
+
+        .ai-message ul,
+        .ai-message ol {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .ai-message li {
+            margin-bottom: 5px;
+        }
+
+        .comparison-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .comparison-header {
+            background-color: #f0f4f8;
+            padding: 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-item {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-label,
+        .comparison-value {
+            padding: 8px 12px;
+        }
+
+        .comparison-label {
+            background-color: #f9f9f9;
+            width: 40%;
+            font-weight: 500;
+            border-right: 1px solid #eee;
+        }
+
+        .comparison-value {
+            width: 60%;
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #1565c0;
+            border-radius: 50%;
+            margin-right: 3px;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .input-container {
+            display: flex;
+            padding: 20px;
+            background-color: transparent;
+            border-top: none;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #1565c0;
+        }
+
+        .send-button {
+    background: linear-gradient(135deg, #a7bfeb, #a7bfeb,#d5e1f5, #e7d7f4); /* Light blue, white, soft purple */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .send-button:hover {
+            background: #0d47a1;
+            transform: scale(1.05);
+        }
+        .sidebar-toggle {
+    display: none; /* Hidden by default on desktop */
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    z-index: 100;
+    background-color: none;
+    color: #767474;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    color: #343434;
+}
+
+.sidebar-toggle i {
+    font-size: 18px;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 992px) {
+    .sidebar {
+        width: 250px;
+        transform: translateX(-100%); /* Hide sidebar by default on mobile */
+        transition: transform 0.3s ease;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99;
+    }
+
+    .sidebar.active {
+        transform: translateX(0); /* Show sidebar when active class is added */
+    }
+
+    .sidebar-toggle {
+        display: flex; /* Show toggle button on mobile */
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Add overlay when sidebar is active */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 98;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* Adjust card layout for smaller screens */
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Even smaller screens */
+@media screen and (max-width: 576px) {
+    .message {
+        max-width: 90%;
+    }
+    .get-pro-button{
+        margin-top:10px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .input-container {
+        padding: 10px;
+    }
+
+    .input-field {
+        padding: 12px;
+        margin-bottom:20px;
+    }
+
+    .send-button {
+        width: 45px;
+        height: 45px;
+    }
+
+    /* Adjust chat container padding */
+    .chat-container {
+        padding: 10px;
+                                max-width:100%;
+
+
+    }
+}
+
+.feedback-buttons {
+    margin-top: 8px;
+    display: flex;
+    gap: 10px;
+}
+
+.feedback-buttons button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.feedback-buttons button:hover {
+    transform: scale(1.2);
+}
+/* Entire Right Sidebar Container */
+.history-container {
+    width: 300px;
+    height: 73vh;
+    background-color: #fff;
+    border-left: 1px solid #ccc;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    margin-top:80px;
+}
+
+/* Header with Close Button */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #fff;
+}
+
+/* Scrollable Area for Chat History */
+.history-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px 15px;
+}
+
+/* Style for History List Items */
+#chatHistoryList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#chatHistoryList li {
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Hide the sidebar by default on mobile, show toggle */
+@media (max-width: 768px) {
+    .history-container {
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .history-container.visible {
+        transform: translateX(0%);
+    }
+
+    #historyToggle {
+        display: block;
+    }
+}
+
+/* History toggle button (mobile) */
+#historyToggle {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: navy;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 20px;
+    z-index: 1100;
+    cursor: pointer;
+}
+
+.get-pro-button {
+    background: linear-gradient(135deg, #c5d4ef, #c5d4ef,#f0f0ff, #e7d7f4); /* Light blue, white, soft purple */
+    color: #2c2c2c;
+    border: 2px solid transparent;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight:300;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.3s ease;
+}
+
+.get-pro-button::before {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, #c4e0ff, #e0ccff, #ffffff, #c4e0ff);
+    animation: rotateGlow 4s linear infinite;
+    z-index: 0;
+    filter: blur(10px);
+    opacity: 0.7;
+}
+
+.get-pro-button::after {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    background: inherit;
+    border-radius: 6px;
+    z-index: 1;
+}
+
+.get-pro-button:hover {
+    color: #4a00e0;
+}
+
+@keyframes rotateGlow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+.remove-history {
+    background-color:transparent;
+    color: black;
+    border: 1px solid #cfc7c7;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-history:hover {
+    background-color: #f2c0bb;
+}
+.new-chat-footer {
+    padding: 12px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    background-color:#fff8f8;
+}
+
+.new-chat-button {
+    background-color: #f5f4f4;
+    color: black;
+    border: 1px solid #7b8fa3;
+    padding: 13px 24px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.new-chat-button:hover {
+    background-color: #e3f3f8;
+}
+.image-entrance {
+    transform: translateX(-100px);
+    opacity: 0;
+    animation: slideIn 1s ease-out forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-entrance:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="https://letsunbound.com/wp-content/uploads/2024/08/Logo-001-01-e1724852823632.png" class="logo" alt="Logo" onclick="window.location.href='https://letscrackwithunbound.pythonanywhere.com/'">
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="https://letscrackwithunbound.pythonanywhere.com/"><i class="fas fa-robot"></i>Home</a></li>
+            <li><a href="/university/"><i class="fas fa-robot"></i>University</a></li>
+            <li> <a href="/dorai/" class="active"><i class="fas fa-home"></i>IVY-BOT</a></li>
+            <li><a href="/analysis/"><i class="fas fa-user-graduate"></i> Profile Analyzer</a></li>
+        </ul>
+
+        <div class="sidebar-section">Explore</div>
+        <ul class="sidebar-menu">
+            <li><a href="/colleges/"><i class="fas fa-university"></i> College Finder</a></li>
+            <li><a href="https://letsunbound.com/about-us/"><i class="fas fa-clipboard-check"></i>About Us</a></li>
+            <li><a href="https://letsunbound.com/blog/"><i class="fas fa-list-ul"></i> Blogs</a></li>
+            <li><a href="https://letsunbound.com/eventswebinar/"><i class="fas fa-award"></i>Event & Webinar</a></li>
+        </ul>
+
+        <div class="sidebar-section">Applications</div>
+        <ul class="sidebar-menu">
+            <li><a href="https://letsunbound.com/contact-page/"><i class="fas fa-tasks"></i> Contact Us</a></li>
+            <!--<li><a href="/application-builder/"><i class="fas fa-file-alt"></i> Application Builder</a></li>-->
+<!--            <li><a href="#"><i class="fas fa-folder-open"></i> Manage Applications</a></li>-->
+<!--            <li><a href="#"><i class="fas fa-compass"></i> Guidance</a></li>-->
+        </ul>
+
+<!--        <div class="sidebar-section">Post Admit</div>-->
+<!--        <ul class="sidebar-menu">-->
+<!--            <li><a href="#"><i class="fas fa-check-circle"></i> Finalize Admits</a></li>-->
+<!--        </ul>-->
+
+        <div style="padding: 0 20px; margin-top: 30px;">
+            <button class="btn-pro">Get Pro</button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+    <h1 style="margin: 0;">
+        <span class="logo-header"></span> IVYBOT - College Assistant
+    </h1>
+    <button class="get-pro-button"><h3>Get Pro</h3></button>
+</div>
+
+
+        <div class="chat-area-container">
+            <!-- History Section -->
+<div class="history-container" id="historyContainer">
+    <div class="history-header">
+        <h3>Chat History</h3>
+        <button class="remove-history" onclick="removeHistory()">🗑 Remove History</button>
+    </div>
+
+    <div class="history-content" id="historyContent">
+        <ul id="chatHistoryList">
+            <!-- History items will appear here -->
+        </ul>
+    </div>
+
+    <div class="new-chat-footer">
+        <button class="new-chat-button" onclick="startNewChat()">➕ New Chat</button>
+    </div>
+</div>
+
+
+            <!-- 2x2 Cards Grid - Centered -->
+<!--            <div class="cards-container">-->
+<!--                <div class="card" data-query="Tell me about college admission requirements and deadlines">-->
+<!--                    <h3>Admission Requirements</h3>-->
+<!--                    <p>Learn about college admission requirements, application deadlines, and important documents needed.</p>-->
+<!--                </div>-->
+<!--                <div class="card" data-query="What scholarships and financial aid are available for college students?">-->
+<!--                    <h3>Scholarships & Financial Aid</h3>-->
+<!--                    <p>Discover scholarships, grants, and financial aid options to help fund your education.</p>-->
+<!--                </div>-->
+<!--                <div class="card" data-query="What are the top-rated majors and their career prospects?">-->
+<!--                    <h3>Majors & Career Paths</h3>-->
+<!--                    <p>Explore popular majors, required courses, and potential career paths after graduation.</p>-->
+<!--                </div>-->
+<!--                <div class="card" data-query="How to prepare for college life and what to expect?">-->
+<!--                    <h3>Campus Life</h3>-->
+<!--                    <p>Get tips on dorm living, extracurricular activities, and adjusting to college life.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <!-- Chat Area -->
+            <div class="chat-container" id="chatContainer">
+<!--                <div class="message ai-message">-->
+<!--                    Hello! I'm Dora AI, your college information assistant. Click on any card above to get started, or ask me any question about colleges!-->
+<!--                </div>-->
+                <!-- Chat messages will be added here -->
+            </div>
+
+
+    <!-- Floating Toggle Button for Mobile -->
+    <button id="historyToggle" onclick="toggleHistory()">📜</button>
+            <!-- Input Area -->
+            <form class="input-container" id="queryForm" method="post" action="{% url 'dorai' %}">
+                <input type="hidden" name="csrfmiddlewaretoken" id="csrfToken" value="{{ csrf_token }}">
+                <input type="text" class="input-field" id="userQuery" name="user_query" placeholder="Ask me anything about colleges..." required>
+                <button type="submit" class="send-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="white"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('queryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userQuery = document.getElementById('userQuery').value.trim();
+            if (!userQuery) return;
+
+            // Add user message to chat
+            addMessage(userQuery, 'user');
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Get form data and send to backend
+            const formData = new FormData(this);
+
+            fetch("{% url 'dorai' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove typing indicator
+                removeTypingIndicator();
+
+                // Add AI response to chat
+                if (data.response) {
+                    addMessage(data.response, 'ai');
+                } else {
+                    addMessage("I'm sorry, I couldn't process that request.", 'ai');
+                }
+            })
+            .catch(error => {
+                // Remove typing indicator
+                removeTypingIndicator();
+
+                // Show error message
+                addMessage("I'm having trouble connecting right now. Please try again later.", 'ai');
+                console.error('Error:', error);
+            });
+
+            // Clear input field
+            document.getElementById('userQuery').value = '';
+        });
+
+        function parseMessageContent(content) {
+    // Handle code blocks (```code```)
+    content = content.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+
+    // Handle inline code (`code`)
+    content = content.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // Handle bold text (** or __)
+    content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    content = content.replace(/__(.*?)__/g, '<strong>$1</strong>');
+
+    // Handle italic text (* or _)
+    content = content.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+    content = content.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+    // Handle strikethrough text (~~text~~)
+    content = content.replace(/~~(.*?)~~/g, '<del>$1</del>');
+
+    // Handle headings (# Heading)
+    content = content.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
+    content = content.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
+    content = content.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
+    content = content.replace(/^#### (.*?)$/gm, '<h4>$1</h4>');
+    content = content.replace(/^##### (.*?)$/gm, '<h5>$1</h5>');
+    content = content.replace(/^###### (.*?)$/gm, '<h6>$1</h6>');
+
+    // Handle links [text](url)
+    content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+    // Handle horizontal rule (---, ___, ***)
+    content = content.replace(/^(\-{3,}|\_{3,}|\*{3,})$/gm, '<hr>');
+
+    // Handle blockquotes (> text)
+    content = content.replace(/^>\s+(.*?)$/gm, '<blockquote>$1</blockquote>');
+
+    // Handle bullet points and numbered lists
+    const lines = content.split('\n');
+    let processedLines = [];
+    let inBulletList = false;
+    let inNumberedList = false;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const bulletMatch = line.match(/^\s*[\-\*]\s+(.+)$/);
+        const numberedMatch = line.match(/^\s*(\d+)\.\s+(.+)$/);
+
+        // Handle bullet lists
+        if (bulletMatch) {
+            if (!inBulletList) {
+                processedLines.push('<ul>');
+                inBulletList = true;
+            }
+            processedLines.push(`<li>${bulletMatch[1]}</li>`);
+        }
+        // Handle numbered lists
+        else if (numberedMatch) {
+            if (!inNumberedList) {
+                processedLines.push('<ol>');
+                inNumberedList = true;
+            }
+            processedLines.push(`<li>${numberedMatch[2]}</li>`);
+        }
+        // Handle regular lines
+        else {
+            // Close any open lists
+            if (inBulletList) {
+                processedLines.push('</ul>');
+                inBulletList = false;
+            }
+            if (inNumberedList) {
+                processedLines.push('</ol>');
+                inNumberedList = false;
+            }
+
+            // Add the regular line with proper line break handling
+            processedLines.push(line);
+        }
+    }
+
+    // Close any remaining open lists
+    if (inBulletList) {
+        processedLines.push('</ul>');
+    }
+    if (inNumberedList) {
+        processedLines.push('</ol>');
+    }
+
+    // Join processed lines with proper paragraph handling
+    content = processedLines.join('\n');
+
+    // Handle paragraphs - convert double line breaks to paragraph boundaries
+    content = '<p>' + content.replace(/\n\s*\n/g, '</p><p>') + '</p>';
+
+    // Clean up empty paragraphs
+    content = content.replace(/<p>\s*<\/p>/g, '');
+
+    // Fix single line breaks within paragraphs (preserve them as <br>)
+    content = content.replace(/<p>([\s\S]*?)<\/p>/g, function(match, p1) {
+        return '<p>' + p1.replace(/\n(?!\n)/g, '<br>') + '</p>';
+    });
+
+    // Handle comparison box syntax
+    const comparisonRegex = /\|comparison\|(.*?)\|\n([\s\S]*?)(?:\n\n|$)/g;
+    content = content.replace(comparisonRegex, function(match, title, tableContent) {
+        let result = '<div class="comparison-box">';
+        if (title.trim()) {
+            result += `<div class="comparison-header">${title.trim()}</div>`;
+        }
+
+        const rows = tableContent.trim().split('\n');
+        rows.forEach(row => {
+            const cells = row.split('|').filter(cell => cell.trim() !== '');
+            if (cells.length >= 2) {
+                result += `<div class="comparison-item">
+                            <div class="comparison-label">${cells[0].trim()}</div>
+                            <div class="comparison-value">${cells[1].trim()}</div>
+                          </div>`;
+            }
+        });
+
+        result += '</div>';
+        return result;
+    });
+
+    // Handle tables
+    const tableRegex = /^\|(.*)\|\s*\n\|([\-\s\|]+)\|\s*\n((.*\n)*?.*)/gm;
+    content = content.replace(tableRegex, function(match, header, separator, rows) {
+        let result = '<table>';
+
+        // Process header
+        result += '<thead><tr>';
+        header.split('|').forEach(cell => {
+            if (cell.trim() !== '') {
+                result += `<th>${cell.trim()}</th>`;
+            }
+        });
+        result += '</tr></thead>';
+
+        // Process rows
+        result += '<tbody>';
+        rows.split('\n').forEach(row => {
+            if (row.trim() !== '') {
+                result += '<tr>';
+                row.split('|').forEach(cell => {
+                    if (cell.trim() !== '') {
+                        result += `<td>${cell.trim()}</td>`;
+                    }
+                });
+                result += '</tr>';
+            }
+        });
+        result += '</tbody></table>';
+
+        return result;
+    });
+
+    return content;
+}
+
+        function addMessage(content, sender) {
+    const chatContainer = document.getElementById('chatContainer');
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+    messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+
+    if (sender === 'ai') {
+        messageDiv.innerHTML = parseMessageContent(content);
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.classList.add('feedback-buttons');
+        feedbackDiv.innerHTML = `
+            <button class="like-button" onclick="handleFeedback('like', this)">👍</button>
+            <button class="dislike-button" onclick="handleFeedback('dislike', this)">👎</button>
+        `;
+        messageDiv.appendChild(feedbackDiv);
+    } else {
+        messageDiv.textContent = content;
+    }
+
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    // Add to History
+    addToHistory(content, sender);
+}
+
+function addToHistory(content, sender) {
+    const historyList = document.getElementById('chatHistoryList');
+    const listItem = document.createElement('li');
+    listItem.classList.add(sender === 'user' ? 'user-history' : 'ai-history');
+    listItem.textContent = content.length > 50 ? content.slice(0, 50) + '...' : content;
+    historyList.appendChild(listItem);
+}
+
+function toggleHistory() {
+    const history = document.getElementById('historyContainer');
+    history.classList.toggle('visible');
+}
+
+
+function handleFeedback(type, button) {
+    const parent = button.parentElement;
+    parent.querySelectorAll('button').forEach(btn => {
+        btn.disabled = true;
+    });
+    button.style.color = type === 'like' ? 'green' : 'red';
+    console.log(`Feedback: ${type}`); // Send to server if needed
+}
+
+
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('message', 'ai-message', 'typing-indicator-container');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Add click event listeners to cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                const query = this.getAttribute('data-query');
+                document.getElementById('userQuery').value = query;
+
+                // Highlight the clicked card briefly
+                this.style.backgroundColor = '#bbdefb';
+                setTimeout(() => {
+                    this.style.backgroundColor = '';
+                }, 300);
+
+                // Auto-submit the form when a card is clicked
+                document.getElementById('queryForm').dispatchEvent(new Event('submit'));
+            });
+        });
+        function addSuggestionCards() {
+    const chatContainer = document.getElementById('chatContainer');
+
+    // Create header container
+    const headerContainer = document.createElement('div');
+    headerContainer.style.display = 'flex';
+    headerContainer.style.flexDirection = 'column';
+    headerContainer.style.alignItems = 'center';
+    headerContainer.style.justifyContent = 'center';
+    headerContainer.style.margin = '20px auto';
+    headerContainer.style.width = '70%';
+    headerContainer.style.maxWidth = '600px';
+
+    // Create image element
+    const imageElement = document.createElement('img');
+    imageElement.id = 'headerImage';
+    imageElement.src = 'https://cdn.dribbble.com/users/5993025/screenshots/14217234/nickimpressiondesign_portfolio_01-06.jpg'; // Replace with your actual image URL
+imageElement.alt = 'College Assistant';
+imageElement.style.width = '140px';
+imageElement.style.height = '140px';
+imageElement.style.borderRadius = '20%';
+imageElement.style.marginBottom = '15px';
+imageElement.style.objectFit = 'cover';
+imageElement.classList.add('image-entrance');  // Add this class
+
+    // Create header text
+    const headerText = document.createElement('h2');
+    headerText.textContent = "An AI assistant which helps you to choose the best colleges from USA";
+    headerText.style.textAlign = 'center';
+    headerText.style.fontSize = '20px';
+    headerText.style.fontWeight = '500';
+    headerText.style.margin = '10px 0 10px 0';
+    headerText.style.color = '#7d7e81';
+
+    // Add elements to header container
+    headerContainer.appendChild(imageElement);
+    headerContainer.appendChild(headerText);
+
+    // Add header container to chat container
+    chatContainer.appendChild(headerContainer);
+
+    // Create cards container with centered grid layout
+    const cardsContainer = document.createElement('div');
+    cardsContainer.id = 'suggestionCards';
+    cardsContainer.style.display = 'grid';
+    cardsContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    cardsContainer.style.gap = '15px';
+    cardsContainer.style.width = '50%';
+    cardsContainer.style.margin = '0 auto';
+    cardsContainer.style.border='1px solid black'
+    cardsContainer.style.justifyContent = 'center';
+
+    // Sample suggestion cards - update the text and queries as needed
+    const suggestions = [
+            { text: "How to shortlist universities?", query: "How to shortlist universities?" },
+            { text: "What GPA do I need to get into an Ivy League school?", query: "What GPA do I need to get into an Ivy League school?" },
+            { text: "Are extracurricular activities important?", query: "Are extracurricular activities important?" },
+            { text: "What is the good SAT score for top colleges in USA?", query: "What is the good SAT score for top colleges in USA?" }
+        ];
+
+    // Create each card
+    suggestions.forEach(suggestion => {
+        const card = document.createElement('div');
+        card.classList.add('suggestion-card');
+        card.setAttribute('data-query', suggestion.query);
+        card.textContent = suggestion.text;
+
+        // Style the card
+        card.style.backgroundColor = '#ffffff'; // Light grey
+        card.style.padding = '15px';
+        card.style.borderRadius = '8px';
+        card.style.cursor = 'pointer';
+        card.style.textAlign = 'center';
+        card.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+        card.style.margin = '60px auto';
+        card.style.border='1px solid #c7c6c6';
+        card.style.transition = 'background-color 0.3s ease';
+
+        // Add hover effect
+            card.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#f5f4f4';
+            });
+
+            card.addEventListener('mouseout', function() {
+                this.style.backgroundColor = '#ffffff';
+            });
+
+        // Add click event
+        card.addEventListener('click', function() {
+            const query = this.getAttribute('data-query');
+            document.getElementById('userQuery').value = query;
+
+            // Highlight the clicked card briefly
+            this.style.backgroundColor = '#bbdefb';
+            setTimeout(() => {
+                this.style.backgroundColor = '#f0f0f0';
+            }, 300);
+
+            // Auto-submit the form when a card is clicked
+            document.getElementById('queryForm').dispatchEvent(new Event('submit'));
+        });
+
+        cardsContainer.appendChild(card);
+    });
+
+    chatContainer.appendChild(cardsContainer);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Create the sidebar toggle button
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'sidebar-toggle';
+    toggleButton.innerHTML = '<i class="fas fa-bars"></i>';
+    document.body.appendChild(toggleButton);
+
+    // Create overlay for mobile view
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+
+    // Get the sidebar element
+    const sidebar = document.querySelector('.sidebar');
+
+    // Add click event to toggle button
+    toggleButton.addEventListener('click', function() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    });
+
+    // Close sidebar when clicking the overlay
+    overlay.addEventListener('click', function() {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+
+    // Handle window resize events
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 992) {
+            // On larger screens, remove the active classes
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+    });
+
+    // Modify the suggestion cards system to be responsive
+    const originalAddSuggestionCards = window.addSuggestionCards || function() {};
+
+    window.addSuggestionCards = function() {
+        const chatContainer = document.getElementById('chatContainer');
+
+        // Create header container
+        const headerContainer = document.createElement('div');
+        headerContainer.style.display = 'flex';
+        headerContainer.style.flexDirection = 'column';
+        headerContainer.style.alignItems = 'center';
+        headerContainer.style.justifyContent = 'center';
+        headerContainer.style.margin = '20px auto';
+        headerContainer.style.width = '70%';
+        headerContainer.style.maxWidth = '600px';
+
+        // Create image element
+        const imageElement = document.createElement('img');
+        imageElement.id = 'headerImage';
+        imageElement.src = 'https://cdn.dribbble.com/users/5993025/screenshots/14217234/nickimpressiondesign_portfolio_01-06.jpg'; // Replace with your actual image URL
+imageElement.alt = 'College Assistant';
+imageElement.style.width = '140px';
+imageElement.style.height = '140px';
+imageElement.style.borderRadius = '20%';
+imageElement.style.marginBottom = '15px';
+imageElement.style.objectFit = 'cover';
+imageElement.classList.add('image-entrance');  // Add this class
+
+
+        // Create header text
+        const headerText = document.createElement('h2');
+        headerText.textContent = "An AI assistant which helps you to choose the best colleges from USA";
+        headerText.style.textAlign = 'center';
+        headerText.style.fontSize = '20px';
+        headerText.style.fontWeight = '500';
+        headerText.style.margin = '10px 0 10px 0';
+        headerText.style.color = '#7d7e81';
+
+        // Add elements to header container
+        headerContainer.appendChild(imageElement);
+        headerContainer.appendChild(headerText);
+
+        // Add header container to chat container
+        chatContainer.appendChild(headerContainer);
+
+        // Create cards container with responsive grid layout
+        const cardsContainer = document.createElement('div');
+        cardsContainer.id = 'suggestionCards';
+        cardsContainer.style.display = 'grid';
+        cardsContainer.style.gridTemplateColumns = window.innerWidth <= 768 ? '1fr' : 'repeat(2, 1fr)';
+        cardsContainer.style.gap = '15px';
+        cardsContainer.style.width = '70%';
+        cardsContainer.style.maxWidth = '600px';
+        cardsContainer.style.margin = '0 auto 20px';
+        cardsContainer.style.justifyContent = 'center';
+
+        // Sample suggestion cards
+        const suggestions = [
+            { text: "How to shortlist universities?", query: "How to shortlist universities?" },
+            { text: "What GPA do I need to get into an Ivy League school?", query: "What GPA do I need to get into an Ivy League school?" },
+            { text: "Are extracurricular activities important?", query: "Are extracurricular activities important?" },
+            { text: "What’s a good SAT score for top U.S. colleges?", query: "What’s a good SAT score for top U.S. colleges?" }
+        ];
+
+        // Create each card
+        suggestions.forEach(suggestion => {
+            const card = document.createElement('div');
+            card.classList.add('suggestion-card');
+            card.setAttribute('data-query', suggestion.query);
+            card.textContent = suggestion.text;
+
+            // Style the card
+            card.style.backgroundColor = '#ffffff'; // Light grey
+            card.style.padding = '22px';
+            card.style.borderRadius = '8px';
+            card.style.cursor = 'pointer';
+            card.style.textAlign = 'center';
+            card.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            card.style.transition = 'background-color 0.3s ease';
+            card.style.border = '1px solid #c7c6c6'; // Darker gray
+
+            // Add hover effect
+            card.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#f5f4f4';
+            });
+
+            card.addEventListener('mouseout', function() {
+                this.style.backgroundColor = '#ffffff';
+            });
+
+            // Add click event
+            card.addEventListener('click', function() {
+                const query = this.getAttribute('data-query');
+                document.getElementById('userQuery').value = query;
+
+                // Highlight the clicked card briefly
+                this.style.backgroundColor = '#bbdefb';
+                setTimeout(() => {
+                    this.style.backgroundColor = '#f0f0f0';
+                }, 300);
+
+                // Auto-submit the form when a card is clicked
+                document.getElementById('queryForm').dispatchEvent(new Event('submit'));
+            });
+
+            cardsContainer.appendChild(card);
+        });
+
+        chatContainer.appendChild(cardsContainer);
+
+        // Update grid layout on window resize
+        window.addEventListener('resize', function() {
+            if (cardsContainer) {
+                cardsContainer.style.gridTemplateColumns = window.innerWidth <= 768 ? '1fr' : 'repeat(2, 1fr)';
+            }
+        });
+    };
+
+    // Call the function to initialize cards if it exists in the original script
+    if (typeof originalAddSuggestionCards === 'function') {
+        addSuggestionCards();
+    }
+
+    // Intercept and modify the fetch request to remove cards when response is received
+    const originalFetch = window.fetch;
+    window.fetch = function() {
+        const fetchPromise = originalFetch.apply(this, arguments);
+
+        // If this is a request to the dorai endpoint
+        if (arguments[0].toString().includes('dorai')) {
+            fetchPromise.then(() => {
+                // Remove suggestion cards once the fetch request completes
+                removeSuggestionCards();
+            });
+        }
+
+        return fetchPromise;
+    };
+
+    // Function to remove suggestion cards
+    function removeSuggestionCards() {
+        const cards = document.getElementById('suggestionCards');
+        if (cards) {
+            cards.remove();
+        }
+
+        // Also remove the header when removing cards
+        const headerImage = document.getElementById('headerImage');
+        if (headerImage) {
+            headerImage.parentElement.remove();
+        }
+    }
+});
+
+
+function removeHistory() {
+    document.getElementById('chatHistoryList').innerHTML = '';
+    // Optionally clear from localStorage/server
+}
+
+function startNewChat() {
+    window.location.reload(); // This reloads the current page
+}
+
+
+    </script>
+</body>
+</html>

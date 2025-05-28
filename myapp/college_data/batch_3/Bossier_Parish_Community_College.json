@@ -1,0 +1,43 @@
+{
+  "college_name": "Bossier Parish Community College",
+  "url": "https://bigfuture.collegeboard.org/colleges/bossier-parish-community-college",
+  "scrape_success": true,
+  "scrape_timestamp": "2025-04-14 20:27:21",
+  "overview": {
+    "description": "Bossier Parish Community College is a medium, 2-year, public college of art. This coed college is located in a suburban setting and is primarily a commuter campus. It offers certificate and associate degrees. This college has an acceptance rate of 98%.",
+    "college_type": "",
+    "location": "",
+    "enrollment": ""
+  },
+  "admissions": {
+    "high_school_gpa": "Neither required nor recommended",
+    "high_school_rank": "Neither required nor recommended",
+    "college_prep_courses": "Recommended",
+    "sat_act_scores": "Not available",
+    "recommendations": "Neither required nor recommended",
+    "application_deadline": ""
+  },
+  "academics": {
+    "majors": []
+  },
+  "costs": {
+    "average_net_price": "",
+    "costs_breakdown": {},
+    "students_receiving_aid": "",
+    "average_aid_package": "",
+    "financial_aid_deadline": ""
+  },
+  "campus-life": {
+    "on_campus_housing": "",
+    "freshmen_live_on_campus": "",
+    "campus_setting": "",
+    "activities": ""
+  },
+  "successful_sections": [
+    "overview",
+    "admissions",
+    "academics",
+    "costs",
+    "campus-life"
+  ]
+}
