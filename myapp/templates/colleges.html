@@ -285,7 +285,9 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 30px;
-            padding: 20px 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .university-card {
@@ -316,6 +318,7 @@
             mask-composite: exclude;
             transition: background 0.4s ease;
             opacity: 0;
+            pointer-events: none; /* IMPORTANT: This prevents the pseudo-element from blocking clicks */
         }
 
         .university-card:hover::before {
@@ -538,6 +541,8 @@
             display: flex;
             gap: 12px;
             margin-top: 20px;
+            position: relative;
+            z-index: 10; /* Ensure buttons are above any pseudo-elements */
         }
 
         .btn {
@@ -552,8 +557,12 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
+            position: relative;
+            z-index: 11; /* Higher than action-buttons container */
+            background: transparent; /* Ensure background is set */
         }
 
+        /* FIXED: Complete the btn-outline-primary class */
         .btn-outline-primary {
             background: transparent;
             border: 2px solid #3b82f6;
@@ -580,6 +589,28 @@
             box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
         }
 
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border: 2px solid #3b82f6;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            border: 2px solid #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+            border-color: #374151;
+        }
+
         .alert {
             background: linear-gradient(135deg, #dbeafe, #bfdbfe);
             border: 1px solid #93c5fd;
@@ -588,6 +619,96 @@
             color: #1e40af;
             text-align: center;
             font-weight: 500;
+        }
+
+        /* Modal Styles */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 1040;
+            overflow: auto;
+        }
+
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(34, 90, 167, 0.2);
+            min-width: 300px;
+            max-width: 400px;
+            width: auto;
+            height: auto;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1050;
+            border: 1px solid #e0e9f5;
+        }
+
+        .modal-content h3 {
+            color: #0053b3;
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #e0e9f5;
+            padding-bottom: 12px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cad6e6;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: #3d82d0;
+            box-shadow: 0 0 0 2px rgba(61, 130, 208, 0.1);
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #456;
+        }
+
+        .college-summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0d6efd;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
         }
 
         @media (max-width: 768px) {
@@ -606,7 +727,6 @@
                 text-align: center;
             }
         }
-
 
 .logo-container {
     display: flex;
