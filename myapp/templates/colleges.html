@@ -113,12 +113,18 @@
         }
 
         .filter-label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-        }
+    display: flex;
+    align-items: left; /* Optional: aligns items vertically */
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.filter-labe2 {
+    display: flex;
+    align-items: right; /* Optional: aligns items vertically */
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
 
         .slider {
             width: 100%;
@@ -1599,7 +1605,7 @@
 
         SAT Score
 
-        <span id="satScoreValue">400</span>
+                    <span id="satScoreValue" class="filter-label2" style="margin-left:80px;">400</span>
     </label>
     <input type="range" id="satScoreSlider" class="slider" min="400" max="1600" value="400" step="10"
            oninput="document.getElementById('satScoreValue').textContent = this.value">
@@ -1613,7 +1619,7 @@
 
                         Financial Aid
 
-                        <span id="finAidValue">0</span>
+                        <span id="finAidValue" style="margin-left:80px;">0</span>
                     </label>
                     <input type="range" id="finAidSlider" class="slider" min="0" max="100" value="0" oninput="document.getElementById('finAidValue').textContent = this.value">
                 </div>
@@ -1626,7 +1632,7 @@
 
                         Cost
 
-                        <span id="costValue">0</span>
+                        <span id="costValue" style="margin-left:140px;">0</span>
                     </label>
                     <input type="range" id="costSlider" class="slider" min="0" max="70000" value="0" step="1000" oninput="document.getElementById('costValue').textContent = this.value">
                 </div>
@@ -1638,7 +1644,7 @@
 
         Graduation Rate
 
-        <span id="graduationRateValue">0%</span>
+        <span id="graduationRateValue" style="margin-left:50px;">0%</span>
     </label>
     <input type="range" id="graduationRateSlider" class="slider" min="0" max="100" value="0" step="1" oninput="updateGraduationRateValue(this.value)">
 </div>
@@ -1648,7 +1654,7 @@
 <div class="filter-group">
     <label class="filter-label">Location
 
-                                            <span class="info-button" title="Locations for college admissions.">i</span>
+                                            <span class="info-button" title="Locations for college admissions." style="margin-left:110px;">i</span>
 
     </label>
     <select id="countryFilter" class="form-select" onchange="loadStates(this.value)">
@@ -1670,7 +1676,7 @@
                 <div class="filter-group">
                     <label class="filter-label">
                         Major
-                                        <span class="info-button" title="Major available for college admissions.">i</span>
+                                        <span class="info-button" title="Major available for college admissions." style="margin-left:130px;">i</span>
 
                     </label>
                     <select id="majorFilter" class="form-select">
