@@ -833,70 +833,180 @@
             document.getElementById('userQuery').value = '';
         });
 
-        function parseMessageContent(content) {
-    // Handle code blocks (```code```)
-    content = content.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+       function parseMessageContent(content) {
+    // First, handle code blocks to prevent interference with other parsing
+    const codeBlocks = [];
+    content = content.replace(/```([\s\S]*?)```/g, (match, code) => {
+        const index = codeBlocks.length;
+        codeBlocks.push(code);
+        return `__CODE_BLOCK_${index}__`;
+    });
 
-    // Handle inline code (`code`)
-    content = content.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // Handle inline code (`code`) 
+    const inlineCodes = [];
+    content = content.replace(/`([^`\n]+)`/g, (match, code) => {
+        const index = inlineCodes.length;
+        inlineCodes.push(code);
+        return `__INLINE_CODE_${index}__`;
+    });
+
+    // Handle comparison tables (custom format)
+    content = content.replace(/\|comparison\|(.*?)\|\n([\s\S]*?)(?:\n\n|$)/g, (match, title, tableContent) => {
+        let result = '<div class="comparison-box" style="border: 1px solid #ddd; border-radius: 8px; margin: 15px 0; overflow: hidden;">';
+        
+        if (title.trim()) {
+            result += `<div class="comparison-header" style="background: #f8f9fa; padding: 12px; font-weight: bold; border-bottom: 1px solid #ddd;">${title.trim()}</div>`;
+        }
+
+        const rows = tableContent.trim().split('\n');
+        rows.forEach(row => {
+            const cells = row.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+            if (cells.length >= 2) {
+                result += `<div class="comparison-item" style="display: flex; padding: 10px; border-bottom: 1px solid #eee;">
+                            <div class="comparison-label" style="flex: 1; font-weight: 500; color: #666;">${cells[0]}</div>
+                            <div class="comparison-value" style="flex: 2; color: #333;">${cells[1]}</div>
+                          </div>`;
+            }
+        });
+
+        result += '</div>';
+        return result;
+    });
+
+    // Enhanced table handling - supports both pipe tables and simple tables
+    content = content.replace(/^\|(.+)\|\s*\n\|[\s\-\|:]+\|\s*\n((?:\|.*\|\s*\n?)*)/gm, (match, headerRow, bodyRows) => {
+        const headers = headerRow.split('|').map(h => h.trim()).filter(h => h !== '');
+        const rows = bodyRows.trim().split('\n').map(row => 
+            row.split('|').map(cell => cell.trim()).filter(cell => cell !== '')
+        ).filter(row => row.length > 0);
+
+        let tableHtml = '<table style="border-collapse: collapse; width: 100%; margin: 15px 0; border: 1px solid #ddd;">';
+        
+        // Add header
+        if (headers.length > 0) {
+            tableHtml += '<thead><tr>';
+            headers.forEach(header => {
+                tableHtml += `<th style="border: 1px solid #ddd; padding: 12px; background-color: #f8f9fa; text-align: left; font-weight: 600;">${header}</th>`;
+            });
+            tableHtml += '</tr></thead>';
+        }
+
+        // Add body rows
+        if (rows.length > 0) {
+            tableHtml += '<tbody>';
+            rows.forEach((row, index) => {
+                tableHtml += '<tr>';
+                row.forEach(cell => {
+                    const bgColor = index % 2 === 0 ? '#ffffff' : '#f8f9fa';
+                    tableHtml += `<td style="border: 1px solid #ddd; padding: 12px; background-color: ${bgColor};">${cell}</td>`;
+                });
+                tableHtml += '</tr>';
+            });
+            tableHtml += '</tbody>';
+        }
+
+        tableHtml += '</table>';
+        return tableHtml;
+    });
+
+    // Handle simple tables without header separators
+    content = content.replace(/^(\|.+\|\s*\n){2,}/gm, (match) => {
+        const rows = match.trim().split('\n').map(row => 
+            row.split('|').map(cell => cell.trim()).filter(cell => cell !== '')
+        ).filter(row => row.length > 0);
+
+        if (rows.length === 0) return match;
+
+        let tableHtml = '<table style="border-collapse: collapse; width: 100%; margin: 15px 0; border: 1px solid #ddd;">';
+        
+        // First row as header
+        if (rows.length > 0) {
+            tableHtml += '<thead><tr>';
+            rows[0].forEach(header => {
+                tableHtml += `<th style="border: 1px solid #ddd; padding: 12px; background-color: #f8f9fa; text-align: left; font-weight: 600;">${header}</th>`;
+            });
+            tableHtml += '</tr></thead>';
+        }
+
+        // Remaining rows as body
+        if (rows.length > 1) {
+            tableHtml += '<tbody>';
+            rows.slice(1).forEach((row, index) => {
+                tableHtml += '<tr>';
+                row.forEach(cell => {
+                    const bgColor = index % 2 === 0 ? '#ffffff' : '#f8f9fa';
+                    tableHtml += `<td style="border: 1px solid #ddd; padding: 12px; background-color: ${bgColor};">${cell}</td>`;
+                });
+                tableHtml += '</tr>';
+            });
+            tableHtml += '</tbody>';
+        }
+
+        tableHtml += '</table>';
+        return tableHtml;
+    });
 
     // Handle bold text (** or __)
     content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     content = content.replace(/__(.*?)__/g, '<strong>$1</strong>');
 
-    // Handle italic text (* or _)
-    content = content.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
-    content = content.replace(/_([^_]+)_/g, '<em>$1</em>');
+    // Handle italic text (* or _) - more careful to avoid conflicts
+    content = content.replace(/(?<!\*)\*([^\*\n]+)\*(?!\*)/g, '<em>$1</em>');
+    content = content.replace(/(?<!_)_([^_\n]+)_(?!_)/g, '<em>$1</em>');
 
     // Handle strikethrough text (~~text~~)
     content = content.replace(/~~(.*?)~~/g, '<del>$1</del>');
 
     // Handle headings (# Heading)
-    content = content.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
-    content = content.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
-    content = content.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
-    content = content.replace(/^#### (.*?)$/gm, '<h4>$1</h4>');
-    content = content.replace(/^##### (.*?)$/gm, '<h5>$1</h5>');
-    content = content.replace(/^###### (.*?)$/gm, '<h6>$1</h6>');
+    content = content.replace(/^#{6}\s+(.+)$/gm, '<h6 style="margin: 15px 0 10px 0; color: #333;">$1</h6>');
+    content = content.replace(/^#{5}\s+(.+)$/gm, '<h5 style="margin: 15px 0 10px 0; color: #333;">$1</h5>');
+    content = content.replace(/^#{4}\s+(.+)$/gm, '<h4 style="margin: 15px 0 10px 0; color: #333;">$1</h4>');
+    content = content.replace(/^#{3}\s+(.+)$/gm, '<h3 style="margin: 15px 0 10px 0; color: #333;">$1</h3>');
+    content = content.replace(/^#{2}\s+(.+)$/gm, '<h2 style="margin: 20px 0 10px 0; color: #333;">$1</h2>');
+    content = content.replace(/^#{1}\s+(.+)$/gm, '<h1 style="margin: 20px 0 15px 0; color: #333;">$1</h1>');
 
     // Handle links [text](url)
-    content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color: #007bff; text-decoration: none;" target="_blank">$1</a>');
 
     // Handle horizontal rule (---, ___, ***)
-    content = content.replace(/^(\-{3,}|\_{3,}|\*{3,})$/gm, '<hr>');
+    content = content.replace(/^(\-{3,}|\_{3,}|\*{3,})$/gm, '<hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">');
 
     // Handle blockquotes (> text)
-    content = content.replace(/^>\s+(.*?)$/gm, '<blockquote>$1</blockquote>');
+    content = content.replace(/^>\s+(.+)$/gm, '<blockquote style="border-left: 4px solid #ddd; margin: 15px 0; padding: 10px 20px; background-color: #f8f9fa; color: #666;">$1</blockquote>');
 
-    // Handle bullet points and numbered lists
+    // Enhanced list handling
     const lines = content.split('\n');
     let processedLines = [];
     let inBulletList = false;
     let inNumberedList = false;
+    let listDepth = 0;
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        const bulletMatch = line.match(/^\s*[\-\*]\s+(.+)$/);
-        const numberedMatch = line.match(/^\s*(\d+)\.\s+(.+)$/);
+        const bulletMatch = line.match(/^(\s*)[\-\*\+]\s+(.+)$/);
+        const numberedMatch = line.match(/^(\s*)(\d+)\.\s+(.+)$/);
 
-        // Handle bullet lists
         if (bulletMatch) {
+            const indent = bulletMatch[1].length;
+            const content = bulletMatch[2];
+            
             if (!inBulletList) {
-                processedLines.push('<ul>');
+                processedLines.push('<ul style="margin: 10px 0; padding-left: 20px;">');
                 inBulletList = true;
+                listDepth = indent;
             }
-            processedLines.push(`<li>${bulletMatch[1]}</li>`);
-        }
-        // Handle numbered lists
-        else if (numberedMatch) {
+            processedLines.push(`<li style="margin: 5px 0;">${content}</li>`);
+        } else if (numberedMatch) {
+            const indent = numberedMatch[1].length;
+            const content = numberedMatch[3];
+            
             if (!inNumberedList) {
-                processedLines.push('<ol>');
+                processedLines.push('<ol style="margin: 10px 0; padding-left: 20px;">');
                 inNumberedList = true;
+                listDepth = indent;
             }
-            processedLines.push(`<li>${numberedMatch[2]}</li>`);
-        }
-        // Handle regular lines
-        else {
+            processedLines.push(`<li style="margin: 5px 0;">${content}</li>`);
+        } else {
             // Close any open lists
             if (inBulletList) {
                 processedLines.push('</ul>');
@@ -906,109 +1016,83 @@
                 processedLines.push('</ol>');
                 inNumberedList = false;
             }
-
-            // Add the regular line with proper line break handling
             processedLines.push(line);
         }
     }
 
     // Close any remaining open lists
-    if (inBulletList) {
-        processedLines.push('</ul>');
-    }
-    if (inNumberedList) {
-        processedLines.push('</ol>');
-    }
+    if (inBulletList) processedLines.push('</ul>');
+    if (inNumberedList) processedLines.push('</ol>');
 
-    // Join processed lines with proper paragraph handling
     content = processedLines.join('\n');
 
     // Handle paragraphs - convert double line breaks to paragraph boundaries
-    content = '<p>' + content.replace(/\n\s*\n/g, '</p><p>') + '</p>';
+    content = content.replace(/\n\s*\n/g, '</p><p>');
+    content = '<p>' + content + '</p>';
 
-    // Clean up empty paragraphs
+    // Clean up empty paragraphs and fix paragraph formatting
     content = content.replace(/<p>\s*<\/p>/g, '');
+    content = content.replace(/<p>(<(?:h[1-6]|ul|ol|table|blockquote|hr|div)[^>]*>)/g, '$1');
+    content = content.replace(/(<\/(?:h[1-6]|ul|ol|table|blockquote|hr|div)>)<\/p>/g, '$1');
 
-    // Fix single line breaks within paragraphs (preserve them as <br>)
-    content = content.replace(/<p>([\s\S]*?)<\/p>/g, function(match, p1) {
-        return '<p>' + p1.replace(/\n(?!\n)/g, '<br>') + '</p>';
+    // Handle single line breaks within paragraphs
+    content = content.replace(/<p>((?:[^<]|<(?!\/p>))*?)<\/p>/g, (match, p1) => {
+        return '<p style="margin: 10px 0; line-height: 1.5;">' + p1.replace(/\n/g, '<br>') + '</p>';
     });
 
-    // Handle comparison box syntax
-    const comparisonRegex = /\|comparison\|(.*?)\|\n([\s\S]*?)(?:\n\n|$)/g;
-    content = content.replace(comparisonRegex, function(match, title, tableContent) {
-        let result = '<div class="comparison-box">';
-        if (title.trim()) {
-            result += `<div class="comparison-header">${title.trim()}</div>`;
-        }
-
-        const rows = tableContent.trim().split('\n');
-        rows.forEach(row => {
-            const cells = row.split('|').filter(cell => cell.trim() !== '');
-            if (cells.length >= 2) {
-                result += `<div class="comparison-item">
-                            <div class="comparison-label">${cells[0].trim()}</div>
-                            <div class="comparison-value">${cells[1].trim()}</div>
-                          </div>`;
-            }
-        });
-
-        result += '</div>';
-        return result;
+    // Restore code blocks
+    codeBlocks.forEach((code, index) => {
+        content = content.replace(`__CODE_BLOCK_${index}__`, 
+            `<pre style="background: #f4f4f4; border: 1px solid #ddd; border-radius: 4px; padding: 15px; margin: 15px 0; overflow-x: auto; font-family: 'Courier New', monospace;"><code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`
+        );
     });
 
-    // Handle tables
-    const tableRegex = /^\|(.*)\|\s*\n\|([\-\s\|]+)\|\s*\n((.*\n)*?.*)/gm;
-    content = content.replace(tableRegex, function(match, header, separator, rows) {
-        let result = '<table>';
-
-        // Process header
-        result += '<thead><tr>';
-        header.split('|').forEach(cell => {
-            if (cell.trim() !== '') {
-                result += `<th>${cell.trim()}</th>`;
-            }
-        });
-        result += '</tr></thead>';
-
-        // Process rows
-        result += '<tbody>';
-        rows.split('\n').forEach(row => {
-            if (row.trim() !== '') {
-                result += '<tr>';
-                row.split('|').forEach(cell => {
-                    if (cell.trim() !== '') {
-                        result += `<td>${cell.trim()}</td>`;
-                    }
-                });
-                result += '</tr>';
-            }
-        });
-        result += '</tbody></table>';
-
-        return result;
+    // Restore inline code
+    inlineCodes.forEach((code, index) => {
+        content = content.replace(`__INLINE_CODE_${index}__`, 
+            `<code style="background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.9em;">${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code>`
+        );
     });
 
     return content;
 }
 
-        function addMessage(content, sender) {
+// Enhanced addMessage function with better styling
+function addMessage(content, sender) {
     const chatContainer = document.getElementById('chatContainer');
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message');
     messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
 
+    // Add message styling
+    messageDiv.style.margin = '10px 0';
+    messageDiv.style.padding = '15px';
+    messageDiv.style.borderRadius = '8px';
+    messageDiv.style.maxWidth = '100%';
+    messageDiv.style.wordWrap = 'break-word';
+
     if (sender === 'ai') {
+        messageDiv.style.backgroundColor = '#f8f9fa';
+        messageDiv.style.border = '1px solid #e9ecef';
         messageDiv.innerHTML = parseMessageContent(content);
 
+        // Add feedback buttons
         const feedbackDiv = document.createElement('div');
         feedbackDiv.classList.add('feedback-buttons');
+        feedbackDiv.style.marginTop = '10px';
+        feedbackDiv.style.textAlign = 'right';
         feedbackDiv.innerHTML = `
-            <button class="like-button" onclick="handleFeedback('like', this)">👍</button>
-            <button class="dislike-button" onclick="handleFeedback('dislike', this)">👎</button>
+            <button class="like-button" onclick="handleFeedback('like', this)" style="margin-right: 5px; background: none; border: none; font-size: 16px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;">👍</button>
+            <button class="dislike-button" onclick="handleFeedback('dislike', this)" style="background: none; border: none; font-size: 16px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;">👎</button>
         `;
         messageDiv.appendChild(feedbackDiv);
     } else {
+        messageDiv.style.backgroundColor = '#007bff';
+        messageDiv.style.color = 'white';
+        messageDiv.style.marginLeft = 'auto';
+        messageDiv.style.marginRight = '0';
+        messageDiv.style.width = 'fit-content';
+        messageDiv.style.maxWidth = '70%';
         messageDiv.textContent = content;
     }
 
