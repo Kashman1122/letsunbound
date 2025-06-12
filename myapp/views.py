@@ -707,7 +707,7 @@ def ai(request):
             return render(request, 'ai.html', {'error': error_message})
         try:
             # Set your OpenAI API key directly (NOT RECOMMENDED FOR PRODUCTION)
-            api_key = os.getenv("OPENAI_API_KEY")
+            api_key = "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"
 
             # Define the system prompt to limit responses to colleges only
             system_prompt = """You are a specialized college information assistant. Your role is to help users with college-related queries ONLY.
