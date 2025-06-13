@@ -734,7 +734,7 @@ def ai(request):
         api_key = os.getenv('OPENAI_API_KEY')
         if not api_key:
             # Fallback to hardcoded key (NOT recommended for production)
-            api_key = "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"
+            api_key = "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"
             logger.warning("Using hardcoded API key - this is not secure for production")
 
         # Define the system prompt
