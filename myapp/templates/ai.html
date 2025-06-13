@@ -785,53 +785,146 @@
 
     <script>
         // Handle form submission
+        // Handle form submission
         document.getElementById('queryForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+    event.preventDefault();
+    console.log('Form submitted');
 
-            const userQuery = document.getElementById('userQuery').value.trim();
-            if (!userQuery) return;
+    const userQuery = document.getElementById('userQuery').value.trim();
+    console.log('User query:', userQuery);
 
-            // Add user message to chat
-            addMessage(userQuery, 'user');
+    if (!userQuery) {
+        console.log('Empty query, returning');
+        return;
+    }
 
-            // Show typing indicator
-            showTypingIndicator();
+    // Add user message to chat
+    addMessage(userQuery, 'user');
 
-            // Get form data and send to backend
-            const formData = new FormData(this);
+    // Show typing indicator
+    showTypingIndicator();
 
-            fetch("{% url 'dorai' %}", {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Remove typing indicator
-                removeTypingIndicator();
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    console.log('CSRF Token:', csrfToken ? 'Found' : 'Not found');
 
-                // Add AI response to chat
-                if (data.response) {
-                    addMessage(data.response, 'ai');
-                } else {
-                    addMessage("I'm sorry, I couldn't process that request.", 'ai');
-                }
-            })
-            .catch(error => {
-                // Remove typing indicator
-                removeTypingIndicator();
+    // Get the URL - try multiple approaches
+    let apiUrl;
 
-                // Show error message
-                addMessage("I'm having trouble connecting right now. Please try again later.", 'ai');
-                console.error('Error:', error);
+    // Method 1: Check if URL is defined globally (set in HTML template)
+    if (typeof window.AI_URL !== 'undefined') {
+        apiUrl = window.AI_URL;
+        console.log('Using window.AI_URL:', apiUrl);
+    }
+    // Method 2: Try to get from a data attribute
+    else if (document.body.dataset.aiUrl) {
+        apiUrl = document.body.dataset.aiUrl;
+        console.log('Using data-ai-url:', apiUrl);
+    }
+    // Method 3: Construct URL manually (adjust path as needed)
+    else {
+        apiUrl = '/dorai/';  // Change this to match your URL pattern
+        console.log('Using fallback URL:', apiUrl);
+    }
+
+    // Create form data
+    const formData = new FormData();
+    formData.append('userQuery', userQuery);
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    console.log('Making request to:', apiUrl);
+
+    // Log form data
+    for (let [key, value] of formData.entries()) {
+        console.log('FormData:', key, '=', value);
+    }
+
+    fetch(apiUrl, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => {
+        console.log('Response received');
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        console.log('Response type:', response.type);
+        console.log('Response url:', response.url);
+
+        // Log response headers
+        for (let [key, value] of response.headers.entries()) {
+            console.log('Response header:', key, '=', value);
+        }
+
+        if (!response.ok) {
+            return response.text().then(text => {
+                console.log('Error response body:', text);
+                throw new Error(`HTTP ${response.status}: ${text}`);
             });
+        }
 
-            // Clear input field
-            document.getElementById('userQuery').value = '';
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            return response.text().then(text => {
+                console.log('Non-JSON response:', text);
+                throw new Error('Expected JSON response but got: ' + contentType);
+            });
+        }
+
+        return response.json();
+    })
+    .then(data => {
+        console.log('Parsed response data:', data);
+
+        // Remove typing indicator
+        removeTypingIndicator();
+
+        // Add AI response to chat
+        if (data.response) {
+            addMessage(data.response, 'ai');
+        } else if (data.error) {
+            addMessage(`Error: ${data.error}`, 'ai');
+            console.error('Server error:', data.error);
+        } else {
+            console.log('Unexpected response format:', data);
+            addMessage("I'm sorry, I couldn't process that request.", 'ai');
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error details:', {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
         });
+
+        // Remove typing indicator
+        removeTypingIndicator();
+
+        // Show more specific error message
+        let errorMessage = "I'm having trouble connecting right now. ";
+
+        if (error.message.includes('Failed to fetch')) {
+            errorMessage += "Please check your internet connection and try again.";
+        } else if (error.message.includes('404')) {
+            errorMessage += "The server endpoint was not found. Please contact support.";
+        } else if (error.message.includes('500')) {
+            errorMessage += "There's a server error. Please try again later.";
+        } else if (error.message.includes('CSRF')) {
+            errorMessage += "Security token error. Please refresh the page.";
+        } else {
+            errorMessage += `Error: ${error.message}`;
+        }
+
+        addMessage(errorMessage, 'ai');
+    });
+
+    // Clear input field
+    document.getElementById('userQuery').value = '';
+});
 
        function parseMessageContent(content) {
     // First, handle code blocks to prevent interference with other parsing
