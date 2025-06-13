@@ -695,22 +695,50 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt  # Add this if you're having CSRF issues
-def ai(request):
-    if request.method == "POST":
-        query = request.POST.get('user_query')
-        # Check if query exists
-        if not query:
-            error_message = "No query provided"
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'error': error_message}, status=400)
-            return render(request, 'ai.html', {'error': error_message})
-        try:
-            # Set your OpenAI API key directly (NOT RECOMMENDED FOR PRODUCTION)
-            api_key = "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"
+import os
+import json
+from langchain_groq import ChatGroq
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+import logging
+logger = logging.getLogger(__name__)
 
-            # Define the system prompt to limit responses to colleges only
-            system_prompt = """You are a specialized college information assistant. Your role is to help users with college-related queries ONLY.
+@csrf_exempt  # Remove this and use proper CSRF tokens in production
+@require_http_methods(["GET", "POST"])
+def ai(request):
+    if request.method == "GET":
+        return render(request, 'ai.html')
+
+    # POST request handling
+    logger.info(f"POST request received")
+    logger.info(f"POST data: {request.POST}")
+    logger.info(f"Headers: {dict(request.headers)}")
+
+    # Get query from POST data
+    query = request.POST.get('userQuery')
+    logger.info(f"Extracted query: {query}")
+
+    # Check if query exists
+    if not query or not query.strip():
+        error_message = "No query provided or query is empty"
+        logger.warning(error_message)
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': error_message}, status=400)
+        return render(request, 'ai.html', {'error': error_message})
+
+    try:
+        # SECURITY WARNING: Store API key in environment variables
+        api_key = os.getenv('OPENAI_API_KEY')
+        if not api_key:
+            # Fallback to hardcoded key (NOT recommended for production)
+            api_key = "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"
+            logger.warning("Using hardcoded API key - this is not secure for production")
+
+        # Define the system prompt
+        system_prompt = """You are a specialized college information assistant. Your role is to help users with college-related queries ONLY.
 
 WHAT YOU CAN HELP WITH:
 - College admissions information
@@ -726,40 +754,75 @@ WHAT YOU CAN HELP WITH:
 
 IMPORTANT RULES:
 1. ONLY answer questions related to colleges, universities, and higher education
-2. If asked about anything unrelated to colleges (like cooking, sports, movies, weather, etc.), respond with: "Sorry, I am specifically trained to assist with college-related queries only. Please ask me about colleges, admissions, courses, or anything related to higher education."
-3. If asked about who developed you or who your developer is, respond with: "I was developed by LetsUnbound team to help students with college-related information."
+2. If asked about anything unrelated to colleges, respond with: "Sorry, I am specifically trained to assist with college-related queries only. Please ask me about colleges, admissions, courses, or anything related to higher education."
+3. If asked about who developed you, respond with: "I was developed by LetsUnbound team to help students with college-related information."
 4. Stay focused on providing helpful, accurate information about colleges and higher education
-5. Be friendly and helpful within your area of expertise
+5. Be friendly and helpful within your area of expertise"""
 
-Please respond to the user's query keeping these guidelines in mind."""
+        logger.info("Initializing OpenAI client")
 
-            # For OpenAI library v1.x+ (current version)
-            client = openai.OpenAI(api_key=api_key)
-            response = client.chat.completions.create(
-                model="gpt-4",  # Use valid model name
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": query}
-                ],
-                temperature=0.7,  # Slightly lower temperature for more focused responses
-                max_tokens=5000,   # Limit response length
-            )
-            response_text = response.choices[0].message.content
+        # Initialize OpenAI client
+        client = openai.OpenAI(api_key=api_key)
 
-            # Return JSON response for AJAX request
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'response': response_text})
-            # If not AJAX, return with context (fallback)
-            return render(request, 'ai.html', {'response': response_text, 'query': query})
-        except Exception as e:
-            # Handle errors gracefully
-            error_message = f"Error: {str(e)}"
-            print(f"OpenAI API Error: {e}")  # Log for debugging
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'error': error_message}, status=500)
-            return render(request, 'ai.html', {'error': error_message})
-    # For GET requests, just render the template
-    return render(request, 'ai.html')
+        logger.info("Making OpenAI API call")
+
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": query.strip()}
+            ],
+            temperature=0.7,
+            max_tokens=1500,
+        )
+
+        response_text = response.choices[0].message.content
+        logger.info(f"OpenAI response received: {response_text[:100]}...")
+
+        # Return JSON response for AJAX request
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'response': response_text,
+                'status': 'success'
+            })
+
+        # If not AJAX, return with context (fallback)
+        return render(request, 'ai.html', {
+            'response': response_text,
+            'query': query
+        })
+
+    except openai.AuthenticationError as e:
+        error_message = "OpenAI API authentication failed. Please check your API key."
+        logger.error(f"OpenAI Authentication Error: {e}")
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': error_message}, status=401)
+        return render(request, 'ai.html', {'error': error_message})
+
+    except openai.RateLimitError as e:
+        error_message = "OpenAI API rate limit exceeded. Please try again later."
+        logger.error(f"OpenAI Rate Limit Error: {e}")
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': error_message}, status=429)
+        return render(request, 'ai.html', {'error': error_message})
+
+    except openai.OpenAIError as e:
+        error_message = f"OpenAI API Error: {str(e)}"
+        logger.error(f"OpenAI API Error: {e}")
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': error_message}, status=500)
+        return render(request, 'ai.html', {'error': error_message})
+
+    except Exception as e:
+        error_message = f"Unexpected error: {str(e)}"
+        logger.error(f"Unexpected Error: {e}", exc_info=True)
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'error': error_message}, status=500)
+        return render(request, 'ai.html', {'error': error_message})
 
 
 @login_required
