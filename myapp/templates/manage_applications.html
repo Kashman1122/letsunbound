@@ -8,115 +8,89 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <style>
+<style>
         :root {
-            --primary-color: #dd2c00;
-            --secondary-color: #ff6e40;
-            --light-bg: #f9f5f5;
-            --dark-text: #333333;
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --light-bg: #f8f9fa;
+            --very-light-bg: #ffffff;
+            --dark-text: #2c3e50;
+            --medium-text: #495057;
             --light-text: #6c757d;
-            --accent-green: #4caf50;
-            --accent-blue: #2196f3;
-            --accent-yellow: #ffc107;
+            --border-color: #e9ecef;
+            --hover-bg: #f1f3f4;
+            --accent-color: #495057;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --warning-color: #ffc107;
+            --sidebar-width: 220px;
+            --header-height: 70px;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fff;
+            background-color: var(--light-bg);
             color: var(--dark-text);
-        }
-        .profile-analyzer-container {
-            max-width: 900px;
-            margin: 50px auto;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            padding: 30px;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
 
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
+        /* Mobile-first approach */
+        .container {
+            margin-top: 40px;
+            width: 100%;
+            padding: 0 15px;
         }
 
-        .profile-header h1 {
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .upload-section {
-            background-color: var(--light-bg);
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .upload-btn {
-            background: linear-gradient(45deg, #007bff, #6610f2);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            transition: all 0.3s;
-        }
-
-        .upload-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(102,16,242,0.3);
-        }
-
-        .analysis-results {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .result-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-        }
-
-        .result-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .result-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .result-title {
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .result-score {
-            text-align: center;
-            font-size: 24px;
-            color: var(--primary-color);
-        }
+        /* Sidebar Styles */
         .sidebar {
-            background-color: var(--light-bg);
+            background-color: var(--very-light-bg);
             height: 100vh;
             position: fixed;
+            top: 0;
+            left: -100%;
             padding: 20px 0;
-            width: 220px;
+            width: var(--sidebar-width);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
         }
 
         .sidebar-logo {
             padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .sidebar-logo img {
             height: 40px;
+            max-width: 100%;
         }
 
         .sidebar-menu {
@@ -126,14 +100,14 @@
         }
 
         .sidebar-menu li {
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .sidebar-menu a {
             display: flex;
             align-items: center;
             padding: 12px 20px;
-            color: var(--dark-text);
+            color: var(--medium-text);
             text-decoration: none;
             transition: all 0.3s;
             border-left: 3px solid transparent;
@@ -141,8 +115,9 @@
 
         .sidebar-menu a:hover,
         .sidebar-menu a.active {
-            background-color: rgba(0,0,0,0.05);
+            background-color: var(--hover-bg);
             border-left: 3px solid var(--primary-color);
+            color: var(--dark-text);
         }
 
         .sidebar-menu i {
@@ -157,45 +132,67 @@
             color: var(--light-text);
             padding: 10px 20px;
             margin-top: 15px;
+            font-weight: 600;
         }
 
-        .main-content {
-            margin-left: 220px;
-            padding: 20px 30px;
-        }
-
+        /* Header Styles */
         .header {
+            background: var(--very-light-bg);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            z-index: 100;
+            padding: 0 15px;
+        }
+
+        .mobile-menu-btn {
+            display: flex;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark-text);
+            cursor: pointer;
+            padding: 10px;
         }
 
         .welcome {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--light-text);
+            display: none;
         }
 
         .welcome strong {
             display: block;
-            font-size: 24px;
+            font-size: 20px;
             color: var(--primary-color);
         }
 
         .search-container {
             flex-grow: 1;
-            margin: 0 30px;
+            margin: 0 15px;
+            max-width: 400px;
         }
 
         .search-box {
             width: 100%;
-            padding: 12px 20px;
-            border-radius: 50px;
-            border: 1px solid rgba(0,0,0,0.1);
-            background-color: #f5f5f5;
-            font-size: 16px;
+            padding: 8px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--light-bg);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: var(--very-light-bg);
         }
 
         .user-profile {
@@ -204,12 +201,14 @@
         }
 
         .user-profile span {
-            margin-right: 15px;
+            margin-right: 10px;
+            display: none;
+            color: var(--medium-text);
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             background-color: var(--primary-color);
             color: white;
@@ -217,10 +216,67 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 14px;
         }
 
-        .journey-title {
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            padding: 20px 15px;
+        }
+
+        /* Profile Analyzer */
+        .profile-analyzer-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: var(--very-light-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            color: var(--primary-color);
+            font-weight: 600;
             font-size: 24px;
+            margin: 0;
+        }
+
+        .upload-section {
+            background-color: var(--light-bg);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(44, 62, 80, 0.15);
+        }
+
+        /* Journey Styles */
+        .journey-title {
+            font-size: 20px;
             margin-bottom: 10px;
         }
 
@@ -231,20 +287,23 @@
         .journey-subtitle {
             color: var(--light-text);
             margin-bottom: 30px;
+            font-size: 14px;
         }
 
         .steps-progress {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             position: relative;
+            overflow-x: auto;
+            padding: 10px 0;
         }
 
         .progress-line {
             position: absolute;
             height: 2px;
-            background-color: #e0e0e0;
+            background-color: var(--border-color);
             width: 100%;
             top: 50%;
             transform: translateY(-50%);
@@ -254,7 +313,7 @@
         .progress-line-completed {
             position: absolute;
             height: 2px;
-            background-color: var(--accent-green);
+            background-color: var(--success-color);
             width: 33%;
             top: 50%;
             transform: translateY(-50%);
@@ -262,168 +321,80 @@
         }
 
         .step {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background-color: white;
-            border: 2px solid #e0e0e0;
+            background-color: var(--very-light-bg);
+            border: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 3;
-            font-size: 20px;
+            font-size: 16px;
+            flex-shrink: 0;
+            color: var(--light-text);
         }
 
         .step.completed {
-            background-color: var(--accent-green);
-            border-color: var(--accent-green);
+            background-color: var(--success-color);
+            border-color: var(--success-color);
             color: white;
         }
 
         .step.active {
-            border-color: var(--accent-green);
-            color: var(--accent-green);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: var(--very-light-bg);
         }
 
-        .step-cards {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
+        /* Card Layouts */
+        .step-cards,
+        .feature-cards {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
-        .step-card {
-            flex: 1;
-            background-color: white;
-            border-radius: 10px;
+        .step-card,
+        .feature-card {
+            background-color: var(--very-light-bg);
+            border-radius: 6px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
             transition: all 0.3s;
         }
 
-        .step-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transform: translateY(-5px);
+        .step-card:hover,
+        .feature-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
         }
 
-        .step-card-title {
-            font-size: 18px;
+        .step-card-title,
+        .feature-title {
+            font-size: 16px;
             font-weight: 600;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: var(--dark-text);
         }
 
         .step-card-title .completed {
-            color: var(--accent-green);
+            color: var(--success-color);
         }
 
-        .step-card-content {
-            color: var(--light-text);
+        .step-card-content,
+        .feature-description {
+            color: var(--medium-text);
             font-size: 14px;
-        }
-
-        .pro-banner {
-            background: linear-gradient(45deg, #ffebee, #ffcdd2);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 40px;
-            border: 1px solid #ffcdd2;
-        }
-
-        .pro-content {
-            flex-grow: 1;
-        }
-
-        .pro-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .pro-title i {
-            margin-right: 10px;
-        }
-
-        .pro-description {
-            color: var(--dark-text);
-            font-size: 14px;
-        }
-
-        .pro-image {
-            margin-right: 20px;
-        }
-
-        .pro-image img {
-            width: 100px;
-            height: 100px;
-        }
-
-        .btn-pro {
-            background: linear-gradient(45deg, #007bff, #6610f2,#6610f2);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-left: 20px;
-            transition: all 0.5s;
-            transition: all 0.5s ease;
-            moz-transition: all 0.5s ease;
-            -webkit-transition: all 0.5s ease;
-            box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.4);
-        }
-
-        .btn-pro:hover {
-            background-color: var(--secondary-color);
-            transform: scale(1.05);
-        }
-
-        .section-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .feature-cards {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .feature-card {
-            flex: 1;
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-            border: 1px solid rgba(0,0,0,0.08);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .feature-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transform: translateY(-5px);
-        }
-
-        .feature-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--accent-blue);
         }
 
         .feature-title.green {
-            color: var(--accent-green);
+            color: var(--success-color);
         }
 
         .feature-title.red {
@@ -431,49 +402,111 @@
         }
 
         .feature-title.yellow {
-            color: var(--accent-yellow);
+            color: var(--warning-color);
         }
 
-        .feature-description {
-            color: var(--light-text);
-            font-size: 14px;
-            margin-bottom: 15px;
+        .feature-title.blue {
+            color: var(--info-color);
         }
 
         .feature-image {
-            margin-top: auto;
+            margin-top: 15px;
             text-align: center;
         }
 
         .feature-image img {
-            height: 120px;
+            height: 80px;
             object-fit: contain;
         }
 
+        /* Pro Banner */
+        .pro-banner {
+            background: var(--light-bg);
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .pro-image {
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+
+        .pro-image img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .pro-content {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        .pro-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .pro-title i {
+            margin-right: 8px;
+        }
+
+        .pro-description {
+            color: var(--medium-text);
+            font-size: 14px;
+        }
+
+        .btn-pro {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-pro:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        /* University Grid */
         .university-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .university-card {
-            background-color: white;
-            border-radius: 10px;
+            background-color: var(--very-light-bg);
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
             transition: all 0.3s;
-            border: 1px solid rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
         }
 
         .university-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
         }
 
         .university-image {
-            height: 150px;
+            height: 120px;
             overflow: hidden;
+            background-color: var(--light-bg);
         }
 
         .university-image img {
@@ -490,6 +523,7 @@
             font-weight: 600;
             margin-bottom: 5px;
             font-size: 16px;
+            color: var(--dark-text);
         }
 
         .university-location {
@@ -518,7 +552,8 @@
 
         .stat-value {
             font-weight: 600;
-            font-size: 16px;
+            font-size: 14px;
+            color: var(--dark-text);
         }
 
         .stat-label {
@@ -527,10 +562,10 @@
         }
 
         .university-match {
-            background-color: #e8f5e9;
+            background-color: #e8f5e8;
             padding: 5px 10px;
-            border-radius: 5px;
-            color: var(--accent-green);
+            border-radius: 4px;
+            color: var(--success-color);
             font-size: 12px;
             font-weight: 600;
             display: flex;
@@ -542,32 +577,78 @@
             margin-right: 5px;
         }
 
-        .popular-reads {
-            background-color: white;
-            border-radius: 10px;
+        /* Analysis Results */
+        .analysis-results {
+            display: grid;
+            gap: 15px;
+        }
+
+        .result-card {
+            background-color: var(--very-light-bg);
+            border-radius: 6px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .result-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        .result-title {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: var(--dark-text);
+        }
+
+        .result-score {
+            text-align: center;
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+
+        /* Popular Reads */
+        .popular-reads {
+            background-color: var(--very-light-bg);
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
         }
 
         .read-title {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 15px;
+            color: var(--dark-text);
         }
 
         .read-card {
             display: flex;
             margin-bottom: 15px;
             padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .read-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
             overflow: hidden;
             margin-right: 15px;
+            flex-shrink: 0;
+            background-color: var(--light-bg);
         }
 
         .read-image img {
@@ -577,23 +658,71 @@
         }
 
         .read-content h5 {
-            font-size: 15px;
+            font-size: 14px;
             margin-bottom: 5px;
+            color: var(--dark-text);
         }
 
         .read-tag {
             display: inline-block;
-            background-color: #e0e0e0;
-            color: var(--dark-text);
-            padding: 2px 8px;
+            background-color: var(--light-bg);
+            color: var(--medium-text);
+            padding: 2px 6px;
             border-radius: 3px;
-            font-size: 12px;
+            font-size: 11px;
             margin-bottom: 5px;
         }
 
         .read-author {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--light-text);
+        }
+
+        /* Filter and Search */
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-section input,
+        .filter-section button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: var(--very-light-bg);
+        }
+
+        .college-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 4px;
+            background: var(--very-light-bg);
+        }
+
+        .search-container input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: var(--very-light-bg);
+        }
+
+        .card-body {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: block;
+            margin: 10px auto;
+            max-width: 150px;
+            height: auto;
         }
 
         .pagination {
@@ -603,111 +732,310 @@
         }
 
         .pagination-item {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background-color: #e0e0e0;
-            margin: 0 5px;
+            background-color: var(--border-color);
+            margin: 0 4px;
             cursor: pointer;
         }
 
         .pagination-item.active {
             background-color: var(--primary-color);
         }
-        .logo {
-            display: block;
-            margin: 10px auto;
-            max-width: 180px;
-        }
-         .filter-section {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 10px;
-    }
-    .filter-section input, .filter-section button {
-        padding: 5px 10px;
-        font-size: 16px;
-    }
 
-        .college-list {
-            max-height: 400px; /* Limit height */
-            overflow-y: auto; /* Enable vertical scroll */
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            background: #f9f9f9;
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--dark-text);
         }
 
-        /* Search bar styling */
-        .search-container {
-            margin-bottom: 10px;
+        /* Responsive Design */
+        @media (min-width: 480px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .profile-analyzer-container {
+                padding: 30px;
+            }
+
+            .pro-image img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .university-image {
+                height: 140px;
+            }
+
+            .read-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .feature-image img {
+                height: 100px;
+            }
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 5px;
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+
+            .sidebar {
+                left: 0;
+                position: fixed;
+            }
+
+            .main-content {
+                margin-left: var(--sidebar-width);
+                padding: 20px 30px;
+            }
+
+            .header {
+                left: var(--sidebar-width);
+                padding: 0 30px;
+            }
+
+            .welcome {
+                display: block;
+                font-size: 18px;
+            }
+
+            .welcome strong {
+                font-size: 24px;
+            }
+
+            .user-profile span {
+                display: block;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .search-box {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+
+            .step-cards,
+            .feature-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .university-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .analysis-results {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .journey-title {
+                font-size: 24px;
+            }
+
+            .journey-subtitle {
+                font-size: 16px;
+            }
+
+            .step {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .profile-header h1 {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .pro-title {
+                font-size: 20px;
+            }
+
+            .pro-image img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .btn-pro {
+                padding: 10px 20px;
+                font-size: 16px;
+                margin-top: 0;
+                margin-left: 20px;
+            }
+
+            .university-image {
+                height: 150px;
+            }
+
+            .read-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .feature-image img {
+                height: 120px;
+            }
+
+            .result-icon {
+                font-size: 40px;
+            }
+
+            .result-score {
+                font-size: 24px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .step-cards,
+            .feature-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .university-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .analysis-results {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .pro-banner {
+                flex-wrap: nowrap;
+            }
+
+            .pro-content {
+                min-width: auto;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .university-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .analysis-results {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Touch-friendly interactions */
+        @media (hover: none) {
+            .step-card:hover,
+            .feature-card:hover,
+            .university-card:hover,
+            .result-card:hover {
+                transform: none;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .logo,
+            .sidebar-logo img,
+            .pro-image img,
+            .university-image img,
+            .read-image img,
+            .feature-image img {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Professional light theme maintained */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light-bg: #f8f9fa;
+                --very-light-bg: #ffffff;
+                --dark-text: #2c3e50;
+                --medium-text: #495057;
+                --light-text: #6c757d;
+            }
+
+            /* Keep the professional light theme even in dark mode preference */
+            body {
+                background-color: var(--light-bg);
+                color: var(--dark-text);
+            }
         }
     </style>
 </head>
 <body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-logo">
-            <img src="https://letsunbound.com/wp-content/uploads/2024/08/Logo-001-01-e1724852823632.png" class="logo" alt="Logo" onclick="window.location.href='https://collegeguide.letsunbound.com/'">
+            <img src="https://letsunbound.com/wp-content/uploads/2024/08/Logo-001-01-e1724852823632.png" alt="Logo" class="logo">
         </div>
-
         <ul class="sidebar-menu">
-<!--             <li><a href="https://letscrackwithunbound.pythonanywhere.com/"><i class="fas fa-robot"></i>Home</a></li>-->
-            <li><a href="http://collegeguide.letsunbound.com/university/"><i class="fas fa-robot"></i>University</a></li>
-            <li> <a href="https://letscrackwithunbound.pythonanywhere.com/dorai/" class="active"><i class="fas fa-home"></i>IVY-BOT</a></li>
-            <li><a href="http://collegeguide.letsunbound.com/analysis/"><i class="fas fa-user-graduate"></i> Profile Analyzer</a></li>
+            <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fas fa-university"></i> Universities</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
         </ul>
-
-        <div class="sidebar-section">Explore</div>
+        <div class="sidebar-section">Tools</div>
         <ul class="sidebar-menu">
-            <li><a href="http://collegeguide.letsunbound.com/colleges/"><i class="fas fa-university"></i> College Finder</a></li>
-            <li><a href="https://letsunbound.com/about-us/"><i class="fas fa-clipboard-check"></i>About Us</a></li>
-            <li><a href="https://letsunbound.com/blog/"><i class="fas fa-list-ul"></i> Blogs</a></li>
-            <li><a href="https://letsunbound.com/eventswebinar/"><i class="fas fa-award"></i>Event & Webinar</a></li>
+            <li><a href="#"><i class="fas fa-search"></i> Search</a></li>
+            <li><a href="#"><i class="fas fa-bookmark"></i> Saved</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
-
-        <div class="sidebar-section">Applications</div>
-        <ul class="sidebar-menu">
-            <li><a href="https://letsunbound.com/contact-page/"><i class="fas fa-tasks"></i> Contact Us</a></li>
-            <!--<li><a href="/application-builder/"><i class="fas fa-file-alt"></i> Application Builder</a></li>-->
-<!--            <li><a href="#"><i class="fas fa-folder-open"></i> Manage Applications</a></li>-->
-<!--            <li><a href="#"><i class="fas fa-compass"></i> Guidance</a></li>-->
-        </ul>
-
-<!--        <div class="sidebar-section">Post Admit</div>-->
-<!--        <ul class="sidebar-menu">-->
-<!--            <li><a href="#"><i class="fas fa-check-circle"></i> Finalize Admits</a></li>-->
-<!--        </ul>-->
-
-        <div style="padding: 0 20px; margin-top: 30px;">
-            <button class="btn-pro">Get Pro</button>
-        </div>
     </div>
+
+
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
+
         <div class="header">
-            <div class="welcome">
-                Welcome,
-<h5 class="profile-name">{{ user.get_full_name }}</h5>            </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="welcome">
+            <strong>Welcome Back!</strong>
+            {{ user.get_full_name }}
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search universities, courses...">
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">{{ user.get_full_name|slice:":1"|join:""|capfirst }}</div>
+        </div>
+    </div>
 
-<!--            <div class="search-container">-->
-<!--                <input type="text" class="search-box" placeholder="Ask anything...">-->
+        <!-- Header -->
+<!--        <div class="header">-->
+<!--            <div class="welcome">-->
+<!--                Welcome,-->
+<!--<h5 class="profile-name">{{ user.get_full_name }}</h5>            </div>-->
+
+<!--&lt;!&ndash;            <div class="search-container">&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="text" class="search-box" placeholder="Ask anything...">&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+
+<!--            <div class="user-profile">-->
+<!--                <span>Undergraduate</span>-->
+<!--<div class="user-avatar">{{ user.get_full_name|slice:":1"|join:""|capfirst }}</div>-->
 <!--            </div>-->
-
-            <div class="user-profile">
-                <span>Undergraduate</span>
-<div class="user-avatar">{{ user.get_full_name|slice:":1"|join:""|capfirst }}</div>
-            </div>
         </div>
 
 
@@ -715,12 +1043,12 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-7" style="width:100%;">
     <div class="row">
-        <div class="col-md-10 offset-md-1">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0">My University Applications</h3>
+        <div class="col-md-10 offset-md-1" style="width:100%;">
+            <div class="card shadow-lg" style="width:100%;">
+                <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color:#eaeaea;">
+                    <h3 class="mb-0" style="color:black;">My University Applications</h3>
                     <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addApplicationModal">
                         <i class="fas fa-plus me-2"></i>Add New Application
                     </button>
@@ -847,48 +1175,48 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 {% endblock %}
         <!-- Feature Cards -->
-        <div class="section-title">Our Services</div>
-        <div class="feature-cards">
-            <div class="feature-card">
-                <div class="feature-title">Profile Analyzer</div>
-                <div class="feature-description">
-                    Unlock insights into your resume's strengths, weaknesses, and improvement areas.
-                </div>
-                <div class="feature-image">
-                    <img src="/api/placeholder/150/120" alt="Profile Analyzer">
-                </div>
-            </div>
+<!--        <div class="section-title">Our Services</div>-->
+<!--        <div class="feature-cards">-->
+<!--            <div class="feature-card">-->
+<!--                <div class="feature-title">Profile Analyzer</div>-->
+<!--                <div class="feature-description">-->
+<!--                    Unlock insights into your resume's strengths, weaknesses, and improvement areas.-->
+<!--                </div>-->
+<!--                <div class="feature-image">-->
+<!--                    <img src="/api/placeholder/150/120" alt="Profile Analyzer">-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="feature-card">
-                <div class="feature-title green">Shortlist Builder</div>
-                <div class="feature-description">
-                    Shortlist Builder will provide a curated shortlist of universities that match your profile
-                </div>
-                <div class="feature-image">
-                    <img src="/api/placeholder/150/120" alt="Shortlist Builder">
-                </div>
-            </div>
+<!--            <div class="feature-card">-->
+<!--                <div class="feature-title green">Shortlist Builder</div>-->
+<!--                <div class="feature-description">-->
+<!--                    Shortlist Builder will provide a curated shortlist of universities that match your profile-->
+<!--                </div>-->
+<!--                <div class="feature-image">-->
+<!--                    <img src="/api/placeholder/150/120" alt="Shortlist Builder">-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="feature-card">
-                <div class="feature-title red">Admit Finder</div>
-                <div class="feature-description">
-                    Admit Finder lets you explore profiles of previous admits to universities worldwide
-                </div>
-                <div class="feature-image">
-                    <img src="/api/placeholder/150/120" alt="Admit Finder">
-                </div>
-            </div>
+<!--            <div class="feature-card">-->
+<!--                <div class="feature-title red">Admit Finder</div>-->
+<!--                <div class="feature-description">-->
+<!--                    Admit Finder lets you explore profiles of previous admits to universities worldwide-->
+<!--                </div>-->
+<!--                <div class="feature-image">-->
+<!--                    <img src="/api/placeholder/150/120" alt="Admit Finder">-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="feature-card">
-                <div class="feature-title yellow">Scholarship Finder</div>
-                <div class="feature-description">
-                    Discover top scholarships from around the world, suited to your study goals.
-                </div>
-                <div class="feature-image">
-                    <img src="/api/placeholder/150/120" alt="Scholarship Finder">
-                </div>
-            </div>
-        </div>
+<!--            <div class="feature-card">-->
+<!--                <div class="feature-title yellow">Scholarship Finder</div>-->
+<!--                <div class="feature-description">-->
+<!--                    Discover top scholarships from around the world, suited to your study goals.-->
+<!--                </div>-->
+<!--                <div class="feature-image">-->
+<!--                    <img src="/api/placeholder/150/120" alt="Scholarship Finder">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- Popular Reads -->
 
