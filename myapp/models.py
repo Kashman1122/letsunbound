@@ -5,16 +5,21 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 class UniversityRegistration(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="university")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="universities")
     university_name = models.CharField(max_length=150)
     country = models.CharField(max_length=150)
     state = models.CharField(max_length=150)
     city = models.CharField(max_length=150)
     location = models.CharField(max_length=255, blank=True, null=True)
     offered_courses = models.TextField(blank=True, null=True)
+    # created_at = models.DateTimeField(auto_now_add=True)  # Optional: track when added
+
+    class Meta:
+        # Optional: prevent duplicate registrations for same university by same user
+        unique_together = ('user', 'university_name')
 
     def __str__(self):
-        return self.university_name
+        return f"{self.user.username} - {self.university_name}"
 
 
 class UserAnalysisDB(models.Model):
