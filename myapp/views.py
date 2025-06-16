@@ -1316,6 +1316,8 @@ def clean_sat_scores(request):
 #         messages.error(request, f'An error occurred: {str(e)}')
 #         return redirect('university')
 
+from django.utils import timezone
+import time
 
 @login_required
 def manage_applications(request):
@@ -1445,27 +1447,30 @@ def book_university(request):
             data = json.loads(request.body)
             university_name = data.get('university_name')
 
-            # Check if user already has a university registration
-            existing_registration = UniversityRegistration.objects.filter(user=request.user).first()
+            if not university_name:
+                return JsonResponse({
+                    'error': 'University name is required.'
+                }, status=400)
+
+            # Check if user already has this specific university registered
+            existing_registration = UniversityRegistration.objects.filter(
+                user=request.user,
+                university_name=university_name
+            ).first()
 
             if existing_registration:
-                # If user already has a registration, update it
-                existing_registration.university_name = university_name
-                existing_registration.save()
-
                 return JsonResponse({
-                    'message': 'University registration updated successfully.',
-                    'status': 'updated'
-                })
+                    'error': f'You have already registered for {university_name}.',
+                    'status': 'duplicate'
+                }, status=400)
 
-            # Create new university registration
+            # Create new university registration (always add, never update)
             UniversityRegistration.objects.create(
                 user=request.user,
                 university_name=university_name,
-                # You might want to add more fields based on the data
                 country=data.get('country', ''),
                 state=data.get('state', ''),
-                city=data.get('area', ''),
+                city=data.get('area', ''),  # Note: using 'area' from data
                 location=f"Graduation Rate: {data.get('graduation_rate', '')}, "
                          f"Type: {data.get('organization_type', '')}, "
                          f"Financial Aid: {data.get('financial_aid', '')}",
@@ -1477,7 +1482,7 @@ def book_university(request):
             )
 
             return JsonResponse({
-                'message': 'University registered successfully.',
+                'message': f'{university_name} registered successfully.',
                 'status': 'created'
             })
 
