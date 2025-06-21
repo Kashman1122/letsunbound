@@ -175,7 +175,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'letscrackwithunbound@gmail.com'
-EMAIL_HOST_PASSWORD = 'krkz txhb zpxd ydyz'  # Use an App Password, not your regular password
+EMAIL_HOST_PASSWORD = 'mibe ehvi hval jyrk'  # Use an App Password, not your regular password
 
 # Increase logging level for debugging email issues
 LOGGING = {
