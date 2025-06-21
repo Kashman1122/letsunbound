@@ -705,6 +705,227 @@ from django.views.decorators.http import require_http_methods
 import logging
 logger = logging.getLogger(__name__)
 
+
+
+import os
+import openai
+import logging
+import numpy as np
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.core.cache import cache
+import hashlib
+import re
+from typing import Dict, Optional, Tuple
+
+logger = logging.getLogger(__name__)
+
+class CollegeMemoizer:
+    """Smart memoization for college-related queries using OpenAI embeddings"""
+    
+    def __init__(self, api_key):
+        self.client = openai.OpenAI(api_key=api_key)
+        
+        # Follow-up detection patterns
+        self.FOLLOW_UP_PATTERNS = [
+            r'\b(tell me )?(more|again|about (it|that|this))\b',
+            r'\b(what|how) about (it|that|this)\b',
+            r'\b(and|also|then|next|furthermore)\b',
+            r'\b(elaborate|explain|details|information)\b',
+            r'\b(continue|go on|further|expand)\b',
+            r'\bsame (thing|topic|college|university)\b'
+        ]
+        
+        self.PRONOUN_PATTERNS = [
+            r'\b(it|this|that|these|those|they|them)\b'
+        ]
+        
+        self.CONTEXTUAL_KEYWORDS = {
+            'again', 'more', 'tell me about it', 'about that', 'same thing',
+            'repeat', 'elaborate', 'explain more', 'details', 'information',
+            'continue', 'go on', 'further', 'expand on', 'similar'
+        }
+
+    def get_session_key(self, request):
+        """Generate unique session key for user"""
+        session_id = request.session.session_key
+        if not session_id:
+            request.session.create()
+            session_id = request.session.session_key
+        return f"college_ai_session_{session_id}"
+
+    def get_embedding(self, text: str) -> Optional[list]:
+        """Get OpenAI embedding for text"""
+        try:
+            response = self.client.embeddings.create(
+                model="text-embedding-3-small",
+                input=text.strip()
+            )
+            return response.data[0].embedding
+        except Exception as e:
+            logger.error(f"Error getting embedding: {e}")
+            return None
+
+    def cosine_similarity(self, vec1: list, vec2: list) -> float:
+        """Calculate cosine similarity between two vectors"""
+        try:
+            vec1 = np.array(vec1)
+            vec2 = np.array(vec2)
+            
+            dot_product = np.dot(vec1, vec2)
+            norm1 = np.linalg.norm(vec1)
+            norm2 = np.linalg.norm(vec2)
+            
+            if norm1 == 0 or norm2 == 0:
+                return 0.0
+                
+            return dot_product / (norm1 * norm2)
+        except Exception as e:
+            logger.error(f"Error calculating similarity: {e}")
+            return 0.0
+
+    def clean_text(self, text: str) -> str:
+        """Clean and normalize text"""
+        text = text.lower().strip()
+        text = re.sub(r'[^\w\s?]', '', text)
+        text = re.sub(r'\s+', ' ', text)
+        return text
+
+    def is_contextual_query(self, query: str) -> bool:
+        """Check if query is asking for context/repetition"""
+        query_clean = self.clean_text(query)
+        
+        # Check for explicit contextual keywords
+        if any(keyword in query_clean for keyword in self.CONTEXTUAL_KEYWORDS):
+            return True
+            
+        # Check for follow-up patterns
+        for pattern in self.FOLLOW_UP_PATTERNS:
+            if re.search(pattern, query_clean, re.IGNORECASE):
+                return True
+                
+        # Check for pronouns indicating reference
+        for pattern in self.PRONOUN_PATTERNS:
+            if re.search(pattern, query_clean, re.IGNORECASE):
+                return True
+                
+        return False
+
+    def analyze_query_similarity(self, current_query: str, previous_query: str) -> Dict:
+        """Analyze similarity between current and previous query"""
+        
+        # Get embeddings
+        current_embedding = self.get_embedding(current_query)
+        previous_embedding = self.get_embedding(previous_query)
+        
+        if not current_embedding or not previous_embedding:
+            return {
+                "is_similar": False,
+                "similarity_score": 0.0,
+                "confidence": 0,
+                "method": "embedding_failed"
+            }
+        
+        # Calculate semantic similarity
+        similarity_score = self.cosine_similarity(current_embedding, previous_embedding)
+        
+        # Base confidence from similarity
+        confidence = int(similarity_score * 100)
+        
+        # Check if it's a contextual query
+        is_contextual = self.is_contextual_query(current_query)
+        
+        if is_contextual:
+            confidence += 40  # Boost confidence for contextual queries
+            method = "contextual_detected"
+        elif similarity_score >= 0.7:
+            method = "high_semantic_similarity"
+        elif similarity_score >= 0.5:
+            method = "medium_semantic_similarity"
+        else:
+            method = "low_similarity"
+        
+        # Additional checks for college-specific terms
+        current_clean = self.clean_text(current_query)
+        previous_clean = self.clean_text(previous_query)
+        
+        # Extract potential college/university names
+        college_terms = []
+        for query in [current_clean, previous_clean]:
+            words = query.split()
+            for i, word in enumerate(words):
+                if word in ['university', 'college', 'institute'] and i > 0:
+                    college_terms.append(words[i-1])
+                elif word in ['harvard', 'mit', 'stanford', 'yale', 'princeton']:
+                    college_terms.append(word)
+        
+        # If same college mentioned, boost confidence
+        if len(set(college_terms)) == 1 and college_terms:
+            confidence += 20
+            method += "_same_institution"
+        
+        # Cap confidence at 100
+        confidence = min(confidence, 100)
+        
+        is_similar = confidence >= 50
+        
+        return {
+            "is_similar": is_similar,
+            "similarity_score": round(similarity_score, 4),
+            "confidence": confidence,
+            "method": method,
+            "is_contextual": is_contextual
+        }
+
+    def get_cached_response(self, request, current_query: str) -> Tuple[Optional[str], Optional[str], Optional[Dict]]:
+        """Get cached response if query is similar to previous one"""
+        session_key = self.get_session_key(request)
+        session_data = cache.get(session_key, {})
+        
+        if not session_data or 'queries' not in session_data:
+            return None, None, None
+        
+        queries = session_data['queries']
+        
+        # Check the most recent query first
+        if queries:
+            last_entry = queries[-1]
+            last_query = last_entry['query']
+            last_response = last_entry['response']
+            
+            # Analyze similarity
+            analysis = self.analyze_query_similarity(current_query, last_query)
+            
+            logger.info(f"Query analysis: {analysis}")
+            logger.info(f"Current: '{current_query}'")
+            logger.info(f"Previous: '{last_query}'")
+            
+            # Return cached response if similar enough
+            if analysis['is_similar'] and analysis['confidence'] >= 50:
+                return last_response, last_query, analysis
+        
+        return None, None, None
+
+    def cache_response(self, request, query: str, response: str):
+        """Cache query and response"""
+        session_key = self.get_session_key(request)
+        session_data = cache.get(session_key, {'queries': []})
+        
+        # Keep only last 3 queries to prevent memory bloat
+        if len(session_data['queries']) >= 3:
+            session_data['queries'] = session_data['queries'][-2:]
+        
+        session_data['queries'].append({
+            'query': query.strip(),
+            'response': response,
+            'timestamp': hash(query) % 1000000
+        })
+        
+        # Cache for 90 minutes
+        cache.set(session_key, session_data, 5400)
+        logger.info(f"Cached response for query: '{query[:50]}...'")
+
+
 @csrf_exempt  # Remove this and use proper CSRF tokens in production
 @require_http_methods(["GET", "POST"])
 def ai(request):
@@ -735,6 +956,44 @@ def ai(request):
         if not api_key:
             # Fallback to hardcoded key (NOT recommended for production)
             logger.warning("Using hardcoded API key - this is not secure for production")
+
+        # Initialize memoizer
+        memoizer = CollegeMemoizer(api_key)
+        
+        # Check for cached similar response first
+        cached_response, original_query, analysis = memoizer.get_cached_response(request, query)
+        
+        if cached_response and analysis:
+            logger.info(f"Returning cached response - Confidence: {analysis['confidence']}%, Method: {analysis['method']}")
+            
+            # Enhance response with context for lower confidence or contextual queries
+            enhanced_response = cached_response
+            
+            if analysis['is_contextual']:
+                enhanced_response += f"\n\n*✨ (Continuing from your previous question about: '{original_query}')*"
+            elif analysis['confidence'] < 80:
+                enhanced_response += f"\n\n*📚 (This response relates to your previous question: '{original_query[:80]}...')*"
+            
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'response': enhanced_response,
+                    'status': 'success',
+                    'cached': True,
+                    'analysis': {
+                        'confidence': analysis['confidence'],
+                        'method': analysis['method'],
+                        'similarity_score': analysis['similarity_score']
+                    }
+                })
+            
+            return render(request, 'ai.html', {
+                'response': enhanced_response,
+                'query': query,
+                'cached': True
+            })
+
+        # No cached response found, proceed with OpenAI API call
+        logger.info("No similar cached response found, making new OpenAI API call")
 
         # Define the system prompt
         system_prompt = """You are a specialized college information assistant. Your role is to help users with college-related queries ONLY.
@@ -778,17 +1037,22 @@ IMPORTANT RULES:
         response_text = response.choices[0].message.content
         logger.info(f"OpenAI response received: {response_text[:100]}...")
 
+        # Cache the new response
+        memoizer.cache_response(request, query, response_text)
+
         # Return JSON response for AJAX request
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
                 'response': response_text,
-                'status': 'success'
+                'status': 'success',
+                'cached': False
             })
 
         # If not AJAX, return with context (fallback)
         return render(request, 'ai.html', {
             'response': response_text,
-            'query': query
+            'query': query,
+            'cached': False
         })
 
     except openai.AuthenticationError as e:
@@ -822,7 +1086,6 @@ IMPORTANT RULES:
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({'error': error_message}, status=500)
         return render(request, 'ai.html', {'error': error_message})
-
 
 @login_required
 def filter_universities(request):
