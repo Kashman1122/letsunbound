@@ -1,0 +1,17 @@
+# File: .github/workflows/django-app.yml
+# Only for accessing API key - no commands
+
+name: API Key Access
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  access-key:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Make API key available
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: echo "API key is now available as environment variable"
